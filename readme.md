@@ -9,6 +9,6 @@ project goals:
  * robot must work
 
 
- ![alt tag](https://lh6.googleusercontent.com/Ls5QHe8xYzzV2Qn8n2MBtvOShwkUB0dqBlTmbZg0L8pD8QwaDy4QsJftLLcyuPEkUqFUekxJeak=w1896-h859)
- 
-good luck everyone!!
+![alt tag](https://raw.githubusercontent.com/jeroeness/swagbot/master/Swag-Bot.jpg)
+
+Good luck everyone!!
