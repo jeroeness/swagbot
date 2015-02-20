@@ -18,7 +18,7 @@ Useful links
  * CodeBlocks IDE http://www.codeblocks.org/
  * C programming manual http://www.gnu.org/software/gnu-c-manual/gnu-c-manual.html
  * AVRDUDE http://www.nongnu.org/avrdude/
-
+ * Arduino development software http://arduino.cc/en/main/software
 
 ![alt tag](https://raw.githubusercontent.com/jeroeness/swagbot/master/Swag-Bot.jpg)
 
