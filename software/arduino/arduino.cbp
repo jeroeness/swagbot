@@ -560,7 +560,7 @@
 					<Variable name="MCU" value="atmega2560" />
 					<Variable name="MCU_CLOCK" value="16" />
 					<Variable name="UPLOAD_BAUDRATE" value="57600" />
-					<Variable name="UPLOAD_PORT" value="" />
+					<Variable name="UPLOAD_PORT" value="COM5" />
 				</Environment>
 			</Target>
 			<Target title="Arduino Mega 1280">
@@ -683,6 +683,12 @@
 		<Compiler>
 			<Add directory="." />
 		</Compiler>
+		<Unit filename="src/lib/pins_arduino.h">
+			<Option target="Arduino Mega 2560/ADK" />
+		</Unit>
+		<Unit filename="src/lib/serial.h">
+			<Option target="Arduino Mega 2560/ADK" />
+		</Unit>
 		<Unit filename="src/lib/swagbotlib.c">
 			<Option compilerVar="CC" />
 			<Option target="Arduino Mega 2560/ADK" />
@@ -692,6 +698,13 @@
 		</Unit>
 		<Unit filename="src/main.c">
 			<Option compilerVar="CC" />
+			<Option target="Arduino Mega 2560/ADK" />
+		</Unit>
+		<Unit filename="src/modules/communication.c">
+			<Option compilerVar="CC" />
+			<Option target="Arduino Mega 2560/ADK" />
+		</Unit>
+		<Unit filename="src/modules/communication.h">
 			<Option target="Arduino Mega 2560/ADK" />
 		</Unit>
 		<Extensions>
