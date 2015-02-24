@@ -61,6 +61,13 @@
 1423435170 d:\documents\projects\swagbot\software\arduino\pins_arduino.h
 	<avr/pgmspace.h>
 
-1424388638 source:d:\documents\projects\swagbot\software\arduino\src\main.c
+1424808229 source:d:\documents\projects\swagbot\software\arduino\src\main.c
 	<Arduino.h>
+	"lib/swagbotlib.h"
+
+1424807021 source:d:\documents\projects\swagbot\software\arduino\src\lib\swagbotlib.c
+
+1424615246 d:\documents\projects\swagbot\software\arduino\src\lib\swagbotlib.h
+
+1424806768 source:d:\documents\projects\swagbot\software\arduino\src\modules\communication.c
 

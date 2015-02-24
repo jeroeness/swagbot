@@ -683,6 +683,13 @@
 		<Compiler>
 			<Add directory="." />
 		</Compiler>
+		<Unit filename="src/lib/swagbotlib.c">
+			<Option compilerVar="CC" />
+			<Option target="Arduino Mega 2560/ADK" />
+		</Unit>
+		<Unit filename="src/lib/swagbotlib.h">
+			<Option target="Arduino Mega 2560/ADK" />
+		</Unit>
 		<Unit filename="src/main.c">
 			<Option compilerVar="CC" />
 			<Option target="Arduino Mega 2560/ADK" />

@@ -1,14 +1,17 @@
 #include <Arduino.h>
+#include "lib/swagbotlib.h"
+#include "modules/communication.h"
 
 void setup() {
-	Serial.begin(9600);
-	pinMode(13, OUTPUT);
+
+	// Invoke initialize for all modules
+	initCommunication();
+
 }
 
 void loop() {
-	Serial.println("Hello world!");
-	delay(100);
-	digitalWrite(13, HIGH);
-	delay(100);
-	digitalWrite(13, LOW);
+
+	// Invoke update for all modules
+	updateCommunication();
+
 }
