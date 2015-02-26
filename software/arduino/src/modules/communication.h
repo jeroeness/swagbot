@@ -2,7 +2,17 @@
 #define COMMUNICATION_H
 
 typedef struct {
-	int i;
+	// Preamble
+	int8_t packetType;	// 3bits
+	// Sensor data
+    int8_t ultrasonic;  // 8bits
+    int8_t bumpers;		// 2bits
+    // System
+    int8_t mode;		// 1bit
+    // Control
+    int8_t leftMotor;	// 8bits
+    int8_t rightMotor;	// 8bits
+						// sum = 30
 } TransmissionPacket;
 
 typedef struct {
@@ -12,7 +22,9 @@ typedef struct {
 void initCommunication();
 void updateCommunication ();
 
-void transmitData(TransmissionPacket *packet);
+inline void insertInString(int8_t *, int8_t, int8_t, int8_t, int8_t);
+TransmissionPacket generateTransmissionPacket ();
+bool transmitData(TransmissionPacket packet);
 InstructionPacket receiveData ();
 
 bool openConnection();

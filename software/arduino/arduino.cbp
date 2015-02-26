@@ -686,6 +686,9 @@
 		<Unit filename="src/lib/pins_arduino.h">
 			<Option target="Arduino Mega 2560/ADK" />
 		</Unit>
+		<Unit filename="src/lib/serial.c">
+			<Option compilerVar="CC" />
+		</Unit>
 		<Unit filename="src/lib/serial.h">
 			<Option target="Arduino Mega 2560/ADK" />
 		</Unit>

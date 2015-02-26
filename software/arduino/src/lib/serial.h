@@ -2,7 +2,7 @@
 #define SERIAL_H
 
 // Thomas implementeerd alle 4 methodes
-void serialBegin(int baud);
+void serialBegin();
 void serialEnd();
 
 char *serialRead();

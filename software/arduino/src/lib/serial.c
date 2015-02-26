@@ -1,13 +1,13 @@
-#define F_CPU 1000000
-
-#include <avr/io.h>
-#include <stdio.h>
-#include <USART.h>
-#include <util/setbaud.h>
-
 #ifndef BAUD
 #define BAUD 9600
 #endif
+
+#include <avr/io.h>
+#include <stdio.h>
+//#include <USART.h>
+#include <util/setbaud.h>
+#include "lib/serial.h"
+
 
 void serialBegin(){
 	UCSR0A |= (1 << U2X0);     // Double the USART Transmission Speed
