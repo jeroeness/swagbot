@@ -10,9 +10,6 @@
 #include "lib/serial.h"
 
 <<<<<<< HEAD
-#ifndef BAUD
-#define BAUD 9600
-#endif
 #ifndef BAUD_PRESCALLER
 #define BAUD_PRESCALLER (((F_CPU / (BAUD * 16UL))) - 1)
 #endif
