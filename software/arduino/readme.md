@@ -10,6 +10,12 @@ When you installed Codeblocks the project probably won't compile out-of-the-box,
  * check if you selected the correct compiler: GNU GCC Compiler for AVR
  * add arduino core directory: go in Codeblocks to > settings > compiler... > select GNU GCC Compiler for AVR > search directories > add the android core directory (e.g. C:\Arduino\hardware\arduino\avr\cores\arduino)
 
+ 
+Useful links
+--------------
+
+ * Atmega32 datasheet http://www.atmel.com/images/doc2549.pdf 
+
 Flashing arduino
 --------------
 To flash arduino mega 2560 using avrdude:
