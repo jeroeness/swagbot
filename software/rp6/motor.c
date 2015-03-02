@@ -4,6 +4,9 @@
 #include <util/delay.h>
 #include <avr/io.h> // I/O Port definitions
 #include <avr/interrupt.h> // Interrupt macros (e.g. cli(), sei())
+
+#include "func_protos.h"
+
 /*****************************************************************************/
 #define BAUD_LOW 38400 //Low speed - 38.4 kBaud
 #define UBRR_BAUD_LOW ((F_CPU/(16*BAUD_LOW))-1)
