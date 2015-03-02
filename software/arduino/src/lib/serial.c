@@ -1,3 +1,4 @@
+#define F_CPU 16000000UL 
 #ifndef BAUD
 #define BAUD 9600
 #endif
