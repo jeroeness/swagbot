@@ -1,7 +1,7 @@
-RP6 Software
+RP6-Software
 =======================
 
-De ontwikkeling van de RP6 software gebeurt hier.
+De ontwikkeling van de RP6-software gebeurt hier.
 
 Elk stuk code dat hiernaartoe gepusht wordt, moet in het juiste bestand staan. We willen spaghetticode voorkomen.
 Zo is er voor de aansturing van de motor één bestand aangemaakt, waarin alle motorfuncties komen te staan. 
