@@ -11,8 +11,6 @@
 #define UBRR_BAUD_HIGH ((F_CPU/(16*BAUD_HIGH))-1)
 /*****************************************************************************/
 
-void drive(int dirL,int dirR,int speedL,int speedR);
-
 void initMotor(){
 	TCNT1=0x00;
 	TCCR1A = (0 << WGM10) | (1 << WGM11) | (1 << COM1A1) | (1 << COM1B1);
@@ -33,18 +31,6 @@ ISR(TIMER1_COMPA_vect){
 }
 
 ISR(TIMER1_COMPB_vect){
-}
-
-int main(){
-	cli();
-	initMotor();
-	sei();
-
-	while(1){
-		//implement automatic and manual mode here
-		
-	}
-	return 0;
 }
 
 //dirL, dirR direction of left and right motor. 0=forward, 1=backward
