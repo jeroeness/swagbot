@@ -5,16 +5,15 @@
 
 #include <avr/io.h>
 #include <stdio.h>
-//#include <USART.h>
+#include <USART.h>
 #include <util/setbaud.h>
 #include "lib/serial.h"
 
-<<<<<<< HEAD
+
 #ifndef BAUD_PRESCALLER
 #define BAUD_PRESCALLER (((F_CPU / (BAUD * 16UL))) - 1)
 #endif
-=======
->>>>>>> origin/master
+
 
 void serialBegin(){
     UBRR0H = (uint8_t)(BAUD_PRESCALLER>>8);
@@ -39,19 +38,3 @@ void serialWrite(char c){
     loop_until_bit_is_set(UCSR0A, UDRE0); /* Wait until data register empty. */
     UDR0 = c;
 }
-
-//www.appelsiini.net/2011/simple-usart-with-avr-libc
-https://hekilledmywire.wordpress.com/2011/01/05/using-the-usartserial-tutorial-part-2/
-//De code hieronder komt uit de arduino lib moet dit nog aanpassen
-/*
-void transmitByte(uint8_t data) {
-                                     // Wait for empty transmit buffer
-  loop_until_bit_is_set(UCSR0A, UDRE0);
-  UDR0 = data;                                            // send data
-}
-
-uint8_t receiveByte(void) {
-  loop_until_bit_is_set(UCSR0A, RXC0);       // Wait for incoming data
-  return UDR0;                                // return register value
-}
-*/
