@@ -13,7 +13,7 @@ int main() {
 	sei();
 
 	while(1) {
-
+	    motorTest();
 	}
 
 	return 0;

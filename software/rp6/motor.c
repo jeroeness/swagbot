@@ -37,8 +37,10 @@ ISR(TIMER1_COMPB_vect){
 }
 
 void motorTest() {
-  
-  
+	drive(200, 100, 1);
+	_delay_ms(1000);
+	drive(200, -100, 1);
+	_delay_ms(1000);
 }
 
 

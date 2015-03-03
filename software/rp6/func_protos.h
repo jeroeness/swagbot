@@ -12,6 +12,7 @@
 void moveMotors(int dirL,int dirR,int speedL,int speedR);
 
 void drive(int speed, int bend, int direction);
-
+void motorTest();
+void stop();
 
 void initMotor();
