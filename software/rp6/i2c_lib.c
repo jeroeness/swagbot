@@ -1,8 +1,10 @@
 /*
- * i2c.c
+ * i2c_lib.c
  *
  * Created: 3-3-2015 11:07:02
  *  Author: gerald
+ *
+ * v0.99
  */ 
 
 
