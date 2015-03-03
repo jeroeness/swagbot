@@ -36,12 +36,28 @@ ISR(TIMER1_COMPA_vect){
 ISR(TIMER1_COMPB_vect){
 }
 
-//dirL, dirR direction of left and right motor. 0=forward, 1=backward
+void motorTest() {
+  
+  
+}
+
+
+// -bend = left; +bend = right
+void drive(int speed, int bend, int direction) {
+	moveMotors(direction, direction, speed + bend, speed - bend);
+}
+
+
+void stop() {
+	moveMotors(0, 0, 0, 0);
+}
+
+//dirL, dirR direction of left and right motor. 1=forward, -1=backward
 //speedL, speedR movement speed of left and right motor. 0 <= speed <= 200
-void drive(int dirL,int dirR,int speedL,int speedR){
+void moveMotors(int dirL,int dirR,int speedL,int speedR){
 	//direction
 	DDRC |= (1 << PINC2) | (1 << PINC3);
-	if(!dirL){
+	if(dirL == 1){
 		PORTC &= ~(1 << PINC2);
 	}
 	
@@ -49,7 +65,7 @@ void drive(int dirL,int dirR,int speedL,int speedR){
 		PORTC |= (1 << PINC2);
 	}
 	
-	if(!dirR){
+	if(dirR == 1){
 		PORTC &= ~(1 << PINC3);
 	}
 	

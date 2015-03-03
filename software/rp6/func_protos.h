@@ -9,6 +9,9 @@
 *	@param speedL the speed of the left motor
 *	@param speedR the speed of the right motor
 */
-void drive(int dirL,int dirR,int speedL,int speedR);
+void moveMotors(int dirL,int dirR,int speedL,int speedR);
+
+void drive(int speed, int bend, int direction);
+
 
 void initMotor();
