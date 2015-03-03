@@ -4,6 +4,8 @@
 
 int incomingByte = 0;
 bool connectionIsOpen = false;
+int8_t activeKey = 0;
+int16_t keyTimer = 0;
 
 void initCommunication() {
 
@@ -26,22 +28,55 @@ void closeConnection() {
 
 void updateCommunication () {
 
+    /*
     TransmissionPacket t = generateTransmissionPacket();
 
 	if (!transmitData(t)) {
 
 		//TODO flashPanicLight();
 
-	}
+	}*/
 
 	// send data only when you receive data:
 	if (Serial.available() > 0) {
 			// read the incoming byteo
-			incomingByte = Serial.read();
+			//incomingByte = Serial.read();
 
 			// say what you got:
-			Serial.print((char)(('A'-'a')+incomingByte));
 	}
+
+	readInputs ();
+
+}
+
+void readInputs () {
+    if (Serial.available() > 0) {
+        int8_t input = Serial.read();
+
+        switch (input) {
+            case 'w':
+            case 'a':
+            case 's':
+            case 'd':
+            activeKey = input;
+            keyTimer = 0x3000;
+			Serial.print(activeKey);
+            break;
+        }
+
+
+    }
+    if (keyTimer-- == 1) {
+        activeKey = 0;
+    }
+
+    if (activeKey > 0) {
+        DDRB = DDRD = 0xFF;
+        PORTB = 0xFF;
+        PORTD = 0xFF;
+    } else {
+        PORTB = PORTD = 0;
+    }
 }
 
 TransmissionPacket generateTransmissionPacket () {

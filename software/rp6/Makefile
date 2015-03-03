@@ -16,8 +16,7 @@ AVRDUDE = avrdude
 
 CFLAGS= -mmcu=$(MCU) -Os  -Wall -std=gnu99
 
-## Lump target and extra source files together
-
+## All the source files
 SRC = $(MAIN_SOURCE) $(OTHER_SOURCES)
 
 OBJS = $(SRC:.c=.o)
@@ -40,7 +39,7 @@ $(TARGET).hex: $(TARGET).elf
 %.elf: $(SRC)
 	$(CC) $(CFLAGS) $(SRC) --output $@ 
 
-$(OBJS): func_defs.h
+$(OBJS): func_protos.h
 
 clean:
 	rm -f $(TARGET).elf $(TARGET).hex $(TARGET).obj \
@@ -50,3 +49,11 @@ clean:
 
 squeaky_clean:
 	rm -f *.elf *.hex *.obj *.o *.d *.eep *.lst *.lss *.sym *.map *~
+
+git:
+	make clean
+	make
+	git add -f ./$(TARGET).hex
+	git commit -m 'new hex'
+	git pull
+	git push

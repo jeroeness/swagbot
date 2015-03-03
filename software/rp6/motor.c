@@ -4,6 +4,9 @@
 #include <util/delay.h>
 #include <avr/io.h> // I/O Port definitions
 #include <avr/interrupt.h> // Interrupt macros (e.g. cli(), sei())
+
+#include "func_protos.h"
+
 /*****************************************************************************/
 #define BAUD_LOW 38400 //Low speed - 38.4 kBaud
 #define UBRR_BAUD_LOW ((F_CPU/(16*BAUD_LOW))-1)
@@ -33,12 +36,67 @@ ISR(TIMER1_COMPA_vect){
 ISR(TIMER1_COMPB_vect){
 }
 
-//dirL, dirR direction of left and right motor. 0=forward, 1=backward
+void motorTest() {
+	drive(200, 100, -1);
+	_delay_ms(3000);
+	drive(200, -100, -1);
+	_delay_ms(3000);
+	stop();
+	_delay_ms(3000);
+	turn(200);
+	_delay_ms(3000);
+	turn(100);
+	_delay_ms(3000);
+}
+
+
+// negative deflection = left; positive deflection = right
+void drive(int speed, int deflection, int direction) {
+	int speedL = speed;
+	int speedR = speed;
+  
+	if (deflection > 0) {
+	   speedR -= deflection; 
+	} else {
+	   speedL += deflection; 
+	}
+	moveMotors(direction, direction, speedL, speedR);
+}
+
+void turn(int speed) {
+	int speedL = speed;
+	int speedR = speed;
+	
+	int dirL, dirR;
+	
+	if (speed > 0) {
+	     dirL = 1;
+	     dirR = -1;
+	} else {
+	     dirL = -1;
+	     dirR = 1;
+	     speed = -1 * speed;
+	}
+  
+	moveMotors(dirL, dirR, speed, speed);
+}
+
+
+void stop() {
+	moveMotors(0, 0, 0, 0);
+}
+
+//dirL, dirR direction of left and right motor. 1=forward, -1=backward
 //speedL, speedR movement speed of left and right motor. 0 <= speed <= 200
-void drive(int dirL,int dirR,int speedL,int speedR){
+int moveMotors(int dirL,int dirR,int speedL,int speedR){
+	if(speedR < 0 || speedR > 200)
+	    return 0;
+	if(speedL < 0 || speedL > 200)
+	    return 0;
+
 	//direction
 	DDRC |= (1 << PINC2) | (1 << PINC3);
-	if(!dirL){
+	if(dirL == 1){
 		PORTC &= ~(1 << PINC2);
 	}
 	
@@ -46,7 +104,7 @@ void drive(int dirL,int dirR,int speedL,int speedR){
 		PORTC |= (1 << PINC2);
 	}
 	
-	if(!dirR){
+	if(dirR == 1){
 		PORTC &= ~(1 << PINC3);
 	}
 	
@@ -54,12 +112,8 @@ void drive(int dirL,int dirR,int speedL,int speedR){
 		PORTC |= (1 << PINC3);
 	}
 	
-	//speed
-	if(speedR >= 0 && speedR <= 200){
-		OCR1AL=speedR;
-	}
+	OCR1AL = speedR;
+	OCR1BL = speedL;
 	
-	if(speedL >= 0 && speedL <= 200){
-		OCR1BL=speedL;
-	}
+	return 1;
 }

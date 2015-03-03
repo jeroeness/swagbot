@@ -1,4 +1,4 @@
-#define F_CPU 16000000UL 
+#define F_CPU 16000000UL
 #ifndef BAUD
 #define BAUD 9600
 #endif
@@ -7,14 +7,18 @@
 #include <stdio.h>
 #include <USART.h>
 #include <util/setbaud.h>
-#include "lib/serial.h"
-
+#include "serial.h"
+#include <util/delay.h>
 
 #ifndef BAUD_PRESCALLER
 #define BAUD_PRESCALLER (((F_CPU / (BAUD * 16UL))) - 1)
 #endif
 
-
+char wait_until_bit_is_set(char A,char B){
+while (~(A & 1 << B)) {
+_delay_ms(1);
+}
+}
 void serialBegin(){
     UBRR0H = (uint8_t)(BAUD_PRESCALLER>>8);
     UBRR0L = (uint8_t)(BAUD_PRESCALLER);
@@ -29,12 +33,12 @@ void serialEnd(){
     UCSR0C &= ~(1<<USBS0 | 1 << UCSZ01) | (1 << UCSZ00);
 }
 
-
+//TODO <for later change the code for serialread and write to a interupt. (224 datashee) >
 char serialRead(void){
-    loop_until_bit_is_set(UCSR0A, RXC0); /* Wait until data exists. */
+  wait_until_bit_is_set(UCSR0A, RXC0); /* Wait until data exists. */
     return UDR0;
 }
 void serialWrite(char c){
-    loop_until_bit_is_set(UCSR0A, UDRE0); /* Wait until data register empty. */
+    wait_until_bit_is_set(UCSR0A, UDRE0); /* Wait until data register empty. */
     UDR0 = c;
 }

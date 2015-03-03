@@ -30,5 +30,7 @@ InstructionPacket receiveData ();
 bool openConnection();
 void closeConnection();
 
+void readInputs ();
+
 
 #endif

@@ -81,9 +81,13 @@
 
 1424952889 d:\documents\projects\swagbot\software\arduino\src\modules\communication.h
 
-1425063586 source:e:\github\swagbot\software\arduino\src\lib\serial.c
+1425327082 source:e:\github\swagbot\software\arduino\src\lib\serial.c
 	<avr/io.h>
 	<stdio.h>
+	<USART.h>
 	<util/setbaud.h>
-	"lib/serial.h"
+	"serial.h"
+	<util/delay.h>
+
+1425326125 e:\github\swagbot\software\arduino\src\lib\serial.h
 

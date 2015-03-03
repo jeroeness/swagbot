@@ -5,8 +5,10 @@
 void serialBegin();
 void serialEnd();
 
-char *serialRead();
+char serialRead(void);
 void serialWrite(char *);
+
+char wait_until_bit_is_set(char,char);
 
 
 #endif // SERIAL_H
