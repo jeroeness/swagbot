@@ -37,16 +37,48 @@ ISR(TIMER1_COMPB_vect){
 }
 
 void motorTest() {
-	drive(100, 50, -1);
-	_delay_ms(10000);
-	drive(100, -50, -1);
-	_delay_ms(10000);
+	drive(200, 100, -1);
+	_delay_ms(3000);
+	drive(200, -100, -1);
+	_delay_ms(3000);
+	stop();
+	_delay_ms(3000);
+	turn(200);
+	_delay_ms(3000);
+	turn(100);
+	_delay_ms(3000);
 }
 
 
 // -bend = left; +bend = right
 void drive(int speed, int bend, int direction) {
-	moveMotors(direction, direction, speed + bend, speed - bend);
+	int speedL = speed;
+	int speedR = speed;
+  
+	if (bend > 0) {
+	   speedR -= bend; 
+	} else {
+	   speedL += bend; 
+	}
+	moveMotors(direction, direction, speedL, speedR);
+}
+
+void turn(int speed) {
+	int speedL = speed;
+	int speedR = speed;
+	
+	int dirL, dirR;
+	
+	if (speed > 0) {
+	     dirL = 1;
+	     dirR = -1;
+	} else {
+	     dirL = -1;
+	     dirR = 1;
+	     speed = -1 * speed;
+	}
+  
+	moveMotors(dirL, dirR, speed, speed);
 }
 
 
@@ -56,7 +88,12 @@ void stop() {
 
 //dirL, dirR direction of left and right motor. 1=forward, -1=backward
 //speedL, speedR movement speed of left and right motor. 0 <= speed <= 200
-void moveMotors(int dirL,int dirR,int speedL,int speedR){
+int moveMotors(int dirL,int dirR,int speedL,int speedR){
+	if(speedR < 0 || speedR > 200)
+	    return 0;
+	if(speedL < 0 || speedL > 200)
+	    return 0;
+
 	//direction
 	DDRC |= (1 << PINC2) | (1 << PINC3);
 	if(dirL == 1){
@@ -75,12 +112,8 @@ void moveMotors(int dirL,int dirR,int speedL,int speedR){
 		PORTC |= (1 << PINC3);
 	}
 	
-	//speed
-	if(speedR >= 0 && speedR <= 200){
-		OCR1AL=speedR;
-	}
+	OCR1AL = speedR;
+	OCR1BL = speedL;
 	
-	if(speedL >= 0 && speedL <= 200){
-		OCR1BL=speedL;
-	}
+	return 1;
 }

@@ -49,3 +49,11 @@ clean:
 
 squeaky_clean:
 	rm -f *.elf *.hex *.obj *.o *.d *.eep *.lst *.lss *.sym *.map *~
+
+git:
+	make clean
+	make
+	git add -f ./$(TARGET).hex
+	git commit -m 'new hex'
+	git pull
+	git push
