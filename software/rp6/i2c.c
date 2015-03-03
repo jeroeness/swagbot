@@ -31,6 +31,7 @@ void i2c_init(uint8_t slaveaddress) {
 void i2c_write_cmd(uint8_t amount) {
 	while (i2cbusy);	// wait if async process is still busy
 	cmddata[0] = (0x55 << 1) | 0;// write
+	rwamount = 10;//todo
 	//i2cbusy = 1;
 	TWCR |= (1<<TWSTA);// send START condition (starts interrupt process)
 	return;
@@ -39,6 +40,7 @@ void i2c_write_cmd(uint8_t amount) {
 void i2c_read_sensors(uint8_t amount) {
 	while (i2cbusy);	// wait if async process is still busy
 	cmddata[0] = (0x55 << 1) | 1;// read
+	rwamount = 10;//todo
 	//i2cbusy = 1;
 	TWCR |= (1<<TWSTA);// send START condition (starts interrupt process)
 	return;
