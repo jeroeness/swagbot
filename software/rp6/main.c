@@ -7,14 +7,31 @@
 
 #include "func_protos.h"
 
-int main() {
+struct sD sensorData;
+
+void testGlobalVariable(){
+	DDRC |= 1<<PC4; //green led as output
+	
+	if(sensorData.bumperLeft == 1){
+		PORTC |= 1<<PC4; //green led on
+	}else{
+		PORTC &= ~(1<<PC4); //green led off
+	}
+	
+}
+
+
+int main(void) {
 	cli();
 	initMotor();
 	sei();
-
+	
+	loadSensors();
+	
 	while(1) {
+		testGlobalVariable();
 	}
-
+	
 	return 0;
 }
 

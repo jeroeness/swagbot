@@ -1,9 +1,10 @@
 #include "mode_manager.h"
+#include "manual_mode.h"
 
 SteeringMode steeringMode;
 
 void initModeManager() {
-	steeringMode = SteeringMode.manual;
+	steeringMode = manual;
 }
 
 void setSteeringMode(SteeringMode s) {
@@ -11,7 +12,7 @@ void setSteeringMode(SteeringMode s) {
 }
 
 void inputKey(int8_t key) {
-	if (steeringMode == SteeringMode.automatic) {
+	if (steeringMode == automatic) {
         handleInputAutomaticMode(key);
 	} else {
 		handleInputManualMode(key);

@@ -64,10 +64,10 @@ void readInputs () {
 			Serial.print(activeKey);
             break;
             case 'm':
-                setSteeringMode(SteeringMode.manual);
+                setSteeringMode(manual);
 			break;
 			case 'n':
-				setSteeringMode(SteeringMode.automatic);
+				setSteeringMode(automatic);
 			break;
         }
 

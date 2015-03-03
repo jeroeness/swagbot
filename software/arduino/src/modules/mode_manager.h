@@ -1,6 +1,9 @@
 #ifndef MODE_MANAGER_H
 #define MODE_MANAGER_H
 
+#include <avr/io.h>
+#include <stdio.h>
+
 enum SteeringMode {
 	manual,
 	automatic
