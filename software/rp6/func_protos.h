@@ -52,10 +52,9 @@ void motorTest();
 
 //SD stands for SensorData
 struct sD{
-	uint8_t bumperRight;
-	uint8_t bumperLeft;
-	
-	uint16_t ultrasoonDistance;
+	int8_t bumperRight:1;
+	int8_t bumperLeft:1;
+	int16_t ultrasoonDistance;
 };
 
 extern struct sD sensorData;
