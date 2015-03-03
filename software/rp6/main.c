@@ -12,11 +12,7 @@ int main() {
 	initMotor();
 	sei();
 
-	stop();
-	motorTest();
-	
 	while(1) {
-	    motorTest();
 	}
 
 	return 0;

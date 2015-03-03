@@ -50,15 +50,15 @@ void motorTest() {
 }
 
 
-// -bend = left; +bend = right
-void drive(int speed, int bend, int direction) {
+// negative deflection = left; positive deflection = right
+void drive(int speed, int deflection, int direction) {
 	int speedL = speed;
 	int speedR = speed;
   
-	if (bend > 0) {
-	   speedR -= bend; 
+	if (deflection > 0) {
+	   speedR -= deflection; 
 	} else {
-	   speedL += bend; 
+	   speedL += deflection; 
 	}
 	moveMotors(direction, direction, speedL, speedR);
 }
