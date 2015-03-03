@@ -9,19 +9,12 @@
 
 struct sD sensorData;
 
-
-int main(void) {
-	cli();
-	initMotor();
-	sei();
-	
-	
-	loadSensors();
-	
-	
-	while(1) {
-	}
-	
-	return 0;
+void loadSensors(){
+	sensorData.bumperLeft = 1;
+	sensorData.bumperRight = 0;
+	sensorData.ultrasoonDistance = 1200;
 }
+
+
+
 

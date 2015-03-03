@@ -37,6 +37,37 @@ void initMotor();
  */
 int moveMotors(int dirL,int dirR,int speedL,int speedR);
 
-/**	A simpel function to test the motor functions.
+/**	A simple function to test the motor functions.
  */
 void motorTest();
+
+
+
+#ifndef SENSORHEADER
+#define SENSORHEADER
+/*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
+/*---------------- SENSOR functions ----------------*/
+/*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
+//description comes later because of debugging state.
+
+//SD stands for SensorData
+struct sD{
+	uint8_t bumperRight;
+	uint8_t bumperLeft;
+	
+	uint16_t ultrasoonDistance;
+};
+
+extern struct sD sensorData;
+
+union uSD {
+	struct sD s;
+	uint8_t sendData[sizeof(sensorData)];
+};
+
+
+
+
+void loadSensors();
+
+#endif
