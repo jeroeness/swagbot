@@ -1,4 +1,6 @@
 
+// TODO kan dit bestand verwijderd worden?
+
 #include <avr/io.h>
 #include "USART.h"
 #include "setbaud.h"

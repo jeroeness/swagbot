@@ -1,6 +1,7 @@
 #include <Arduino.h>
 #include "communication.h"
 #include "lib/serial.h"
+#include "mode_manager.h"
 
 int incomingByte = 0;
 bool connectionIsOpen = false;
@@ -62,6 +63,12 @@ void readInputs () {
             keyTimer = 0x3000;
 			Serial.print(activeKey);
             break;
+            case 'm':
+                setSteeringMode(SteeringMode.manual);
+			break;
+			case 'n':
+				setSteeringMode(SteeringMode.automatic);
+			break;
         }
 
 
@@ -71,9 +78,7 @@ void readInputs () {
     }
 
     if (activeKey > 0) {
-        DDRB = DDRD = 0xFF;
-        PORTB = 0xFF;
-        PORTD = 0xFF;
+		inputKey (activeKey);
     } else {
         PORTB = PORTD = 0;
     }
