@@ -4,6 +4,9 @@
 #include <util/delay.h>
 #include <avr/io.h> // I/O Port definitions
 #include <avr/interrupt.h> // Interrupt macros (e.g. cli(), sei())
+
+#include "func_protos.h"
+
 /*****************************************************************************/
 #define BAUD_LOW 38400 //Low speed - 38.4 kBaud
 #define UBRR_BAUD_LOW ((F_CPU/(16*BAUD_LOW))-1)
@@ -33,12 +36,30 @@ ISR(TIMER1_COMPA_vect){
 ISR(TIMER1_COMPB_vect){
 }
 
-//dirL, dirR direction of left and right motor. 0=forward, 1=backward
+void motorTest() {
+	drive(100, 50, -1);
+	_delay_ms(10000);
+	drive(100, -50, -1);
+	_delay_ms(10000);
+}
+
+
+// -bend = left; +bend = right
+void drive(int speed, int bend, int direction) {
+	moveMotors(direction, direction, speed + bend, speed - bend);
+}
+
+
+void stop() {
+	moveMotors(0, 0, 0, 0);
+}
+
+//dirL, dirR direction of left and right motor. 1=forward, -1=backward
 //speedL, speedR movement speed of left and right motor. 0 <= speed <= 200
-void drive(int dirL,int dirR,int speedL,int speedR){
+void moveMotors(int dirL,int dirR,int speedL,int speedR){
 	//direction
 	DDRC |= (1 << PINC2) | (1 << PINC3);
-	if(!dirL){
+	if(dirL == 1){
 		PORTC &= ~(1 << PINC2);
 	}
 	
@@ -46,7 +67,7 @@ void drive(int dirL,int dirR,int speedL,int speedR){
 		PORTC |= (1 << PINC2);
 	}
 	
-	if(!dirR){
+	if(dirR == 1){
 		PORTC &= ~(1 << PINC3);
 	}
 	

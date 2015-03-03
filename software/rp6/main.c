@@ -5,7 +5,7 @@
 #include <avr/io.h> // I/O Port definitions
 #include <avr/interrupt.h> // Interrupt macros (e.g. cli(), sei())
 
-#include "func_defs.h"
+#include "func_protos.h"
 
 int main() {
 	cli();
@@ -13,7 +13,7 @@ int main() {
 	sei();
 
 	while(1) {
-
+	    motorTest();
 	}
 
 	return 0;
