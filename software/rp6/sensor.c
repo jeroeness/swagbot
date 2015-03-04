@@ -85,7 +85,7 @@ void readBumperL(){
 
 	if(PINB & (1<<PB0)){
 		sensorData.bumperLeft = 1;
-		}else{
+	}else{
 		sensorData.bumperLeft = 0;
 	}
 	
