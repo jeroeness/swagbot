@@ -98,26 +98,26 @@ void checkMove() {
 	}
 }
 
-int checkFuzzy(int value1, int value2, int fuzzyness) {
+int checkFuzzy(int16_t value1, int16_t value2, int16_t fuzzyness) {
 	return (value1 < value2 + fuzzyness && value1 > value2 - fuzzyness);
 }
 
-void turnByDegrees(int degrees) {
+void turnByDegrees(int16_t degrees) {
 	targetDegrees = sensorData.compassDegrees + degrees;
 	action = ACTION_TURN;
 }
 
-void turnToDegrees(int degrees) {
+void turnToDegrees(int16_t degrees) {
 	targetDegrees = degrees;
 	action = ACTION_TURN;
 }
 
-void moveDistance(int distance) {
+void moveDistance(int16_t distance) {
 	targetDistance = sensorData.ultrasoonDistance - distance;
 	action = ACTION_MOVE;
 }
 
-void moveToDistance(int distance) {
+void moveToDistance(int16_t distance) {
 	targetDistance = distance;
 	action = ACTION_MOVE;
 }
