@@ -52,8 +52,8 @@ void motorTest();
 
 //SD stands for SensorData
 struct sD{
-	int8_t bumperRight:1;
-	int8_t bumperLeft:1;
+	uint8_t bumperRight:1;
+	uint8_t bumperLeft:1;
 	int16_t ultrasoonDistance;
 };
 
@@ -65,8 +65,13 @@ union uSD {
 };
 
 
+void initSensors();
 
+void setLed(uint8_t uLed, uint8_t uOn);
 
-void loadSensors();
+void readBumperL();
+void readBumperR();
+void readSensors();
+
 
 #endif
