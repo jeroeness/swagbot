@@ -9,16 +9,31 @@
 
 struct sD sensorData;
 
+
+
 void testGlobalVariable(){
-	DDRC |= 1<<PC4; //green led as output
 	
 	if(sensorData.bumperLeft == 1){
-		PORTC |= 1<<PC4; //green led on
+		setLed(1,1);
+		setLed(2,0);
+		setLed(3,1);
+		setLed(4,0);
+		setLed(5,1);
+		setLed(6,0);
 	}else{
-		PORTC &= ~(1<<PC4); //green led off
+		setLed(1,0);
+		setLed(2,1);
+		setLed(3,0);
+		setLed(4,1);
+		setLed(5,0);
+		setLed(6,1);
 	}
 	
 }
+
+
+
+
 
 
 int main(void) {
@@ -26,9 +41,16 @@ int main(void) {
 	initMotor();
 	sei();
 	
-	loadSensors();
+	initSensors();
+	
+	//setLed(2,1);
+	
+	//DDRB |= 1<<PB3; //green led as output
+
+	stop();
 	
 	while(1) {
+		readSensors();
 		testGlobalVariable();
 	}
 	
