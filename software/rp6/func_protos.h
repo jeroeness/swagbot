@@ -31,8 +31,8 @@ void initMotor();
  *
  *	@param dirL 		the direction of the left motor (-1 for backwards, +1 for forward)
  *	@param dirR 		the direction of the right motor (-1 for backwards, +1 for forward)
- *	@param speedL 		the speed of the left motor (min: 0, max: 200)
- *	@param speedR 		the speed of the right motor (min: 0, max: 200)
+ *	@param speedL 		the speed of the left motor (min: 0, max: 100)
+ *	@param speedR 		the speed of the right motor (min: 0, max: 100)
  * 	@return 			1 if successfull, 0 if wrong speed
  */
 int moveMotors(int dirL,int dirR,int speedL,int speedR);
@@ -55,6 +55,7 @@ struct sD{
 	uint8_t bumperRight:1;
 	uint8_t bumperLeft:1;
 	int16_t ultrasoonDistance;
+	uint16_t compassDegrees;
 };
 
 extern struct sD sensorData;
