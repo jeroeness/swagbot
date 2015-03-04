@@ -8,10 +8,25 @@
 
 struct SD sensorData;
 
+//todo: make function to convert the led state to sensorData.ledStatus, this is so we can check what led is actually on.
+//todo: send error status from the rp6 to the mega2560? If the stamina bar is low, motor on fire or the leds are having a party?
+//todo: add item to the struct so we know in what mode the rp6 is. Automatic or Manual (1 bit).
+
 
 void initSensors(){
 	DDRC |= 1<<PC6 | 1<<PC5 | 1<<PC4; //set leds as output (Right)
 	DDRB |= 1<<PB7 | 1<<PB1 | 1<<PB0; //set leds as output (Left)
+}
+
+//if any data is received by RP6 parse it with the following function
+void parseSensorInfo(union USD * incommingData){
+	uint8_t i = 0;
+	
+	for(i = 0; i < 7; i++){
+		setLed(i+1,(incommingData->s.ledStatus & (1<<i)) != 0);
+	}
+	
+	//todo: add function to change motor status.
 }
 
 

@@ -69,7 +69,6 @@ void turn(int speed) {
 	     dirR = 1;
 	     speed = -1 * speed;
 	}
-  
 	moveMotors(dirL, dirR, speed, speed);
 }
 
