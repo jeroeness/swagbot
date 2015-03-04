@@ -47,6 +47,7 @@ void motorTest() {
 	_delay_ms(3000);
 	turn(100);
 	_delay_ms(3000);
+	//hoi ik ben martijn en ik wil weten hoe github werkt.
 }
 
 
