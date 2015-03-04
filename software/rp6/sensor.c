@@ -1,8 +1,8 @@
-#define F_CPU 8000000 //Base: 8.00MHz - DO NOT CHANGE! // CPU works @ 8.0Mhz;
+#define F_CPU 8000000
 
 #include <stdio.h>
-#include <avr/io.h> // I/O Port definitions
-#include <avr/interrupt.h> // Interrupt macros (e.g. cli(), sei())
+#include <avr/io.h>
+#include <avr/interrupt.h>
 #include <util/delay.h>
 #include "func_protos.h"
 

@@ -1,18 +1,10 @@
-#define F_CPU 8000000 //Base: 8.00MHz - DO NOT CHANGE! // CPU works @ 8.0Mhz;
-
+#define F_CPU 8000000
 #include <stdio.h>
 #include <util/delay.h>
-#include <avr/io.h> // I/O Port definitions
-#include <avr/interrupt.h> // Interrupt macros (e.g. cli(), sei())
+#include <avr/io.h>
+#include <avr/interrupt.h>
 
 #include "func_protos.h"
-
-/*****************************************************************************/
-#define BAUD_LOW 38400 //Low speed - 38.4 kBaud
-#define UBRR_BAUD_LOW ((F_CPU/(16*BAUD_LOW))-1)
-#define BAUD_HIGH 500000 //High speed - 500 kBaud
-#define UBRR_BAUD_HIGH ((F_CPU/(16*BAUD_HIGH))-1)
-/*****************************************************************************/
 
 void initMotor(){
 	TCNT1=0x00;
