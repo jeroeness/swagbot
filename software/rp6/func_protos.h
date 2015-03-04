@@ -27,15 +27,13 @@ void stop();
  */
 void initMotor();
 
-/**	Makes the RP6 motors rotate in dirL/dir/R at speedL/speedR
+/**	Makes the RP6 motors rotate at speedL/speedR
  *
- *	@param dirL 		the direction of the left motor (-1 for backwards, +1 for forward)
- *	@param dirR 		the direction of the right motor (-1 for backwards, +1 for forward)
- *	@param speedL 		the speed of the left motor (min: 0, max: 200)
- *	@param speedR 		the speed of the right motor (min: 0, max: 200)
+ *	@param speedL 		the speed of the left motor (min: -100, max: 100)  negative for backwards, positive for forwards.
+ *	@param speedR 		the speed of the right motor (min: -100, max: 100)  negative for backwards, positive for forwards.
  * 	@return 			1 if successfull, 0 if wrong speed
  */
-int moveMotors(int dirL,int dirR,int speedL,int speedR);
+int moveMotors(int8_t speedL, int8_t speedR);
 
 /**	A simple function to test the motor functions.
  */
@@ -54,6 +52,7 @@ void motorTest();
 struct SD{
 	uint8_t bumperRight:1;
 	uint8_t bumperLeft:1;
+	uint16_t compassDegrees;
 	int16_t ultrasonic;
 	int8_t motorLeft;
 	int8_t motorRight;
