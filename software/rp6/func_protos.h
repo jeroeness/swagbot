@@ -53,7 +53,7 @@ struct SD{
 	uint8_t bumperRight:1;
 	uint8_t bumperLeft:1;
 	uint16_t compassDegrees;
-	int16_t ultrasonic;
+	uint16_t ultrasonic;
 	int16_t motorLeft;
 	int16_t motorRight;
 	uint8_t ledStatus; //8 all leds in one variable

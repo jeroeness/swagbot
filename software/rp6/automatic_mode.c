@@ -52,7 +52,7 @@ void updateAutomaticMode() {
 }
 
 void checkCrash() {
-	if (sensorData.ultrasoonDistance < 10 || sensorData.bumperLeft || sensorData.bumperRight) {
+	if (sensorData.ultrasonic < 10 || sensorData.bumperLeft || sensorData.bumperRight) {
 		stop();
 		action = ACTION_IDLE;
 	}
@@ -86,11 +86,11 @@ void checkTurn() {
 }
 
 void checkMove() {
-	if (checkFuzzy(targetDistance, sensorData.ultrasoonDistance, MOVE_MARGE)) {
+	if (checkFuzzy(targetDistance, sensorData.ultrasonic, MOVE_MARGE)) {
 		stop();
 		action = ACTION_IDLE;
 	} else {
-		if (targetDistance < sensorData.ultrasoonDistance) {
+		if (targetDistance < sensorData.ultrasonic) {
 			drive(200, 0, 1);
 		} else {
 			drive(200, 0, -1);
@@ -113,7 +113,7 @@ void turnToDegrees(int16_t degrees) {
 }
 
 void moveDistance(int16_t distance) {
-	targetDistance = sensorData.ultrasoonDistance - distance;
+	targetDistance = sensorData.ultrasonic - distance;
 	action = ACTION_MOVE;
 }
 
