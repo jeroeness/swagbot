@@ -539,6 +539,7 @@
 					<Add directory="$(ARDUINO_DIR)/hardware/arduino/cores/arduino" />
 					<Add directory="$(ARDUINO_DIR)/libraries" />
 					<Add directory="$(ARDUINO_DIR)/hardware/arduino/variants/mega" />
+					<Add directory="src/modules" />
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
@@ -703,11 +704,29 @@
 			<Option compilerVar="CC" />
 			<Option target="Arduino Mega 2560/ADK" />
 		</Unit>
+		<Unit filename="src/modules/automatic_mode.c">
+			<Option compilerVar="CC" />
+			<Option target="Arduino Mega 2560/ADK" />
+		</Unit>
 		<Unit filename="src/modules/communication.c">
 			<Option compilerVar="CC" />
 			<Option target="Arduino Mega 2560/ADK" />
 		</Unit>
 		<Unit filename="src/modules/communication.h">
+			<Option target="Arduino Mega 2560/ADK" />
+		</Unit>
+		<Unit filename="src/modules/manual_mode.c">
+			<Option compilerVar="CC" />
+			<Option target="Arduino Mega 2560/ADK" />
+		</Unit>
+		<Unit filename="src/modules/manual_mode.h">
+			<Option target="Arduino Mega 2560/ADK" />
+		</Unit>
+		<Unit filename="src/modules/mode_manager.c">
+			<Option compilerVar="CC" />
+			<Option target="Arduino Mega 2560/ADK" />
+		</Unit>
+		<Unit filename="src/modules/mode_manager.h">
 			<Option target="Arduino Mega 2560/ADK" />
 		</Unit>
 		<Extensions>

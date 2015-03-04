@@ -8,6 +8,9 @@ bool connectionIsOpen = false;
 int8_t activeKey = 0;
 int16_t keyTimer = 0;
 
+struct sD sensorData;
+
+
 void initCommunication() {
 
 	openConnection();
@@ -85,26 +88,38 @@ void readInputs () {
 }
 
 TransmissionPacket generateTransmissionPacket () {
-	TransmissionPacket tp;
 
 	// TODO temporary generating dummy packet
-	tp.bumpers = 3;
-	tp.leftMotor = 255;
-	tp.rightMotor = 127;
-    tp.mode = 0;
-    tp.packetType = 1;
-    tp.ultrasonic = 152;
+	sensorData.bumperRight = 1;
+	sensorData.bumperLeft = 1;
+	sensorData.leftMotor = 255;
+	sensorData.rightMotor = 127;
+    //sensorData.mode = 0;
+    //sensorData.packetType = 1;
+    sensorData.ultrasonic = 152;
 
-    tp.bumpers = 0;
-	tp.leftMotor = 0;
-	tp.rightMotor = 0;
-    tp.mode = 0;
-    tp.packetType = 1;
-    tp.ultrasonic = 0;
-
+    sensorData.bumperRight = 0;
+    sensorData.bumperLeft = 0;
+	sensorData.leftMotor = 0;
+	sensorData.rightMotor = 0;
+    sensorData.mode = 0;
+    sensorData.packetType = 1;
+    sensorData.ultrasonic = 0;
+	
+	/* voor gui in sprint 2
+	struct uSD sendata;
+	
+	sendata.s = tp;
+	Serial.print(sendata.sendData[i]);
+	*/
+	
     return tp;
 }
 
+
+
+
+/*
 bool transmitData(TransmissionPacket packet) {
 
 	// See transmission packet for sizes
@@ -162,3 +177,4 @@ inline void insertInString(int8_t *string, int8_t data, int8_t dataLength, int8_
 
 
 }
+*/

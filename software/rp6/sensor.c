@@ -6,7 +6,7 @@
 #include <util/delay.h>
 #include "func_protos.h"
 
-struct sD sensorData;
+struct SD sensorData;
 
 
 void initSensors(){
@@ -18,7 +18,7 @@ void initSensors(){
 //Use it like this to turn SL5 on: setLed(5,1);
 //Use it like this to turn SL3 off: setLed(3,0);
 void setLed(uint8_t uLed, uint8_t uOn){
-	//pwron is on PB4, Yellow power led.
+	//PWRON is on PB4, Yellow power led.
 	
 	uLed |= uOn<<4;
 	switch (uLed){
@@ -85,7 +85,7 @@ void readBumperL(){
 
 	if(PINB & (1<<PB0)){
 		sensorData.bumperLeft = 1;
-		}else{
+	}else{
 		sensorData.bumperLeft = 0;
 	}
 	
