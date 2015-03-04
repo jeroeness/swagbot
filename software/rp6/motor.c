@@ -56,8 +56,8 @@ void drive(int speed, int deflection, int direction) {
 }
 
 void turn(int speed) {
-	int speedL = speed;
-	int speedR = speed;
+	//int speedL = speed;
+	//int speedR = speed;
 	
 	int dirL, dirR;
 	

@@ -43,7 +43,7 @@ void initTimerMain(){
 	TIMSK |= (1 << TOIE0);
 	
 	//Set overflow variable to 0 (just to be sure)
-	timer0_overflow = 0;
+	timer0Overflow = 0;
 }
 
 
