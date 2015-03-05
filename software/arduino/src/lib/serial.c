@@ -3,6 +3,8 @@
 #define BAUD 9600
 #endif
 
+#include <Arduino.h>
+
 #include <avr/io.h>
 #include <stdio.h>
 //#include <USART.h>
@@ -15,14 +17,15 @@
 #endif
 
 char wait_until_bit_is_set(char A,char B){
-while (~(A & 1 << B)) {
-_delay_ms(1);
+while (!(A & 1 << B)) {
+//Serial.print("wait2");
+_delay_ms(10);
+
 }
 }
 void serialBegin(){
     UBRR0H = (uint8_t)(BAUD_PRESCALLER>>8);
     UBRR0L = (uint8_t)(BAUD_PRESCALLER);
-	UCSR0A |= (1 << U2X0);     // Double the USART Transmission Speed
     UCSR0B |= (1 << TXEN0 | 1 << RXEN0); //Enable RX and TX
     UCSR0C |= (1<<USBS0 | 1 << UCSZ01) | (1 << UCSZ00); //1 stopbit(USBS0) 8 databits(UCSZ00 & UCSZ01)
 }
@@ -38,7 +41,13 @@ char serialRead(void){
   wait_until_bit_is_set(UCSR0A, RXC0); /* Wait until data exists. */
     return UDR0;
 }
-void serialWrite(char c){
-    wait_until_bit_is_set(UCSR0A, UDRE0); /* Wait until data register empty. */
-    UDR0 = c;
+void serialWrite(char *c){
+char *test = "hallo";
+//serialWriteCharacter(test);
+}
+
+void serialWriteCharacter(char c){
+
+ wait_until_bit_is_set(UCSR0A, UDRE0); /* Wait until data register empty. */
+ UDR0 = c;
 }
