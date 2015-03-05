@@ -53,6 +53,7 @@ int main(void) {
 	initMotor();
 	initSensors();
 	initTimerMain();
+	initAutomaticMode();
 	
 	sei();
 	
@@ -64,6 +65,8 @@ int main(void) {
 			
 			readSensors();
 		}
+		
+		updateAutomaticMode();
 		
 		testGlobalVariable();
 	}

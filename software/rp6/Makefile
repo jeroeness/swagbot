@@ -4,7 +4,7 @@ MCU   = atmega32
 MAIN_SOURCE = main.c
 
 ## Other sources seperated by a SPACE
-OTHER_SOURCES = motor.c sensor.c
+OTHER_SOURCES = motor.c sensor.c automatic_mode.c
 
 
 ## Defined programs / locations

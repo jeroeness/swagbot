@@ -1,6 +1,7 @@
 #define F_CPU 8000000
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include <util/delay.h>
@@ -25,15 +26,23 @@ uint8_t action;
 
 uint8_t nextAction;
 uint8_t totalActions;
-uint8_t** actionList;
+uint16_t** actionList;
 
 void initAutomaticMode() {
 	action = ACTION_IDLE;
 	nextAction = 0;
-	actionList = { {ACTION_MOVE, 20}, 
-				   {ACTION_WAIT, 1000},
-				   {ACTION_TURN, 180},
-				   {ACTION_MOVE_TO, 10} };
+	actionList = (uint16_t**) calloc(4, sizeof(uint16_t*));
+	for (uint8_t i=0; i<4; i++) {
+		actionList[i] = (uint16_t*) calloc(2, sizeof(uint16_t));
+	}
+	actionList[0][0] = ACTION_MOVE; 
+	actionList[0][1] = 20; 
+	actionList[1][0] = ACTION_WAIT; 
+	actionList[1][1] = 1000; 
+	actionList[2][0] = ACTION_TURN; 
+	actionList[2][1] = 180; 
+	actionList[3][0] = ACTION_MOVE_TO; 
+	actionList[3][1] = 10; 
 }
 
 void updateAutomaticMode() {
@@ -59,7 +68,7 @@ void checkCrash() {
 }
 
 void executeNextAction() {
-	int * next = actionList[nextAction];
+	uint16_t * next = actionList[nextAction];
 	switch (next[0]) {
 		case ACTION_MOVE:
 			moveDistance(next[1]);
