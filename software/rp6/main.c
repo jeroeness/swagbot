@@ -56,16 +56,12 @@ int main(void) {
 	
 	sei();
 	
-	stop(); //stop the motors
-	
 	while(1) {
 		if(timer0Overflow == 1){ //timed script sequence of 50ms
 			timer0Overflow = 0;
 			
 			readSensors();
 		}
-		
-		updateAutomaticMode();
 		
 		testGlobalVariable();
 	}
