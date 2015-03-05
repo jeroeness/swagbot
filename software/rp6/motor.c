@@ -60,7 +60,7 @@ void turn(int8_t speed) {
 }
 
 void stop() {
-	moveMotors(0, 0, 0, 0);
+	moveMotors(0, 0);
 }
 
 //dirL, dirR direction of left and right motor. 1=forward, -1=backward
