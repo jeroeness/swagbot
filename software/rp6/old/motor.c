@@ -1,13 +1,10 @@
-
+#define F_CPU 8000000
 #include <stdio.h>
 #include <util/delay.h>
 #include <avr/io.h>
 #include <avr/interrupt.h>
 
-#include "motor.h"
-#include "sensor.h"
-
-struct SD sensorData;
+#include "func_protos.h"
 
 void initMotor(){
 	TCNT1=0x00;
@@ -74,8 +71,24 @@ int moveMotors(int8_t speedL, int8_t speedR){
 	if(speedL < -100 || speedL > 100)
 	    return 0;
 
-	sensorData.motorLeft = speedL;
-	sensorData.motorRight = speedR;
+	//direction
+	DDRC |= (1 << PINC2) | (1 << PINC3);
+	if(speedL > 0){
+		PORTC &= ~(1 << PINC2);
+	} else{
+		PORTC |= (1 << PINC2);
+		speedL = -1 * speedL;
+	}
+	
+	if(speedR > 0){
+		PORTC &= ~(1 << PINC3);
+	} else{
+		PORTC |= (1 << PINC3);
+		speedR = -1 * speedR;
+	}
+	
+	OCR1AL = 2 * speedR;
+	OCR1BL = 2 * speedL;
 	
 	return 1;
 }
