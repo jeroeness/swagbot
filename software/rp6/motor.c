@@ -29,21 +29,21 @@ ISR(TIMER1_COMPB_vect){
 }
 
 void motorTest() {
-	drive(200, 100, -1);
+	drive(100, 50, -1);
 	_delay_ms(3000);
-	drive(200, -100, -1);
+	drive(100, -50, -1);
 	_delay_ms(3000);
 	stop();
 	_delay_ms(3000);
-	turn(200);
-	_delay_ms(3000);
 	turn(100);
+	_delay_ms(3000);
+	turn(50);
 	_delay_ms(3000);
 }
 
 
 // negative deflection = left; positive deflection = right
-void drive(int speed, int deflection, int direction) {
+void drive(int8_t speed, int8_t deflection, int8_t direction) {
 	int speedL = speed;
 	int speedR = speed;
   
@@ -52,26 +52,12 @@ void drive(int speed, int deflection, int direction) {
 	} else {
 	   speedL += deflection; 
 	}
-	moveMotors(direction, direction, speedL, speedR);
+	moveMotors(direction * speedL, direction * speedR);
 }
 
-void turn(int speed) {
-	//int speedL = speed;
-	//int speedR = speed;
-	
-	int dirL, dirR;
-	
-	if (speed > 0) {
-	     dirL = 1;
-	     dirR = -1;
-	} else {
-	     dirL = -1;
-	     dirR = 1;
-	     speed = -1 * speed;
-	}
-	moveMotors(dirL, dirR, speed, speed);
+void turn(int8_t speed) {
+	moveMotors(speed, -speed);
 }
-
 
 void stop() {
 	moveMotors(0, 0, 0, 0);
@@ -79,32 +65,30 @@ void stop() {
 
 //dirL, dirR direction of left and right motor. 1=forward, -1=backward
 //speedL, speedR movement speed of left and right motor. 0 <= speed <= 200
-int moveMotors(int dirL,int dirR,int speedL,int speedR){
-	if(speedR < 0 || speedR > 200)
+int moveMotors(int8_t speedL, int8_t speedR){
+	if(speedR < -100 || speedR > 100)
 	    return 0;
-	if(speedL < 0 || speedL > 200)
+	if(speedL < -100 || speedL > 100)
 	    return 0;
 
 	//direction
 	DDRC |= (1 << PINC2) | (1 << PINC3);
-	if(dirL == 1){
+	if(speedL > 0){
 		PORTC &= ~(1 << PINC2);
-	}
-	
-	else{
+	} else{
 		PORTC |= (1 << PINC2);
+		speedL = -1 * speedL;
 	}
 	
-	if(dirR == 1){
+	if(speedR > 0){
 		PORTC &= ~(1 << PINC3);
-	}
-	
-	else{
+	} else{
 		PORTC |= (1 << PINC3);
+		speedR = -1 * speedR;
 	}
 	
-	OCR1AL = speedR;
-	OCR1BL = speedL;
+	OCR1AL = 2 * speedR;
+	OCR1BL = 2 * speedL;
 	
 	return 1;
 }
