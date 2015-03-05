@@ -53,7 +53,6 @@ int main(void) {
 	initMotor();
 	initSensors();
 	initTimerMain();
-	initAutomaticMode();
 	
 	sei();
 	

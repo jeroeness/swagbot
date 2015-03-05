@@ -7,6 +7,8 @@
 #include "motor.h"
 #include "sensor.h"
 
+struct SD sensorData;
+
 void initMotor(){
 	TCNT1=0x00;
 	TCCR1A = (0 << WGM10) | (1 << WGM11) | (1 << COM1A1) | (1 << COM1B1);
