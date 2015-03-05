@@ -9,32 +9,47 @@
 
 #define TURN_MARGE 5
 #define MOVE_MARGE 5
+#define TIME_MARGIN 5
 
 #define ACTION_IDLE 	0
 #define ACTION_TURN 	1
 #define ACTION_TURN_TO 	2
-#define ACTION_MOVE 	3
-#define ACTION_MOVE_TO 	4
-#define ACTION_WAIT 	5
+#define ACTION_TURN_FOR	3
+#define ACTION_MOVE 	4
+#define ACTION_MOVE_TO 	5
+#define ACTION_MOVE_FOR	6
+#define ACTION_WAIT 	7
 
 struct SD sensorData;
 
 uint16_t targetDegrees;
 uint16_t targetDistance;
 
+volatile uint16_t targetMillis;
+volatile uint16_t currentMillis;
+volatile uint16_t overflowCount;
+
 uint8_t action;
+
+uint8_t speed;
 
 uint8_t nextAction;
 uint8_t totalActions;
 uint16_t** actionList;
 
 void initAutomaticMode() {
+	resetClock();
+
+	setSpeed(200);
+
 	action = ACTION_IDLE;
 	nextAction = 0;
+
 	actionList = (uint16_t**) calloc(4, sizeof(uint16_t*));
 	for (uint8_t i=0; i<4; i++) {
 		actionList[i] = (uint16_t*) calloc(2, sizeof(uint16_t));
 	}
+
 	actionList[0][0] = ACTION_MOVE; 
 	actionList[0][1] = 20; 
 	actionList[1][0] = ACTION_WAIT; 
@@ -57,6 +72,23 @@ void updateAutomaticMode() {
 		case ACTION_IDLE:
 			executeNextAction();
 			break;
+	}
+}
+
+void initTimer() {
+	TIMSK0=(1<<TOIE0);
+	TCCR0B = (1<<CS02); // prescaler 256; fcpu 8000000 = 122 overflows per second
+}
+
+ISR(TIMER0_OVF_vect)
+{
+	if ((overflowCount++) % 1.2 == 0) {
+		overflowCount = 1;
+		if (targetMillis != 0 && checkFuzzy(targetMillis, ++currentMillis, TIME_MARGIN)) {
+			stop();
+			action = ACTION_IDLE;
+			resetClock();
+		}
 	}
 }
 
@@ -119,6 +151,29 @@ void turnByDegrees(int16_t degrees) {
 void turnToDegrees(int16_t degrees) {
 	targetDegrees = degrees;
 	action = ACTION_TURN;
+}
+
+void turnFor(int16_t milliseconds) {
+	action = ACTION_TURN_FOR;
+	resetClock();
+	targetMillis = milliseconds;
+	turn(speed);
+}
+
+void moveFor(int16_t milliseconds, int8_t direction) {
+	action = ACTION_MOVE_FOR;
+	resetClock();
+	targetMillis = milliseconds;
+	drive(speed, 0, direction);
+}
+
+inline void resetClock() {
+	currentMillis = 0;
+	overflowCount = 1;
+}
+
+void setSpeed(int8_t s) {
+	speed = s;
 }
 
 void moveDistance(int16_t distance) {
