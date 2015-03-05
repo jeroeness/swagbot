@@ -2,13 +2,14 @@
 #include "communication.h"
 #include "lib/serial.h"
 #include "mode_manager.h"
+#include "lib/sensor.h"
+
+struct SD sensorData;
 
 int incomingByte = 0;
 bool connectionIsOpen = false;
 int8_t activeKey = 0;
 int16_t keyTimer = 0;
-
-struct sD sensorData;
 
 
 void initCommunication() {
@@ -40,6 +41,7 @@ void updateCommunication () {
 		//TODO flashPanicLight();
 
 	}*/
+    printVerbose();
 
 	// send data only when you receive data:
 	if (Serial.available() > 0) {
@@ -50,6 +52,13 @@ void updateCommunication () {
 	}
 
 	readInputs ();
+
+}
+
+void printVerbose() {
+
+    //TODO print suff
+
 
 }
 
@@ -87,6 +96,7 @@ void readInputs () {
     }
 }
 
+/*
 TransmissionPacket generateTransmissionPacket () {
 
 	// TODO temporary generating dummy packet
@@ -105,16 +115,10 @@ TransmissionPacket generateTransmissionPacket () {
     sensorData.mode = 0;
     sensorData.packetType = 1;
     sensorData.ultrasonic = 0;
-	
-	/* voor gui in sprint 2
-	struct uSD sendata;
-	
-	sendata.s = tp;
-	Serial.print(sendata.sendData[i]);
-	*/
-	
+
+
     return tp;
-}
+}*/
 
 
 

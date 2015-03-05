@@ -30,6 +30,8 @@ InstructionPacket receiveData ();
 bool openConnection();
 void closeConnection();
 
+void printVerbose();
+
 void readInputs ();
 
 
