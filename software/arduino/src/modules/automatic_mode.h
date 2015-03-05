@@ -1,0 +1,6 @@
+#ifndef AUTOMATIC_MODE_H
+#define AUTOMATIC_MODE_H
+
+
+
+#endif // AUTOMATIC_MODE_H
