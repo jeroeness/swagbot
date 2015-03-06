@@ -540,6 +540,7 @@
 					<Add directory="$(ARDUINO_DIR)/libraries" />
 					<Add directory="$(ARDUINO_DIR)/hardware/arduino/variants/mega" />
 					<Add directory="src/modules" />
+					<Add directory="src/lib" />
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
@@ -685,6 +686,9 @@
 			<Add directory="." />
 		</Compiler>
 		<Unit filename="src/lib/pins_arduino.h">
+			<Option target="Arduino Mega 2560/ADK" />
+		</Unit>
+		<Unit filename="src/lib/sensor.h">
 			<Option target="Arduino Mega 2560/ADK" />
 		</Unit>
 		<Unit filename="src/lib/serial.c">

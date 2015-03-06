@@ -72,20 +72,22 @@
 1424808356 d:\documents\projects\swagbot\software\arduino\src\lib\swagbotlib.h
 	"lib/pins_arduino.h"
 
-1425420776 source:d:\documents\projects\swagbot\software\arduino\src\modules\communication.c
+1425648568 source:d:\documents\projects\swagbot\software\arduino\src\modules\communication.c
 	<Arduino.h>
 	"communication.h"
 	"lib/serial.h"
 	"mode_manager.h"
+	"lib/sensor.h"
 
-1425420725 source:d:\documents\projects\swagbot\software\arduino\src\lib\serial.c
+1425648568 source:d:\documents\projects\swagbot\software\arduino\src\lib\serial.c
+	<Arduino.h>
 	<avr/io.h>
 	<stdio.h>
 	<util/setbaud.h>
 	"serial.h"
 	<util/delay.h>
 
-1425418393 d:\documents\projects\swagbot\software\arduino\src\modules\communication.h
+1425648568 d:\documents\projects\swagbot\software\arduino\src\modules\communication.h
 
 1425327082 source:e:\github\swagbot\software\arduino\src\lib\serial.c
 	<avr/io.h>
@@ -97,13 +99,21 @@
 
 1425326125 e:\github\swagbot\software\arduino\src\lib\serial.h
 
-1425418393 d:\documents\projects\swagbot\software\arduino\src\lib\serial.h
+1425648568 d:\documents\projects\swagbot\software\arduino\src\lib\serial.h
 
 1425420805 d:\documents\projects\swagbot\software\arduino\src\modules\mode_manager.h
 	<avr/io.h>
 	<stdio.h>
 
-1425418393 source:d:\documents\projects\swagbot\software\arduino\src\modules\automatic_mode.c
+1425651398 source:d:\documents\projects\swagbot\software\arduino\src\modules\automatic_mode.c
+	<stdio.h>
+	<stdlib.h>
+	<avr/io.h>
+	<avr/interrupt.h>
+	<util/delay.h>
+	"automatic_mode.h"
+	"motor.h"
+	"sensor.h"
 
 1425420303 source:d:\documents\projects\swagbot\software\arduino\src\modules\manual_mode.c
 	"manual_mode.h"
@@ -113,4 +123,10 @@
 1425420826 source:d:\documents\projects\swagbot\software\arduino\src\modules\mode_manager.c
 	"mode_manager.h"
 	"manual_mode.h"
+
+1425648568 d:\documents\projects\swagbot\software\arduino\src\modules\automatic_mode.h
+
+1425648568 d:\documents\projects\swagbot\software\arduino\src\modules\motor.h
+
+1425648568 d:\documents\projects\swagbot\software\arduino\src\lib\sensor.h
 

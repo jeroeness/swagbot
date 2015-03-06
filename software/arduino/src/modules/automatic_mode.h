@@ -24,4 +24,7 @@ void initTimer();
 inline void setSpeed(int8_t s);
 inline void setDirection(int8_t d);
 
+void beginAutomaticMode();
+void stopAutomaticMode();
+
 #endif // AUTOMATIC_MODE_H

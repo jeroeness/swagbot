@@ -8,7 +8,7 @@ struct SD sensorData;
 
 int incomingByte = 0;
 bool connectionIsOpen = false;
-int8_t activeKey = 0;
+uint8_t activeKey = 0;
 int16_t keyTimer = 0;
 
 
@@ -64,16 +64,21 @@ void printVerbose() {
 
 void readInputs () {
     if (Serial.available() > 0) {
-        int8_t input = Serial.read();
-
+        uint8_t input = Serial.read();
         switch (input) {
             case 'w':
             case 'a':
             case 's':
             case 'd':
-            activeKey = input;
-            keyTimer = 0x3000;
-			Serial.print(activeKey);
+            	if (input != activeKey) {
+					if (activeKey) {
+						inputKeyRelease(activeKey);
+					}
+					inputKeyPress(input);
+            	}
+				activeKey = input;
+				keyTimer = 0x3000;
+				Serial.print(activeKey);
             break;
             case 'm':
                 setSteeringMode(manual);
@@ -82,17 +87,14 @@ void readInputs () {
 				setSteeringMode(automatic);
 			break;
         }
-
-
-    }
-    if (keyTimer-- == 1) {
-        activeKey = 0;
     }
 
     if (activeKey > 0) {
-		inputKey (activeKey);
-    } else {
-        PORTB = PORTD = 0;
+		if (keyTimer-- == 1) {
+			inputKeyRelease(activeKey);
+			activeKey = 0;
+		}
+		inputKeyDown (activeKey);
     }
 }
 
