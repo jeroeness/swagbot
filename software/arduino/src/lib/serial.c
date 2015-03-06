@@ -3,9 +3,9 @@
 #define BAUD 9600
 #endif
 
-#include <Arduino.h>
 
 #include <avr/io.h>
+#include <string.h>
 #include <stdio.h>
 //#include <USART.h>
 #include <util/setbaud.h>
@@ -16,11 +16,8 @@
 #define BAUD_PRESCALLER (((F_CPU / (BAUD * 16UL))) - 1)
 #endif
 
-//char wait_until_bit_is_set(char sfr,char bit){
-//while (bit_is_clear(sfr, bit)){
-//_delay_ms(10);
-//}
-//}
+char *newLineCharacters = "\r\n";
+
 void serialBegin(){
     UBRR0H = (uint8_t)(BAUD_PRESCALLER>>8);
     UBRR0L = (uint8_t)(BAUD_PRESCALLER);
@@ -36,23 +33,22 @@ void serialEnd(){
 
 //TODO <for later change the code for serialread and write to a interupt. (224 datashee) >
 char serialRead(void){
-  loop_until_bit_is_set(UCSR0A, RXC0); /* Wait until data exists. */
+    loop_until_bit_is_set(UCSR0A, RXC0); /* Wait until data exists. */
     return UDR0;
 }
-void serialWrite(char *c){
-char *test = "hallo";
-//serialWriteCharacter(test);
+void serialPrint(char *c){
+    int i;
+    for(i = 0; i < strlen(c); i++){
+        serialWriteCharacter(c[i]);
+    }
+}
+
+void serialPrintLine(char *c) {
+    serialPrint(c);
+    serialPrint(newLineCharacters);
 }
 
 void serialWriteCharacter(char c){
-switch(c){
-case '\r': Serial.print("\n\r");
-         break;
-default:
- loop_until_bit_is_set(UCSR0A, UDRE0); /* Wait until data register empty. */
- UDR0 = c;
-}
-
-
-
+    loop_until_bit_is_set(UCSR0A, UDRE0); /* Wait until data register empty. */
+    UDR0 = c;
 }
