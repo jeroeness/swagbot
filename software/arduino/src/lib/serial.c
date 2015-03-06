@@ -16,13 +16,11 @@
 #define BAUD_PRESCALLER (((F_CPU / (BAUD * 16UL))) - 1)
 #endif
 
-char wait_until_bit_is_set(char A,char B){
-while (!(A & 1 << B)) {
-//Serial.print("wait2");
-_delay_ms(10);
-
-}
-}
+//char wait_until_bit_is_set(char sfr,char bit){
+//while (bit_is_clear(sfr, bit)){
+//_delay_ms(10);
+//}
+//}
 void serialBegin(){
     UBRR0H = (uint8_t)(BAUD_PRESCALLER>>8);
     UBRR0L = (uint8_t)(BAUD_PRESCALLER);
@@ -38,7 +36,7 @@ void serialEnd(){
 
 //TODO <for later change the code for serialread and write to a interupt. (224 datashee) >
 char serialRead(void){
-  wait_until_bit_is_set(UCSR0A, RXC0); /* Wait until data exists. */
+  loop_until_bit_is_set(UCSR0A, RXC0); /* Wait until data exists. */
     return UDR0;
 }
 void serialWrite(char *c){
@@ -47,7 +45,14 @@ char *test = "hallo";
 }
 
 void serialWriteCharacter(char c){
-
- wait_until_bit_is_set(UCSR0A, UDRE0); /* Wait until data register empty. */
+switch(c){
+case '\r': Serial.print("\n\r");
+         break;
+default:
+ loop_until_bit_is_set(UCSR0A, UDRE0); /* Wait until data register empty. */
  UDR0 = c;
+}
+
+
+
 }
