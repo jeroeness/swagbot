@@ -32,6 +32,7 @@ volatile uint16_t overflowCount;
 uint8_t action;
 
 uint8_t speed;
+uint8_t direction;
 
 uint8_t nextAction;
 uint8_t totalActions;
@@ -41,6 +42,7 @@ void initAutomaticMode() {
 	resetClock();
 
 	setSpeed(200);
+	setDirection(1);
 
 	action = ACTION_IDLE;
 	nextAction = 0;
@@ -108,8 +110,14 @@ void executeNextAction() {
 		case ACTION_MOVE_TO:
 			moveToDistance(next[1]);
 			break;
+		case ACTION_MOVE_FOR:
+			moveFor(next[1], direction);
+			break;
 		case ACTION_TURN:
 			turnByDegrees(next[1]);
+			break;
+		case ACTION_TURN_TO:
+			turnToDegrees(next[1]);
 			break;
 		case ACTION_TURN_TO:
 			turnToDegrees(next[1]);
@@ -172,8 +180,12 @@ inline void resetClock() {
 	overflowCount = 1;
 }
 
-void setSpeed(int8_t s) {
+inline void setSpeed(int8_t s) {
 	speed = s;
+}
+
+inline void setDirection(int8_t d) {
+	direction = d;
 }
 
 void moveDistance(int16_t distance) {
