@@ -131,10 +131,25 @@ void readBumperR(){
 }
 
 
+void readCompass(){
+	uint8_t compassDegree = 0;
+	
+	//we need a function like this in I2C Library:
+	//write a 0x01 to address 0xC0 (R/W low)
+	//Write a 0x01 to address 0xC0 (R/W High)
+	//Read 8 bits from 0xC0
+	
+	//compassDegree = resultFromI2C;
+	
+	//for more information visit: http://www.robot-electronics.co.uk/htm/cmps3tech.htm
+	
+	sensorData.compassDegrees = 360 / 255 * compassDegree;
+}
+
 
 void readSensors(){
 	readBumperR();
 	readBumperL();
 	
-	
+	readCompass();
 }
