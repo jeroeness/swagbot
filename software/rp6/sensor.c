@@ -133,7 +133,7 @@ void readBumperR(){
 
 void readCompass(){
 	uint8_t compassDegree = 0;
-	
+	//sprint2
 	//we need a function like this in I2C Library:
 	//write a 0x01 to address 0xC0 (R/W low)
 	//Write a 0x01 to address 0xC0 (R/W High)
