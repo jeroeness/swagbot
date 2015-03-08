@@ -1,6 +1,8 @@
 #ifndef COMMUNICATION_H
 #define COMMUNICATION_H
 
+#include <avr/pgmspace.h>
+
 typedef struct {
 	// Preamble
 	int8_t packetType;	// 3bits
