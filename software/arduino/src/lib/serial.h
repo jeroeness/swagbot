@@ -8,10 +8,12 @@ void serialEnd();
 char serialRead(void);
 char serialReadCharacter(char);
 
-void serialPrint(char *);
-void serialPrintLine(char *);
+void serialPrint(const char *);
+void serialPrintLine(const char *);
 void serialWriteCharacter(char);
 
+void serialWriteCharacterFromBuffer();
+int8_t serialAvailable();
 
 //char wait_until_bit_is_set(char,char);
 
