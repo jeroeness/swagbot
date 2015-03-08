@@ -1,5 +1,7 @@
 #include "manual_mode.h"
 #include "motor.h"
+#include "../lib/sensor.h"
+#include "../lib/serial.h"
 
 void inputRight() {
 	turn(100);
@@ -14,7 +16,11 @@ void inputBackward() {
 }
 
 void inputForward() {
-	moveMotors(100, 100);
+	if(sensorData.bumperRight == 1 || sensorData.bumperLeft == 1){
+        inputStop();
+    }else {
+        moveMotors(100, 100);
+    }
 }
 
 void inputStop() {
