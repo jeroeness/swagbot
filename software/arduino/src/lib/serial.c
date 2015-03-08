@@ -100,7 +100,7 @@ void serialPrint(const char *c){
 }
 
 void serialPrintLine(const char *c) {
-	char *ln = (char*)malloc((strlen(c) + 2) * sizeof(char));
+	char *ln = (char*)malloc((strlen(c) + 3) * sizeof(char));
 	memcpy(ln, c, strlen(c) + 1);
 	strcat(ln, newLineCharacters);
     serialPrint(ln);
