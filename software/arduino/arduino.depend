@@ -61,33 +61,40 @@
 1423435170 d:\documents\projects\swagbot\software\arduino\pins_arduino.h
 	<avr/pgmspace.h>
 
-1425419669 source:d:\documents\projects\swagbot\software\arduino\src\main.c
-	<Arduino.h>
+1425810787 source:d:\documents\projects\swagbot\software\arduino\src\main.c
+	<avr/pgmspace.h>
+	<avr/io.h>
+	<avr/interrupt.h>
+	<stdlib.h>
 	"lib/swagbotlib.h"
 	"modules/communication.h"
 	"modules/mode_manager.h"
+	"modules/motor.h"
 
 1424948809 source:d:\documents\projects\swagbot\software\arduino\src\lib\swagbotlib.c
 
-1424808356 d:\documents\projects\swagbot\software\arduino\src\lib\swagbotlib.h
-	"lib/pins_arduino.h"
-
-1425648568 source:d:\documents\projects\swagbot\software\arduino\src\modules\communication.c
+1425770178 d:\documents\projects\swagbot\software\arduino\src\lib\swagbotlib.h
 	<Arduino.h>
+
+1425825291 source:d:\documents\projects\swagbot\software\arduino\src\modules\communication.c
 	"communication.h"
-	"lib/serial.h"
+	"serial.h"
 	"mode_manager.h"
-	"lib/sensor.h"
+	"sensor.h"
 
-1425648568 source:d:\documents\projects\swagbot\software\arduino\src\lib\serial.c
-	<Arduino.h>
+1425825344 source:d:\documents\projects\swagbot\software\arduino\src\lib\serial.c
 	<avr/io.h>
+	<string.h>
 	<stdio.h>
+	<avr/interrupt.h>
 	<util/setbaud.h>
 	"serial.h"
 	<util/delay.h>
+	"serial.h"
+	<stdlib.h>
 
-1425648568 d:\documents\projects\swagbot\software\arduino\src\modules\communication.h
+1425770296 d:\documents\projects\swagbot\software\arduino\src\modules\communication.h
+	<avr/pgmspace.h>
 
 1425327082 source:e:\github\swagbot\software\arduino\src\lib\serial.c
 	<avr/io.h>
@@ -99,13 +106,13 @@
 
 1425326125 e:\github\swagbot\software\arduino\src\lib\serial.h
 
-1425648568 d:\documents\projects\swagbot\software\arduino\src\lib\serial.h
+1425771474 d:\documents\projects\swagbot\software\arduino\src\lib\serial.h
 
-1425420805 d:\documents\projects\swagbot\software\arduino\src\modules\mode_manager.h
+1425654234 d:\documents\projects\swagbot\software\arduino\src\modules\mode_manager.h
 	<avr/io.h>
 	<stdio.h>
 
-1425651398 source:d:\documents\projects\swagbot\software\arduino\src\modules\automatic_mode.c
+1425766976 source:d:\documents\projects\swagbot\software\arduino\src\modules\automatic_mode.c
 	<stdio.h>
 	<stdlib.h>
 	<avr/io.h>
@@ -115,18 +122,33 @@
 	"motor.h"
 	"sensor.h"
 
-1425420303 source:d:\documents\projects\swagbot\software\arduino\src\modules\manual_mode.c
+1425655860 source:d:\documents\projects\swagbot\software\arduino\src\modules\manual_mode.c
 	"manual_mode.h"
+	"motor.h"
 
-1425420269 d:\documents\projects\swagbot\software\arduino\src\modules\manual_mode.h
+1425655180 d:\documents\projects\swagbot\software\arduino\src\modules\manual_mode.h
 
-1425420826 source:d:\documents\projects\swagbot\software\arduino\src\modules\mode_manager.c
+1425655137 source:d:\documents\projects\swagbot\software\arduino\src\modules\mode_manager.c
 	"mode_manager.h"
 	"manual_mode.h"
+	"automatic_mode.h"
 
-1425648568 d:\documents\projects\swagbot\software\arduino\src\modules\automatic_mode.h
+1425655123 d:\documents\projects\swagbot\software\arduino\src\modules\automatic_mode.h
 
-1425648568 d:\documents\projects\swagbot\software\arduino\src\modules\motor.h
+1425764667 d:\documents\projects\swagbot\software\arduino\src\modules\motor.h
+	<avr/io.h>
+	<stdio.h>
 
 1425648568 d:\documents\projects\swagbot\software\arduino\src\lib\sensor.h
+
+1425767684 source:d:\documents\projects\swagbot\software\arduino\src\modules\motor.c
+	<stdio.h>
+	<util/delay.h>
+	<avr/io.h>
+	<avr/interrupt.h>
+	"motor.h"
+	"sensor.h"
+
+1423435170 d:\documents\projects\swagbot\software\arduino\src\lib\pins_arduino.h
+	<avr/pgmspace.h>
 
