@@ -1,8 +1,7 @@
 #include "communication.h"
-#include "serial.h"
+#include "../lib/serial.h"
 #include "mode_manager.h"
-#include "sensor.h"
-
+#include "../lib/sensor.h"
 int incomingByte = 0;
 bool connectionIsOpen = false;
 uint8_t activeKey = 0;
@@ -28,9 +27,60 @@ void updateCommunication () {
     printVerbose();
 }
 
+char* itoa(int i, char b[]){
+    char const digit[] = "0123456789";
+    char* p = b;
+    if(i<0){
+        *p++ = '-';
+        i *= -1;
+    }
+    int shifter = i;
+    do{ //Move to where representation ends
+        ++p;
+        shifter = shifter/10;
+    }while(shifter);
+    *p = '\0';
+    do{ //Move back, inserting digits as u go
+        *--p = digit[i%10];
+        i = i/10;
+    }while(i);
+    return b;
+}
+
+
 void printVerbose() {
-    //serialPrintLine("hello");
-    //TODO print suff
+
+sensorData.bumperRight = 1;
+sensorData.bumperLeft = 1;
+sensorData.motorLeft = 255;
+sensorData.motorRight = 255;
+sensorData.ultrasonic = 12;
+sensorData.ledStatus = 0;
+
+char *str = "   ";
+
+//print sensor data
+
+serialPrint("Motor Left:");
+serialPrintLine(itoa(sensorData.motorLeft, str));
+serialPrint("Motor Right:");
+serialPrintLine(itoa(sensorData.motorRight, str));
+
+serialPrint("LED:");
+serialPrintLine(itoa(sensorData.ledStatus, str));
+serialPrint("Ultrasonic:");
+serialPrintLine(itoa(sensorData.ultrasonic, str));
+
+serialPrint("The Right bumper:");
+serialPrintLine(itoa(sensorData.bumperRight, str));
+serialPrint("The left bumper:");
+serialPrintLine(itoa(sensorData.bumperLeft, str));
+
+
+
+
+
+while(1){}
 
 
 }
