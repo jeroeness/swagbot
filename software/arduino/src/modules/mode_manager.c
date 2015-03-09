@@ -32,7 +32,8 @@ void inputKeyDown (uint8_t key) {
 
 void inputKeyPress(uint8_t key) {
 	if (steeringMode == automatic) {
-        handleKeyPressAutomaticMode(key);
+        	setSteeringMode(manual);
+        	handleKeyPressManualMode(key);
 	} else {
 		handleKeyPressManualMode(key);
 	}
@@ -45,11 +46,6 @@ void inputKeyRelease(uint8_t key) {
 		handleKeyReleaseManualMode(key);
 	}
 }
-
-void handleKeyPressAutomaticMode (uint8_t key) {
-	//TODO this method is not yet implemented
-}
-
 
 void handleKeyReleaseAutomaticMode (uint8_t key) {
 	//TODO this method is not yet implemented
