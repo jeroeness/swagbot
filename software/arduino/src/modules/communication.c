@@ -1,70 +1,107 @@
-#include <Arduino.h>
 #include "communication.h"
-#include "lib/serial.h"
+#include "../lib/serial.h"
 #include "mode_manager.h"
-
+#include "../lib/sensor.h"
 int incomingByte = 0;
 bool connectionIsOpen = false;
-int8_t activeKey = 0;
+uint8_t activeKey = 0;
 int16_t keyTimer = 0;
 
-struct sD sensorData;
-
-
 void initCommunication() {
-
 	openConnection();
-
 }
 
 bool openConnection () {
-	// TODO omschrijven, arduino lib niet gebruiken
-	Serial.begin(9600);
-	Serial.print("hello");
+	serialBegin();
 	connectionIsOpen = true;
 	return 1;
 }
 
 void closeConnection() {
-    Serial.end();
+	serialEnd();
     connectionIsOpen = false;
 }
 
 void updateCommunication () {
-
-    /*
-    TransmissionPacket t = generateTransmissionPacket();
-
-	if (!transmitData(t)) {
-
-		//TODO flashPanicLight();
-
-	}*/
-
-	// send data only when you receive data:
-	if (Serial.available() > 0) {
-			// read the incoming byteo
-			//incomingByte = Serial.read();
-
-			// say what you got:
-	}
-
 	readInputs ();
+    printVerbose();
+}
+
+char* itoa(int i, char b[]){
+    char const digit[] = "0123456789";
+    char* p = b;
+    if(i<0){
+        *p++ = '-';
+        i *= -1;
+    }
+    int shifter = i;
+    do{ //Move to where representation ends
+        ++p;
+        shifter = shifter/10;
+    }while(shifter);
+    *p = '\0';
+    do{ //Move back, inserting digits as u go
+        *--p = digit[i%10];
+        i = i/10;
+    }while(i);
+    return b;
+}
+
+
+void printVerbose() {
+
+sensorData.bumperRight = 1;
+sensorData.bumperLeft = 1;
+sensorData.motorLeft = 255;
+sensorData.motorRight = 255;
+sensorData.ultrasonic = 12;
+sensorData.ledStatus = 0;
+
+char *str = "   ";
+
+//print sensor data
+
+serialPrint("Motor Left:");
+serialPrintLine(itoa(sensorData.motorLeft, str));
+serialPrint("Motor Right:");
+serialPrintLine(itoa(sensorData.motorRight, str));
+
+serialPrint("LED:");
+serialPrintLine(itoa(sensorData.ledStatus, str));
+serialPrint("Ultrasonic:");
+serialPrintLine(itoa(sensorData.ultrasonic, str));
+
+serialPrint("The Right bumper:");
+serialPrintLine(itoa(sensorData.bumperRight, str));
+serialPrint("The left bumper:");
+serialPrintLine(itoa(sensorData.bumperLeft, str));
+
+
+
+
+
+while(1){}
+
 
 }
 
 void readInputs () {
-    if (Serial.available() > 0) {
-        int8_t input = Serial.read();
-
+	if (serialAvailable()) {
+        char input = serialRead();
         switch (input) {
             case 'w':
             case 'a':
             case 's':
             case 'd':
-            activeKey = input;
-            keyTimer = 0x3000;
-			Serial.print(activeKey);
+            	if (input != activeKey) {
+					if (activeKey) {
+						inputKeyRelease(activeKey);
+					}
+					inputKeyPress(input);
+            	}
+				activeKey = input;
+				keyTimer = 0x3000;
+
             break;
             case 'm':
                 setSteeringMode(manual);
@@ -73,108 +110,17 @@ void readInputs () {
 				setSteeringMode(automatic);
 			break;
         }
-
-
-    }
-    if (keyTimer-- == 1) {
-        activeKey = 0;
     }
 
     if (activeKey > 0) {
-		inputKey (activeKey);
-    } else {
-        PORTB = PORTD = 0;
+		if (keyTimer-- == 1) {
+			inputKeyRelease(activeKey);
+			activeKey = 0;
+		}
+		inputKeyDown (activeKey);
+
+		char *str = " ";
+		str[0] = activeKey;
+		serialPrint(str);
     }
 }
-
-TransmissionPacket generateTransmissionPacket () {
-
-	// TODO temporary generating dummy packet
-	sensorData.bumperRight = 1;
-	sensorData.bumperLeft = 1;
-	sensorData.leftMotor = 255;
-	sensorData.rightMotor = 127;
-    //sensorData.mode = 0;
-    //sensorData.packetType = 1;
-    sensorData.ultrasonic = 152;
-
-    sensorData.bumperRight = 0;
-    sensorData.bumperLeft = 0;
-	sensorData.leftMotor = 0;
-	sensorData.rightMotor = 0;
-    sensorData.mode = 0;
-    sensorData.packetType = 1;
-    sensorData.ultrasonic = 0;
-	
-	/* voor gui in sprint 2
-	struct uSD sendata;
-	
-	sendata.s = tp;
-	Serial.print(sendata.sendData[i]);
-	*/
-	
-    return tp;
-}
-
-
-
-
-/*
-bool transmitData(TransmissionPacket packet) {
-
-	// See transmission packet for sizes
-    int packetSize = 3 + 8 + 2 + 1 + 8 + 8;
-    int mallocSize = (int)ceil(packetSize / 8) + 1;
-
-    int8_t * data = (int8_t*)calloc(mallocSize, sizeof(int8_t));
-
-	// data visualisation:
-	// [........][........][........][........][......]
-	//  AAABBBBB  BBBCCDEE  EEEEEEFF  FFFFFF    \0
-	//data |= packet.packetType;
-	//data |= packet.ultrasonic >> 3;
-
-	insertInString(data, packet.rightMotor, 8, 3, 2);
-	insertInString(data, packet.leftMotor, 8, 2, 2);
-	insertInString(data, packet.mode, 1, 1, 2);
-	insertInString(data, packet.bumpers, 2, 1, 3);
-	insertInString(data, packet.ultrasonic, 8, 1, 5);
-	insertInString(data, packet.packetType, 3, 0, 5);
-
-	for (int i = 0; i < mallocSize; i++) {
-		Serial.print((int8_t)data[i], BIN);
-		Serial.print(' ');
-	}
-	Serial.println();
-
-    free(data);
-
-	return 1;
-}
-
-inline int8_t power(int8_t base, int8_t exp) {
-	if (exp == 0) {
-		return base != 0;
-	}
-	for (int8_t i = 0; i < exp; i++) {
-		base *= base;
-	}
-}
-
-inline void insertInString(int8_t *string, int8_t data, int8_t dataLength, int8_t byteOffset, int8_t bitOffset) {
-	//string[byteOffset] |= (data & ((1<<7-bitOffset)-1)) << bitOffset;
-
-	//if (bitOffset+dataLength > 8) {
-	//	string[byteOffset - 1] |= (data & ~((1<<7-bitOffset)-1)) >> 8 - bitOffset;
-	//}
-
-	int8_t i = 0;
-	for (i = 0; i < min(8-bitOffset, dataLength); i++) {
-		if (data & (1 << i)) {
-			string[byteOffset] += power(2, i + bitOffset);
-		}
-	}
-
-
-}
-*/

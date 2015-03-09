@@ -1,5 +1,6 @@
 #include "mode_manager.h"
 #include "manual_mode.h"
+#include "automatic_mode.h"
 
 SteeringMode steeringMode;
 
@@ -8,23 +9,54 @@ void initModeManager() {
 }
 
 void setSteeringMode(SteeringMode s) {
+	if (steeringMode != s) {
+		if (steeringMode == manual) {
+			stopManualMode();
+			beginAutomaticMode();
+		} else {
+			stopAutomaticMode();
+			beginManualMode();
+		}
+	}
 	steeringMode = s;
 }
 
-void inputKey(int8_t key) {
+void inputKeyDown (uint8_t key) {
+	//TODO
 	if (steeringMode == automatic) {
-        handleInputAutomaticMode(key);
+        //handleKeyDownAutomaticMode(key);
 	} else {
-		handleInputManualMode(key);
+		//handleKeyDownManualMode(key);
 	}
 }
 
-void handleInputAutomaticMode (int8_t key) {
+void inputKeyPress(uint8_t key) {
+	if (steeringMode == automatic) {
+        handleKeyPressAutomaticMode(key);
+	} else {
+		handleKeyPressManualMode(key);
+	}
+}
+
+void inputKeyRelease(uint8_t key) {
+	if (steeringMode == automatic) {
+        handleKeyReleaseAutomaticMode(key);
+	} else {
+		handleKeyReleaseManualMode(key);
+	}
+}
+
+void handleKeyPressAutomaticMode (uint8_t key) {
 	//TODO this method is not yet implemented
 }
 
-void handleInputManualMode (int8_t key) {
-	//TODO handle keypresses
+
+void handleKeyReleaseAutomaticMode (uint8_t key) {
+	//TODO this method is not yet implemented
+}
+
+
+void handleKeyPressManualMode (uint8_t key) {
 	switch (key) {
 		case 'w':
 			inputForward();
@@ -37,6 +69,17 @@ void handleInputManualMode (int8_t key) {
 			break;
 		case 'd':
 			inputRight();
+			break;
+	}
+}
+
+void handleKeyReleaseManualMode (uint8_t key) {
+	switch (key) {
+		case 'w':
+		case 'a':
+		case 's':
+		case 'd':
+			inputStop();
 			break;
 	}
 }

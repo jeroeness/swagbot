@@ -54,6 +54,7 @@ void setLed(uint8_t uLed, uint8_t uOn);
 
 void readBumperL();
 void readBumperR();
+void readCompass();
 void readSensors();
 
 

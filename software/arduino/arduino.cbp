@@ -540,6 +540,7 @@
 					<Add directory="$(ARDUINO_DIR)/libraries" />
 					<Add directory="$(ARDUINO_DIR)/hardware/arduino/variants/mega" />
 					<Add directory="src/modules" />
+					<Add directory="src/lib" />
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
@@ -549,6 +550,7 @@
 					<Add option="-Wl,-Map=$(TARGET_OUTPUT_FILE).map,--cref" />
 				</Linker>
 				<ExtraCommands>
+					<Add before='$(TARGET_COMPILER_DIR)ArduinoUploader &quot;$(PROJECT_DIR).&quot; $(BOARD_ID) - $(MCU_CLOCK) 0 &quot;$(PROJECT_DIR)${TARGET_OUTPUT_DIR}/lib_${BOARD_ID}_${MCU_CLOCK}.a&quot; &quot;$(PROJECT_DIR)${TARGET_OUTPUT_DIR}/core_${BOARD_ID}_${MCU_CLOCK}.a&quot;' />
 					<Add after='avr-objcopy -O ihex -R .eeprom -R .eesafe &quot;$(TARGET_OUTPUT_FILE)&quot; &quot;$(TARGET_OUTPUT_FILE).hex&quot;' />
 					<Add after='avr-objcopy --no-change-warnings -j .eeprom --change-section-lma .eeprom=0 -O ihex &quot;$(TARGET_OUTPUT_FILE)&quot; &quot;$(TARGET_OUTPUT_FILE).eep.hex&quot;' />
 					<Add after='avr-size --mcu=$(MCU) --format=avr &quot;$(TARGET_OUTPUT_FILE)&quot;' />
@@ -685,48 +687,79 @@
 			<Add directory="." />
 		</Compiler>
 		<Unit filename="src/lib/pins_arduino.h">
+			<Option target="Arduino Uno" />
+			<Option target="Arduino Mega 2560/ADK" />
+		</Unit>
+		<Unit filename="src/lib/sensor.h">
+			<Option target="Arduino Uno" />
 			<Option target="Arduino Mega 2560/ADK" />
 		</Unit>
 		<Unit filename="src/lib/serial.c">
 			<Option compilerVar="CC" />
+			<Option target="Arduino Uno" />
+			<Option target="Arduino Mega 2560/ADK" />
 		</Unit>
 		<Unit filename="src/lib/serial.h">
+			<Option target="Arduino Uno" />
 			<Option target="Arduino Mega 2560/ADK" />
 		</Unit>
 		<Unit filename="src/lib/swagbotlib.c">
 			<Option compilerVar="CC" />
+			<Option target="Arduino Uno" />
 			<Option target="Arduino Mega 2560/ADK" />
 		</Unit>
 		<Unit filename="src/lib/swagbotlib.h">
+			<Option target="Arduino Uno" />
 			<Option target="Arduino Mega 2560/ADK" />
 		</Unit>
 		<Unit filename="src/main.c">
 			<Option compilerVar="CC" />
+			<Option target="Arduino Uno" />
 			<Option target="Arduino Mega 2560/ADK" />
 		</Unit>
 		<Unit filename="src/modules/automatic_mode.c">
 			<Option compilerVar="CC" />
+			<Option target="Arduino Uno" />
+			<Option target="Arduino Mega 2560/ADK" />
+		</Unit>
+		<Unit filename="src/modules/automatic_mode.h">
+			<Option target="Arduino Uno" />
 			<Option target="Arduino Mega 2560/ADK" />
 		</Unit>
 		<Unit filename="src/modules/communication.c">
 			<Option compilerVar="CC" />
+			<Option target="Arduino Uno" />
 			<Option target="Arduino Mega 2560/ADK" />
 		</Unit>
 		<Unit filename="src/modules/communication.h">
+			<Option target="Arduino Uno" />
 			<Option target="Arduino Mega 2560/ADK" />
 		</Unit>
 		<Unit filename="src/modules/manual_mode.c">
 			<Option compilerVar="CC" />
+			<Option target="Arduino Uno" />
 			<Option target="Arduino Mega 2560/ADK" />
 		</Unit>
 		<Unit filename="src/modules/manual_mode.h">
+			<Option target="Arduino Uno" />
 			<Option target="Arduino Mega 2560/ADK" />
 		</Unit>
 		<Unit filename="src/modules/mode_manager.c">
 			<Option compilerVar="CC" />
+			<Option target="Arduino Uno" />
 			<Option target="Arduino Mega 2560/ADK" />
 		</Unit>
 		<Unit filename="src/modules/mode_manager.h">
+			<Option target="Arduino Uno" />
+			<Option target="Arduino Mega 2560/ADK" />
+		</Unit>
+		<Unit filename="src/modules/motor.c">
+			<Option compilerVar="CC" />
+			<Option target="Arduino Uno" />
+			<Option target="Arduino Mega 2560/ADK" />
+		</Unit>
+		<Unit filename="src/modules/motor.h">
+			<Option target="Arduino Uno" />
 			<Option target="Arduino Mega 2560/ADK" />
 		</Unit>
 		<Extensions>

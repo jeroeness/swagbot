@@ -6,9 +6,16 @@ void serialBegin();
 void serialEnd();
 
 char serialRead(void);
-void serialWrite(char *);
+char serialReadCharacter(char);
 
-char wait_until_bit_is_set(char,char);
+void serialPrint(const char *);
+void serialPrintLine(const char *);
+void serialWriteCharacter(char);
+
+void serialWriteCharacterFromBuffer();
+int8_t serialAvailable();
+
+//char wait_until_bit_is_set(char,char);
 
 
 #endif // SERIAL_H
