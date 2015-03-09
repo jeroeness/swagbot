@@ -67,7 +67,6 @@ void i2c_read_sensors(uint8_t amount) {
 void i2c_continue(void)
 {
 	TWCR = (1 << TWINT) | (1 << TWEA) | (1 << TWEN) | (1 << TWIE);
-	i2cbusy = 0;
 	return;
 }
 
