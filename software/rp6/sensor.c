@@ -7,6 +7,7 @@
 #include "func_protos.h"
 
 struct SD sensorData;
+struct ID instructionData;
 
 //todo: make function to convert the led state to sensorData.ledStatus, this is so we can check what led is actually on.
 //todo: send error status from the rp6 to the mega2560? If the stamina bar is low, motor on fire or the leds are having a party?
@@ -19,15 +20,17 @@ void initSensors(){
 }
 
 //if any data is received by RP6 parse it with the following function
-void parseSensorInfo(union USD * incommingData){
+void parseSensorInfo(union UID * incommingData){
 	uint8_t i = 0;
 	
 	for(i = 0; i < 7; i++){
-		setLed(i+1,(incommingData->s.ledStatus & (1<<i)) != 0);
+		setLed(i+1,(incommingData->i.ledStatus & (1<<i)) != 0);
 	}
 	
-	//todo: add function to change motor status.
+	moveMotors(incommingData->i.motorLeft,incommingData->i.motorRight);
 }
+
+
 
 
 //Use it like this to turn SL5 on: setLed(5,1);

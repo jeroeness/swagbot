@@ -8,6 +8,8 @@
 #include "func_protos.h"
 
 struct SD sensorData;
+struct ID instructionData;
+
 volatile uint8_t timer0OverflowCount = 0; //for timer overflow
 volatile uint8_t timer0Overflow = 0; //for timer overflow
 

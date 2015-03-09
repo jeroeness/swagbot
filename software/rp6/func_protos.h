@@ -33,18 +33,28 @@ struct SD{
 	uint8_t bumperRight:1;
 	uint8_t bumperLeft:1;
 	uint16_t compassDegrees;
+	int8_t motorLeft;
+	int8_t motorRight;
 	int16_t ultrasonic;
+};
+
+struct ID{
 	int8_t motorLeft;
 	int8_t motorRight;
 	uint8_t ledStatus; //8 all leds in one variable
 };
 
-
+extern struct ID instructionData;
 extern struct SD sensorData;
 
 union USD {
 	struct SD s;
 	uint8_t sendData[sizeof(sensorData)];
+};
+
+union UID {
+	struct ID i;
+	uint8_t receiveData[sizeof(instructionData)];
 };
 
 
