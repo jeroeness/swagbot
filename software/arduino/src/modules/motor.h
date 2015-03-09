@@ -22,12 +22,6 @@ void turn(int8_t speed);
  */
 void stop();
 
-/**	This function initializes everything that is necessary for the motor functions to work.
- * 
- *	@param speed		the speed at which the RP6 will turn 
- */
-void initMotor();
-
 /**	Set the motor variables to be sent to the RP6 by I2C
  *
  *	@param speedL 		the speed of the left motor (min: -100, max: 100)  negative for backwards, positive for forwards.

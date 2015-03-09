@@ -7,8 +7,8 @@
 #include "motor.h"
 #include "sensor.h"
 
-#define TURN_MARGE 5
-#define MOVE_MARGE 5
+#define TURN_MARGIN 5
+#define MOVE_MARGIN 5
 
 #define ACTION_IDLE 	0
 #define ACTION_TURN 	1
@@ -31,10 +31,12 @@ uint16_t** actionList;
 void initAutomaticMode() {
 	action = ACTION_IDLE;
 	nextAction = 0;
+	
 	actionList = (uint16_t**) calloc(4, sizeof(uint16_t*));
 	for (uint8_t i=0; i<4; i++) {
 		actionList[i] = (uint16_t*) calloc(2, sizeof(uint16_t));
 	}
+	
 	actionList[0][0] = ACTION_MOVE; 
 	actionList[0][1] = 20; 
 	actionList[1][0] = ACTION_WAIT; 
@@ -86,7 +88,7 @@ void executeNextAction() {
 }
 
 void checkTurn() {
-	if (checkFuzzy(targetDegrees, sensorData.compassDegrees, TURN_MARGE)) {
+	if (checkFuzzy(targetDegrees, sensorData.compassDegrees, TURN_MARGIN)) {
 		stop();
 		action = ACTION_IDLE;
 	} else {
@@ -95,7 +97,7 @@ void checkTurn() {
 }
 
 void checkMove() {
-	if (checkFuzzy(targetDistance, sensorData.ultrasonic, MOVE_MARGE)) {
+	if (checkFuzzy(targetDistance, sensorData.ultrasonic, MOVE_MARGIN)) {
 		stop();
 		action = ACTION_IDLE;
 	} else {
