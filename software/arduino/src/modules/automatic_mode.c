@@ -204,3 +204,11 @@ void moveToDistance(int16_t distance) {
 	targetDistance = distance;
 	action = ACTION_MOVE;
 }
+
+void beginAutomaticMode(){
+	// do nothing
+}
+
+void stopAutomaticMode(){
+	stop();
+}
