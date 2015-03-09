@@ -2,6 +2,10 @@
 #include "../lib/serial.h"
 #include "mode_manager.h"
 #include "../lib/sensor.h"
+
+struct SD sensorData;
+struct ID instructionData;
+
 int incomingByte = 0;
 bool connectionIsOpen = false;
 uint8_t activeKey = 0;
@@ -50,37 +54,38 @@ char* itoa(int i, char b[]){
 
 void printVerbose() {
 
-sensorData.bumperRight = 1;
-sensorData.bumperLeft = 1;
-sensorData.motorLeft = 255;
-sensorData.motorRight = 255;
-sensorData.ultrasonic = 12;
-sensorData.ledStatus = 0;
-
-char *str = "   ";
-
-//print sensor data
-
-serialPrint("Motor Left:");
-serialPrintLine(itoa(sensorData.motorLeft, str));
-serialPrint("Motor Right:");
-serialPrintLine(itoa(sensorData.motorRight, str));
-
-serialPrint("LED:");
-serialPrintLine(itoa(sensorData.ledStatus, str));
-serialPrint("Ultrasonic:");
-serialPrintLine(itoa(sensorData.ultrasonic, str));
-
-serialPrint("The Right bumper:");
-serialPrintLine(itoa(sensorData.bumperRight, str));
-serialPrint("The left bumper:");
-serialPrintLine(itoa(sensorData.bumperLeft, str));
+	sensorData.bumperRight = 1;
+	sensorData.bumperLeft = 1;
+	instructionData.motorLeft = 255;
+	instructionData.motorRight = 255;
+	instructionData.ledStatus = 0;
+	sensorData.ultrasonic = 12;
 
 
+	char *str = "   ";
+
+	//print sensor data
+
+	serialPrint("Motor Left:");
+	serialPrintLine(itoa(instructionData.motorLeft, str));
+	serialPrint("Motor Right:");
+	serialPrintLine(itoa(instructionData.motorRight, str));
+
+	serialPrint("LED:");
+	serialPrintLine(itoa(instructionData.ledStatus, str));
+	serialPrint("Ultrasonic:");
+	serialPrintLine(itoa(sensorData.ultrasonic, str));
+
+	serialPrint("The Right bumper:");
+	serialPrintLine(itoa(sensorData.bumperRight, str));
+	serialPrint("The left bumper:");
+	serialPrintLine(itoa(sensorData.bumperLeft, str));
 
 
 
-while(1){}
+
+
+	while(1);
 
 
 }
