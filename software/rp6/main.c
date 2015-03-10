@@ -1,42 +1,14 @@
-#define F_CPU 8000000 //Base: 8.00MHz - DO NOT CHANGE! // CPU works @ 8.0Mhz;
-
-#include <stdio.h>
-#include <util/delay.h>
-#include <avr/io.h> // I/O Port definitions
-#include <avr/interrupt.h> // Interrupt macros (e.g. cli(), sei())
-
 #include "func_protos.h"
 
-struct SD sensorData;
-struct ID instructionData;
+//extern union UID instructionData;
+//extern union USD sensorData;
 
 volatile uint8_t timer0OverflowCount = 0; //for timer overflow
 volatile uint8_t timer0Overflow = 0; //for timer overflow
 
-
-void testGlobalVariable(){
-	
-	if(sensorData.bumperLeft == 1){
-		setLed(1,1);
-		setLed(2,0);
-		setLed(3,1);
-		setLed(4,0);
-		setLed(5,1);
-		setLed(6,0);
-	}else{
-		setLed(1,0);
-		setLed(2,1);
-		setLed(3,0);
-		setLed(4,1);
-		setLed(5,0);
-		setLed(6,1);
-	}
-	
-}
-
 void initTimerMain(){
 	//timer0: set prescaler of 1024
-	TCCR0 |= (1 << CS00) | (1<<CS02); 
+	TCCR0 |= (1 << CS00) | (1<<CS02);
 	
 	//timer0: init counter
 	TCNT0 = 0;
@@ -54,6 +26,7 @@ int main(void) {
 	
 	initMotor();
 	initSensors();
+	i2c_init(0xAA);
 	initTimerMain();
 	
 	sei();
@@ -64,8 +37,6 @@ int main(void) {
 			
 			readSensors();
 		}
-		
-		testGlobalVariable();
 	}
 	
 	return 0;
@@ -79,7 +50,7 @@ ISR(TIMER0_OVF_vect)
 	timer0OverflowCount++;
 	if(timer0OverflowCount == 1){
 		TCNT0 = 122; //count from 122 to 256(overflow) to create pulse of 50ms
-	}else{
+		}else{
 		timer0Overflow = 1;
 		timer0OverflowCount = 0;
 	}
