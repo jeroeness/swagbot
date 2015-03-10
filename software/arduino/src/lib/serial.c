@@ -19,8 +19,6 @@
 //#include <USART.h>
 #include <util/setbaud.h>
 #include "serial.h"
-#include <util/delay.h>
-#include "serial.h"
 #include <stdlib.h>
 
 #ifndef BAUD_PRESCALLER
