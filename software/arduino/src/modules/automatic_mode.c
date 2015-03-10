@@ -6,7 +6,7 @@
 #include "automatic_mode.h"
 #include "motor.h"
 #include "sensor.h"
-//#include "mode_manager.h"
+#include "mode_manager.h"
 
 #define TURN_MARGIN 5
 #define MOVE_MARGIN 5
