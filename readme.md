@@ -1,7 +1,7 @@
 Project 420SwagBotScope
 =======================
 
-cool project bla bla, teamwork together bla bla programming bladiebla bla bla hard working bla bla profesionality bla bla whip required bla bla bla delivery bla.
+cool project bla bla, teamwork together bla bla programming bladiebla bla bla hard working bla bla professionality bla bla whip required bla bla bla delivery bla.
 
 project goals:
  * robot must do stuff
