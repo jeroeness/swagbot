@@ -18,7 +18,7 @@
  *  Author: gerald
  *
  * v1.01
- */ 
+ */
 //todo
 // startindex+rwamount fixen
 
@@ -58,7 +58,7 @@ void i2c_waitforidle(void) {
 
 
 void i2c_write_cmd_wrap(void) {
-	
+
 	instructionDataLocal.i.motorLeft = instructionData.motorLeft;
 	instructionDataLocal.i.motorRight = instructionData.motorRight;
 	instructionDataLocal.i.ledStatus = instructionData.ledStatus;
@@ -115,6 +115,7 @@ void i2c_SR_done(void)
 
 ISR(TWI_vect)
 {
+
 	uint8_t static volatile rwaddress = 0; // index of read/write operation by a master
 	uint8_t static volatile firstwrite = 0; // first write to slave is address (write to index)
 

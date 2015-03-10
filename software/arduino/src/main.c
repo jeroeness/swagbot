@@ -10,9 +10,11 @@
 #include <avr/pgmspace.h>
 #include <avr/io.h>
 #include <avr/interrupt.h>
+#include <avr/delay.h>
 #include <stdlib.h>
 
 #include "lib/swagbotlib.h"
+#include "lib/serial.h"
 #include "modules/communication.h"
 #include "modules/mode_manager.h"
 #include "modules/motor.h"
@@ -31,14 +33,14 @@ int main(void){
 
 	sei();
 
-	SteeringMode s = automatic;
-	setSteeringMode(s);
+	setSteeringMode(automatic);
 	resetAutomaticMode();
+
+	i2c_write_cmd_wrap();
 
 	while(1){
 		updateAutomaticMode();
 		updateCommunication();
-		i2c_write_cmd_wrap();
 	}
 
 	return 1998;

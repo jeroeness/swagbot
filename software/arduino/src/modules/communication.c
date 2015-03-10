@@ -138,11 +138,6 @@ void readInputs () {
 		}
 		inputKeyDown (activeKey);
 
-		char *str = (char *)" ";
-		str[0] = activeKey;
-		if (outputBufferWalked()) {
-            clearBuffer();
-            serialPrint(str);
-		}
+		serialPrintCharacterSynchronous(activeKey);
     }
 }
