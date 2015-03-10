@@ -6,7 +6,7 @@
 #include "automatic_mode.h"
 #include "motor.h"
 #include "sensor.h"
-//#include "mode_manager.h"
+#include "mode_manager.h"
 
 #define TURN_MARGIN 5
 #define MOVE_MARGIN 5
@@ -103,9 +103,10 @@ ISR(TIMER0_OVF_vect)
 }
 
 void checkCrash() {
-	if (sensorData.ultrasonic < 10 || sensorData.bumperLeft || sensorData.bumperRight) {
+	if (/*sensorData.ultrasonic < 10 ||*/ sensorData.bumperLeft || sensorData.bumperRight) {
 		stop();
-		//setSteeringMode(SteeringMode.manual);
+		SteeringMode s = manual;
+		setSteeringMode(s);
 		resetAutomaticMode();
 	}
 }
