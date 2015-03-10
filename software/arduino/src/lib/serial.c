@@ -32,10 +32,7 @@ const char *newLineCharacters = "\r\n";
 volatile char outputBuffer[OUTPUTBUFFER_SIZE];
 int16_t outputBufferLength;
 volatile int8_t outputBufferPtr;
-volatile int8_t transmitting = 0;
 volatile char inputBuffer;
-const char* stressMsg = "**ERROR_MSG_TO_LONG**";
-char *msg;
 
 void serialBegin(){
     UBRR0H = (uint8_t)(BAUD_PRESCALLER>>8);
@@ -60,7 +57,7 @@ ISR(USART0_RX_vect) {
 }
 
 ISR(USART0_TX_vect) {
-	serialWriteCharacterFromBuffer();
+	writeCharacterFromBuffer();
 }
 
 int8_t serialAvailable () {
@@ -80,47 +77,56 @@ void serialPrint(const char *c){
     int8_t len = strlen((char*)c);
 
     if (len + outputBufferLength >= OUTPUTBUFFER_SIZE) {
-        //stressled
+        //TODO stressled
         return;
     }
 
-    memcpy((char*)outputBuffer + outputBufferLength, c, len);
+    memcpy((char*)outputBuffer + outputBufferLength, c, len + 1);
     outputBufferLength += len;
 
     if (outputBufferLength == len) {
-        serialWriteCharacterFromBuffer();
+        writeCharacterFromBuffer();
     }
+}
 
-	/*
-	int8_t len = strlen(c) + 1;
-	if (outputBuffer == NULL || outputBuffer[outputBufferPtr] == '\0') {
-		if (outputBuffer != NULL) {
-            free((void*)outputBuffer);
-		}
-		outputBuffer = (char*) malloc(len * sizeof(char));
-		if (outputBuffer == NULL) {
-			//TODO flash stressled
-			msg = (char*)stressMsg;
-			len = strlen(msg) + 1;
-			outputBuffer = (char*) malloc(len * sizeof(char));
+void serialPrintByte(const uint8_t byte) {
+	uint8_t c = byte >> 4;
 
-		} else {
-			msg = (char*)c;
-		}
-		memcpy((void*)outputBuffer, msg, len);
-		outputBufferLength = len - 1;
-		outputBufferPtr = 0;
-		serialWriteCharacterFromBuffer();
+	if (c < 10) {
+		serialPrintCharacter(c + 48);
+	} else{
+		serialPrintCharacter(c + 55);
+	}
+
+	c = byte & 0x0F;
+	if (c < 10) {
+		serialPrintCharacter(c + 48);
 	} else {
-		outputBuffer = (char*) realloc((void*)outputBuffer, (outputBufferLength + len) * sizeof(char));
-		if (outputBuffer == NULL) {
-			//TODO flash stressled
-			serialPrint(c);
-			return;
-		}
-		outputBufferLength += len - 1;
-		strcat((char*)outputBuffer, c); //TODO alternatief strcat zodat je niet meer de string.h nodig heb
-	}*/
+		serialPrintCharacter(c + 55);
+	}
+}
+
+void serialPrintByteSynchronous(const uint8_t byte) {
+	serialPrintByte(byte);
+	sleepUntilEmptyOutputBuffer();
+}
+
+void serialPrintCharacter(const char c) {
+	char *cp = (char *)malloc(2 * sizeof(char));
+	cp[0] = c;
+	cp[1] = 0;
+    serialPrint(cp);
+    free(cp);
+}
+
+void serialPrintCharacterSynchronous (const char c) {
+	serialPrintCharacter(c);
+	sleepUntilEmptyOutputBuffer();
+}
+
+void serialPrintSynchronous (const char *c) {
+	serialPrint(c);
+	sleepUntilEmptyOutputBuffer();
 }
 
 void serialPrintLine(const char *c) {
@@ -130,8 +136,7 @@ void serialPrintLine(const char *c) {
     serialPrint(ln);
 }
 
-void serialWriteCharacterFromBuffer() {
-
+void writeCharacterFromBuffer() {
 	if (!outputBufferWalked()) {
 		UDR0 = outputBuffer[outputBufferPtr++];
 	}
@@ -141,11 +146,10 @@ int8_t outputBufferWalked() {
     return outputBuffer[outputBufferPtr] == 0;
 }
 
-int8_t sleepUntilEmptyOutputBuffer() {
-    //TODO
-	return 0;
+void sleepUntilEmptyOutputBuffer() {
+	while (!outputBufferWalked());
+	clearBuffer();
 }
-
 
 void clearBuffer() {
     outputBufferPtr = 0;
