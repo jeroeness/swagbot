@@ -60,6 +60,7 @@ void loop() {
 int main(void){
 	cli();
 	
+	i2c_init(0xA8);
 	initAutomaticMode();
 	initCommunication();
 	
@@ -69,8 +70,10 @@ int main(void){
 	setSteeringMode(s);
 	resetAutomaticMode();
 	
+	moveMotors(100,-100);
+	
 	while(1){
-		updateAutomaticMode();
+// 		updateAutomaticMode();
 		updateCommunication();
 		i2c_write_cmd_wrap();
 	}

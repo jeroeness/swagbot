@@ -31,19 +31,19 @@ ActionList * actionList;
 void initAutomaticMode() {
 	resetClock();
 
-	setDefaultSpeed(200);
+	setDefaultSpeed(100);
 
 	currentAction = ACTION_IDLE;
 
 	initActionList(10);
 	
-	addToActionList(ACTION_MOVE, 200, 100);
+	addToActionList(ACTION_MOVE, 200, 50);
 	addToActionList(ACTION_WAIT, 1000, 0);
 	addToActionList(ACTION_TURN_FOR, 500, 0);
-	addToActionList(ACTION_TURN_FOR, 500, 100);
-	addToActionList(ACTION_TURN_FOR, 500, -150);
+	addToActionList(ACTION_TURN_FOR, 500, 50);
+	addToActionList(ACTION_TURN_FOR, 500, -80);
 	addToActionList(ACTION_MOVE_TO, 10, 0);
-	addToActionList(ACTION_MOVE_TO, 50, 100);
+	addToActionList(ACTION_MOVE_TO, 50, 50);
 }
 
 void updateAutomaticMode() {

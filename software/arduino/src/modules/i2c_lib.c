@@ -36,10 +36,10 @@ union USD sensorDataLocal;
 uint8_t volatile destaddress, startindex, rwamount;
 uint8_t volatile i2cbusy;
 
-void i2c_init(uint8_t slaveaddress) {
+void i2c_init(uint8_t masteraddress) {
 	TWSR = 0;	// prescaler always 0 (AVR315)
 	TWBR = ((F_CPU / I2C_CLOCK) - 16) / 2;
-	TWAR = (slaveaddress & 0xFE) | 1; // i2c slave address (atmega32) + general call enable
+	TWAR = (masteraddress & 0xFE) | 1; // i2c master address (atmega 2560) + general call enable
 	TWCR = (1 << TWINT) | (1 << TWEA) | (1 << TWEN) | (1 << TWIE);
 	i2cbusy = 0;
 }
