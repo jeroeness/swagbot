@@ -27,7 +27,7 @@ int8_t defaultSpeed;
 
 uint8_t currentAction;
 uint8_t totalActions;
-ActionList actionList;
+ActionList * actionList;
 
 void initAutomaticMode() {
 	resetClock();
@@ -63,13 +63,16 @@ void updateAutomaticMode() {
 }
 
 void initActionList(uint8_t size) {
-	actionList.list = (Action*) malloc(size * sizeof(Action));
-	actionList.size = size;
-	actionList.nextAction = 0;
-	actionList.usedSize = 0;
+	ActionList newActionList;
+	actionList = &newActionList;
+	
+	actionList->list = (Action*) malloc(size * sizeof(Action));
+	actionList->size = size;
+	actionList->nextAction = 0;
+	actionList->usedSize = 0;
 	
 	for (uint8_t i=0; i<size; i++) {
-		Action* action = &(actionList.list[i]);
+		Action* action = &(actionList->list[i]);
 		action->action = ACTION_IDLE;
 		action->argument = 0;
 		action->tempSpeed = 0;
@@ -77,9 +80,9 @@ void initActionList(uint8_t size) {
 }
 
 void addToActionList(int16_t action, int16_t argument, int16_t tempSpeed) {
-	if (actionList.usedSize >= actionList.size) return;
+	if (actionList->usedSize >= actionList->size) return;
 	
-	Action * newAction = &(actionList.list[actionList.usedSize++]);
+	Action * newAction = &(actionList->list[actionList->usedSize++]);
 	newAction->action = action;
 	newAction->argument = argument;
 	newAction->tempSpeed = tempSpeed;
@@ -111,10 +114,10 @@ void checkCrash() {
 }
 
 void executeNextAction() {
-	if (actionList.nextAction >= actionList.usedSize)
-		actionList.nextAction = 0;
+	if (actionList->nextAction >= actionList->usedSize)
+		actionList->nextAction = 0;
 	
-	Action next = actionList.list[actionList.nextAction++];
+	Action next = actionList->list[actionList->nextAction++];
 	
 	
 	if (next.tempSpeed != 0) {
@@ -211,7 +214,7 @@ inline void resetClock() {
 }
 
 void resetAutomaticMode() {
-	actionList.nextAction = 0;
+	actionList->nextAction = 0;
 	currentAction = ACTION_IDLE;
 }
 
