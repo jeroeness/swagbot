@@ -3,23 +3,37 @@
 
 #include <avr/pgmspace.h>
 
-typedef struct {
+struct TP {
 	// Preamble
-	int8_t packetType;	// 3bits
+	uint8_t packetType:3;	// 3bits
 	// Sensor data
-    int8_t ultrasonic;  // 8bits
-    int8_t bumpers;		// 2bits
+    uint8_t ultrasonic;  // 8bits
+    uint8_t bumpers:2;		// 2bits
     // System
-    int8_t mode;		// 1bit
+    uint8_t mode:1;		// 1bit
     // Control
     int8_t leftMotor;	// 8bits
     int8_t rightMotor;	// 8bits
 						// sum = 30
-} TransmissionPacket;
+} ;
+
+extern struct TP TransmissionPacket;
 
 typedef struct {
 	int i;
 } InstructionPacket;
+
+
+union test {
+	TP s;
+	uint8_t sendData[sizeof(TransmissionPacket)];
+	
+};
+
+//union test blabla;
+//blabla.s = TransmissionPacket;
+//blabla.sendData[i];
+
 
 void initCommunication();
 void updateCommunication ();

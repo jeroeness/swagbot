@@ -1,12 +1,8 @@
-#define F_CPU 8000000
-
-#include <stdio.h>
-#include <avr/io.h>
-#include <avr/interrupt.h>
-#include <util/delay.h>
+//sensor.c
 #include "func_protos.h"
 
-struct SD sensorData;
+extern union UID instructionData;
+extern union USD sensorData;
 
 //todo: make function to convert the led state to sensorData.ledStatus, this is so we can check what led is actually on.
 //todo: send error status from the rp6 to the mega2560? If the stamina bar is low, motor on fire or the leds are having a party?
@@ -19,15 +15,17 @@ void initSensors(){
 }
 
 //if any data is received by RP6 parse it with the following function
-void parseSensorInfo(union USD * incommingData){
+void parseInstruction(void){
 	uint8_t i = 0;
 	
-	for(i = 0; i < 7; i++){
-		setLed(i+1,(incommingData->s.ledStatus & (1<<i)) != 0);
+	for(i = 0; i < 7; i++)
+	{
+		setLed(i+1, (instructionData.instructionstruct.ledStatus & (1<<i)) != 0);
 	}
-	
-	//todo: add function to change motor status.
+
+	moveMotors(instructionData.instructionstruct.motorLeft, instructionData.instructionstruct.motorRight);
 }
+
 
 
 //Use it like this to turn SL5 on: setLed(5,1);
@@ -99,9 +97,9 @@ void readBumperL(){
 	_delay_us(3);
 
 	if(PINB & (1<<PB0)){
-		sensorData.bumperLeft = 1;
+		sensorData.sensorStruct.bumperLeft = 1;
 	}else{
-		sensorData.bumperLeft = 0;
+		sensorData.sensorStruct.bumperLeft = 0;
 	}
 	
 	
@@ -120,9 +118,9 @@ void readBumperR(){
 	_delay_us(3);
 
 	if(PINB & (1<<PC6)){
-		sensorData.bumperRight = 1;
+		sensorData.sensorStruct.bumperRight = 1;
 	}else{
-		sensorData.bumperRight = 0;
+		sensorData.sensorStruct.bumperRight = 0;
 	}
 	
 	DDRC = DDRCurrent;
@@ -143,7 +141,7 @@ void readCompass(){
 	
 	//for more information visit: http://www.robot-electronics.co.uk/htm/cmps3tech.htm
 	
-	sensorData.compassDegrees = 360 / 255 * compassDegree;
+	sensorData.sensorStruct.compassDegrees = 360 / 255 * compassDegree;
 }
 
 
@@ -151,5 +149,5 @@ void readSensors(){
 	readBumperR();
 	readBumperL();
 	
-	readCompass();
+	//readCompass();
 }

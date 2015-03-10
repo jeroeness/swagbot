@@ -12,14 +12,16 @@
 #define MOVE_MARGIN 5
 #define TIME_MARGIN 5
 
-#define ACTION_IDLE 	0
-#define ACTION_TURN 	1
-#define ACTION_TURN_TO 	2
-#define ACTION_TURN_FOR	3
-#define ACTION_MOVE 	4
-#define ACTION_MOVE_TO 	5
-#define ACTION_MOVE_FOR	6
-#define ACTION_WAIT 	7
+#define ACTION_IDLE 		0
+#define ACTION_TURN 		1
+#define ACTION_TURN_TO 		2
+#define ACTION_TURN_FOR		3
+#define ACTION_MOVE 		4
+#define ACTION_MOVE_TO 		5
+#define ACTION_MOVE_FOR		6
+#define ACTION_WAIT 		7
+#define ACTION_SET_SPEED 	8
+#define ACTION_SET_DIRECTION 	9
 
 struct SD sensorData;
 
@@ -37,7 +39,7 @@ uint8_t direction;
 
 uint8_t nextAction;
 uint8_t totalActions;
-uint16_t** actionList;
+int16_t** actionList;
 
 void initAutomaticMode() {
 	resetClock();
@@ -48,9 +50,9 @@ void initAutomaticMode() {
 	action = ACTION_IDLE;
 	nextAction = 0;
 
-	actionList = (uint16_t**) calloc(4, sizeof(uint16_t*));
+	actionList = (int16_t**) calloc(4, sizeof(int16_t*));
 	for (uint8_t i=0; i<4; i++) {
-		actionList[i] = (uint16_t*) calloc(2, sizeof(uint16_t));
+		actionList[i] = (int16_t*) calloc(2, sizeof(int16_t));
 	}
 
 	actionList[0][0] = ACTION_MOVE; 
@@ -121,8 +123,20 @@ void executeNextAction() {
 		case ACTION_TURN_TO:
 			turnToDegrees(next[1]);
 			break;
-		case ACTION_TURN_TO:
-			turnToDegrees(next[1]);
+		case ACTION_TURN_FOR:
+			turnFor(next[1]);
+			break;
+		case ACTION_WAIT:
+			resetClock();
+			targetMillis = next[1];
+			break;
+		case ACTION_SET_SPEED:
+			setSpeed(next[1]);
+			action = ACTION_IDLE;
+			break;
+		case ACTION_SET_DIRECTION:
+			setDirection(next[1]);
+			action = ACTION_IDLE;
 			break;
 	}
 }
@@ -203,4 +217,12 @@ void moveDistance(int16_t distance) {
 void moveToDistance(int16_t distance) {
 	targetDistance = distance;
 	action = ACTION_MOVE;
+}
+
+void beginAutomaticMode(){
+	// do nothing
+}
+
+void stopAutomaticMode(){
+	stop();
 }

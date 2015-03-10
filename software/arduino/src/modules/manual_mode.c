@@ -23,12 +23,8 @@ void inputForward() {
     }
 }
 
-void inputStop() {
-	moveMotors(0, 0);
-}
-
 void stopManualMode() {
-	inputStop();
+	stop();
 }
 
 void beginManualMode() {
