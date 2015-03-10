@@ -5,7 +5,7 @@
 #define I2C_CLOCK 100000UL
 #endif
 
-void i2c_init(uint8_t slaveaddress);
+void i2c_init(uint8_t masteraddress);
 void i2c_waitforidle(void);
 void i2c_write_cmd_wrap(void);
 void i2c_write_cmd(uint8_t);
