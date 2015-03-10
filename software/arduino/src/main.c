@@ -27,17 +27,22 @@ struct SD sensorData;
 
 int main(void){
 	cli();
-	
+
+	PORTD = 3;
+
+
 	i2c_init(0xA8);
 	initAutomaticMode();
 	initCommunication();
-	i2c_init(1);
 
 	sei();
 
 	setSteeringMode(automatic);
 	resetAutomaticMode();
 
+	serialPrintSynchronous("begin!");
+	i2c_write_cmd_wrap();
+	serialPrintSynchronous("end!");
 
 	while(1){
 		i2c_write_cmd_wrap();

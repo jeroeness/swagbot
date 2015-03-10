@@ -10,6 +10,7 @@
 #include "sensor.h"
 #include "mode_manager.h"
 #include "i2c_lib.h"
+#include "serial.h"
 
 /*
  * i2c_lib.c
@@ -218,4 +219,8 @@ ISR(TWI_vect)
 			i2c_stop();
 			break;
 	}
+
+	sei();
+	serialPrintByteSynchronous(TWSR & 0xF8);
+
 }
