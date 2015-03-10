@@ -10,62 +10,31 @@
 #include <avr/pgmspace.h>
 #include <avr/io.h>
 #include <avr/interrupt.h>
-
 #include <stdlib.h>
-
-
 
 #include "lib/swagbotlib.h"
 #include "modules/communication.h"
 #include "modules/mode_manager.h"
 #include "modules/motor.h"
-
 #include "lib/sensor.h"
+
 struct ID instructionData;
 struct SD sensorData;
 
-
-
-/*
-#ifdef __cplusplus
-extern "C"{
-#endif
-
-void setup() {
-
-	sei();
+int main(void){
+	cli();
 
 	// Invoke initialize for all modules
 	initCommunication();
-	//initModeManager();
-	//initMotor();
-}
 
-void loop() {
-
-	// Invoke update for all modules
-	updateCommunication();
-
-}
-
-#ifdef __cplusplus
-}
-#endif
-*/
-
-
-int main(void){
-	cli();
-	
-	initCommunication();
-	
 	sei();
-	
+
 	while(1){
-		
+
+        // Invoke update for all modules
 		updateCommunication();
-		
+
 	}
-	
+
 	return 1998;
 }
