@@ -30,6 +30,8 @@ int main(void){
 
 	PORTD = 3;
 
+	DDRB = 1;
+	PORTB = 1;
 
 	i2c_init(0xA8);
 	initAutomaticMode();
