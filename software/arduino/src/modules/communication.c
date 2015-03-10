@@ -31,8 +31,8 @@ void closeConnection() {
 }
 
 void updateCommunication () {
-	//readInputs ();
-    printVerbose();
+	readInputs ();
+    //printVerbose();
 }
 
 char* itoa(int i, char b[]){
@@ -140,6 +140,9 @@ void readInputs () {
 
 		char *str = (char *)" ";
 		str[0] = activeKey;
-		serialPrint(str);
+		if (outputBufferWalked()) {
+            clearBuffer();
+            serialPrint(str);
+		}
     }
 }
