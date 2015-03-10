@@ -9,24 +9,19 @@
 
 struct SD sensorData;
 
-void motorTest() {
-	drive(100, 50, -1);
-	_delay_ms(3000);
-	drive(100, -50, -1);
-	_delay_ms(3000);
-	stop();
-	_delay_ms(3000);
-	turn(100);
-	_delay_ms(3000);
-	turn(50);
-	_delay_ms(3000);
-}
-
 
 // negative deflection = left; positive deflection = right
-void drive(int8_t speed, int8_t deflection, int8_t direction) {
-	int speedL = speed;
-	int speedR = speed;
+void drive(int8_t speed, int8_t deflection) {
+	uint8_t direction;
+	if (speed < 0)
+		direction = -1;
+	else
+		direction = 1;
+
+	int speedL = direction * speed;
+	int speedR = direction * speed;
+	
+	
   
 	if (deflection > 0) {
 	   speedR -= deflection; 

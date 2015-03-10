@@ -13,7 +13,7 @@
  *	@param speed		the speed at which the RP6 will drive 
  * 	@param deflection	the amount the RP6 should deflect when driving (deflect < 0: The RP6 will deflect to the left, deflect > 0: The RP6 will deflect to the right, deflect == 0: The RP6 won't deflect) 
  */
-void drive(int8_t speed, int8_t bend, int8_t direction);
+void drive(int8_t speed, int8_t bend);
 
 /**	Makes the RP6 turn around it's own axis.
  * 
@@ -32,9 +32,5 @@ void stop();
  * 	@return 			1 if successfull, 0 if wrong speed
  */
 int moveMotors(int8_t speedL, int8_t speedR);
-
-/**	A simple function to test the motor functions.
- */
-void motorTest();
 
 #endif // MOTOR_H
