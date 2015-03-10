@@ -30,6 +30,7 @@ int main(void){
 
 	initAutomaticMode();
 	initCommunication();
+	i2c_init(1);
 
 	sei();
 
