@@ -1,3 +1,12 @@
+#ifndef F_CPU
+#ifdef __AVR_ATmega2560__
+#define F_CPU 8000000UL
+#endif // __AVR_ATmega2560__
+#ifdef __AVR_ATmega328P__
+#define F_CPU 16000000UL
+#endif // __AVR_ATmega328P__
+#endif // F_CPU
+
 #include <avr/pgmspace.h>
 #include <avr/io.h>
 #include <avr/interrupt.h>
@@ -11,14 +20,6 @@
 #include "modules/mode_manager.h"
 #include "modules/motor.h"
 
-#ifndef F_CPU
-#ifdef __AVR_ATmega2560__
-#define F_CPU 8000000UL
-#endif // __AVR_ATmega2560__
-#ifdef __AVR_ATmega328P__
-#define F_CPU 16000000UL
-#endif // __AVR_ATmega328P__
-#endif // F_CPU
 
 #ifdef __cplusplus
 extern "C"{
