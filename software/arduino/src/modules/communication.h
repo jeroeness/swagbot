@@ -39,8 +39,8 @@ void initCommunication();
 void updateCommunication ();
 
 inline void insertInString(int8_t *, int8_t, int8_t, int8_t, int8_t);
-TransmissionPacket generateTransmissionPacket ();
-bool transmitData(TransmissionPacket packet);
+struct TransmissionPacket generateTransmissionPacket ();
+bool transmitData(struct TransmissionPacket packet);
 InstructionPacket receiveData ();
 
 bool openConnection();
