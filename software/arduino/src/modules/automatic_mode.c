@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <avr/io.h>
 #include <avr/interrupt.h>
-#include <util/delay.h>
+//#include <util/delay.h>
 #include "automatic_mode.h"
 #include "motor.h"
 #include "sensor.h"

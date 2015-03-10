@@ -62,7 +62,7 @@ void printVerbose() {
 	sensorData.ultrasonic = 12;
 
 
-	char *str = "   ";
+	char *str = (char *)"   ";
 
 	//print sensor data
 
@@ -124,7 +124,7 @@ void readInputs () {
 		}
 		inputKeyDown (activeKey);
 
-		char *str = " ";
+		char *str = (char *)" ";
 		str[0] = activeKey;
 		serialPrint(str);
     }
