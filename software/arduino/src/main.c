@@ -41,11 +41,12 @@ int main(void){
 	resetAutomaticMode();
 
 	serialPrintSynchronous("begin!");
+	moveMotors(50,50);
 	i2c_write_cmd_wrap();
 	serialPrintSynchronous("end!");
 
 	while(1){
-		i2c_write_cmd_wrap();
+		//i2c_write_cmd_wrap();
  		//updateAutomaticMode();
 		moveMotors(50,50);
 		updateCommunication();
