@@ -3,7 +3,10 @@
 #include "mode_manager.h"
 #include "../lib/sensor.h"
 
-struct SD sensorData;
+#include <avr/io.h>
+#include <stdio.h>
+#include <stdlib.h>
+
 struct ID instructionData;
 
 int incomingByte = 0;
@@ -27,7 +30,7 @@ void closeConnection() {
 }
 
 void updateCommunication () {
-	readInputs ();
+	//readInputs ();
     printVerbose();
 }
 
@@ -51,6 +54,22 @@ char* itoa(int i, char b[]){
     return b;
 }
 
+char* uitoa(unsigned int i, char b[]){
+    char const digit[] = "0123456789";
+    char* p = b;
+    int shifter = i;
+    do{ //Move to where representation ends
+        ++p;
+        shifter = shifter/10;
+    }while(shifter);
+    *p = '\0';
+    do{ //Move back, inserting digits as u go
+        *--p = digit[i%10];
+        i = i/10;
+    }while(i);
+    return b;
+}
+
 
 void printVerbose() {
 
@@ -58,36 +77,28 @@ void printVerbose() {
 	sensorData.bumperLeft = 1;
 	instructionData.motorLeft = 255;
 	instructionData.motorRight = 255;
-	instructionData.ledStatus = 0;
+	instructionData.ledStatus = 1;
 	sensorData.ultrasonic = 12;
 
 
-	char *str = "   ";
+	char *str = (char*)malloc(3 * sizeof(char));
 
-	//print sensor data
+        while (!outputBufferWalked());
+        clearBuffer();
+        serialPrint("Motor Left:");
+        serialPrintLine(itoa(instructionData.motorLeft, str));
+        serialPrint("Motor Right:");
+        serialPrintLine(itoa(instructionData.motorRight, str));
 
-	serialPrint("Motor Left:");
-	serialPrintLine(itoa(instructionData.motorLeft, str));
-	serialPrint("Motor Right:");
-	serialPrintLine(itoa(instructionData.motorRight, str));
+        serialPrint("LED:");
+        serialPrintLine(itoa(instructionData.ledStatus, str));
+        serialPrint("Ultrasonic:");
+        serialPrintLine(itoa(sensorData.ultrasonic, str));
 
-	serialPrint("LED:");
-	serialPrintLine(itoa(instructionData.ledStatus, str));
-	serialPrint("Ultrasonic:");
-	serialPrintLine(itoa(sensorData.ultrasonic, str));
-
-	serialPrint("The Right bumper:");
-	serialPrintLine(itoa(sensorData.bumperRight, str));
-	serialPrint("The left bumper:");
-	serialPrintLine(itoa(sensorData.bumperLeft, str));
-
-
-
-
-
-	while(1);
-
-
+        serialPrint("The Right bumper:");
+        serialPrintLine(itoa(sensorData.bumperRight, str));
+        serialPrint("The left bumper:");
+        serialPrintLine(itoa(sensorData.bumperLeft, str));
 }
 
 void readInputs () {

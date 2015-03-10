@@ -75,7 +75,7 @@ void handleKeyReleaseManualMode (uint8_t key) {
 		case 'a':
 		case 's':
 		case 'd':
-			inputStop();
+			stopManualMode();
 			break;
 	}
 }

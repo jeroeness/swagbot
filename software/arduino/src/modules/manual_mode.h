@@ -5,7 +5,7 @@ void inputRight();
 void inputLeft();
 void inputBackward();
 void inputForward();
-void inputStop();
+void stopManualMode();
 
 void stopManualMode();
 void beginManualMode();

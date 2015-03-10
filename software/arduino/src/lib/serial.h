@@ -15,6 +15,10 @@ void serialWriteCharacter(char);
 void serialWriteCharacterFromBuffer();
 int8_t serialAvailable();
 
+int8_t outputBufferWalked();
+int8_t sleepUntilEmptyOutputBuffer();
+
+void clearBuffer();
 //char wait_until_bit_is_set(char,char);
 
 
