@@ -21,8 +21,8 @@ struct ID{
 	uint8_t ledStatus; //8 all leds in one variable
 };
 
-extern struct ID instructionData;
 extern struct SD sensorData;
+extern struct ID instructionData;
 
 union USD {
 	struct SD s;

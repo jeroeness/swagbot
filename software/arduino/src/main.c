@@ -20,7 +20,13 @@
 #include "modules/mode_manager.h"
 #include "modules/motor.h"
 
+#include "lib/sensor.h"
+struct ID instructionData;
+struct SD sensorData;
 
+
+
+/*
 #ifdef __cplusplus
 extern "C"{
 #endif
@@ -45,3 +51,21 @@ void loop() {
 #ifdef __cplusplus
 }
 #endif
+*/
+
+
+int main(void){
+	cli();
+	
+	initCommunication();
+	
+	sei();
+	
+	while(1){
+		
+		updateCommunication();
+		
+	}
+	
+	return 1998;
+}

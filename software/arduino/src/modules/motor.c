@@ -7,7 +7,7 @@
 #include "motor.h"
 #include "sensor.h"
 
-struct SD sensorData;
+extern struct SD sensorData;
 
 
 // negative deflection = left; positive deflection = right

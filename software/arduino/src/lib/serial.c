@@ -143,6 +143,7 @@ int8_t outputBufferWalked() {
 
 int8_t sleepUntilEmptyOutputBuffer() {
     //TODO
+	return 0;
 }
 
 

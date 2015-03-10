@@ -12,7 +12,7 @@
 #define MOVE_MARGIN 5
 #define TIME_MARGIN 5
 
-struct SD sensorData;
+extern struct SD sensorData;
 
 uint16_t targetDegrees;
 uint16_t targetDistance;

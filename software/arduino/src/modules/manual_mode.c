@@ -3,6 +3,8 @@
 #include "../lib/sensor.h"
 #include "../lib/serial.h"
 
+extern struct SD sensorData;
+
 void inputRight() {
 	turn(100);
 }

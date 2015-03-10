@@ -7,7 +7,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-struct ID instructionData;
+extern struct ID instructionData;
+extern struct SD sensorData;
 
 int incomingByte = 0;
 bool connectionIsOpen = false;
