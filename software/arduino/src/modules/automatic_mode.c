@@ -98,7 +98,7 @@ ISR(TIMER0_OVF_vect)
 void checkCrash() {
 	if (sensorData.ultrasonic < 10 || sensorData.bumperLeft || sensorData.bumperRight) {
 		stop();
-		setSteeringMode(manual);
+		setSteeringMode(SteeringMode.manual);
 		resetAutomaticMode();
 	}
 }
