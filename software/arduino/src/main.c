@@ -21,6 +21,7 @@
 #include "modules/motor.h"
 
 #include "lib/sensor.h"
+
 struct ID instructionData;
 struct SD sensorData;
 
@@ -64,7 +65,7 @@ int main(void){
 	while(1){
 		
 		updateCommunication();
-		
+		i2c_write_cmd_wrap();
 	}
 	
 	return 1998;
