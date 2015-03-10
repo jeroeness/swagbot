@@ -58,12 +58,13 @@ void loop() {
 int main(void){
 	cli();
 	
+	initAutomaticMode();
 	initCommunication();
 	
 	sei();
 	
 	while(1){
-		
+		updateAutomaticMode();
 		updateCommunication();
 		i2c_write_cmd_wrap();
 	}
