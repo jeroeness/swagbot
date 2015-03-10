@@ -3,6 +3,14 @@
 #define BAUD 9600
 #endif
 
+#ifndef F_CPU
+#ifdef __AVR_ATmega2560__
+#define F_CPU 8000000UL
+#endif // __AVR_ATmega2560__
+#ifdef __AVR_ATmega328P__
+#define F_CPU 16000000UL
+#endif // __AVR_ATmega328P__
+#endif // F_CPU
 
 #include <avr/io.h>
 #include <string.h>
@@ -10,8 +18,6 @@
 #include <avr/interrupt.h>
 //#include <USART.h>
 #include <util/setbaud.h>
-#include "serial.h"
-#include <util/delay.h>
 #include "serial.h"
 #include <stdlib.h>
 

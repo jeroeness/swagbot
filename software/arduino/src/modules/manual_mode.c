@@ -17,10 +17,14 @@ void inputBackward() {
 
 void inputForward() {
 	if(sensorData.bumperRight == 1 || sensorData.bumperLeft == 1){
-        stopManualMode();
+        stop();
     }else {
         moveMotors(100, 100);
     }
+}
+
+void inputStop(){
+	stop();
 }
 
 void stopManualMode() {

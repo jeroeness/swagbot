@@ -12,7 +12,7 @@ struct SD{
 	uint16_t compassDegrees;
 	int8_t motorLeft;
 	int8_t motorRight;
-	int16_t ultrasonic;
+	uint16_t ultrasonic;
 };
 
 struct ID{

@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <avr/io.h>
 #include <avr/interrupt.h>
-#include <util/delay.h>
+//#include <util/delay.h>
 #include "automatic_mode.h"
 #include "motor.h"
 #include "sensor.h"
@@ -11,17 +11,6 @@
 #define TURN_MARGIN 5
 #define MOVE_MARGIN 5
 #define TIME_MARGIN 5
-
-#define ACTION_IDLE 		0
-#define ACTION_TURN 		1
-#define ACTION_TURN_TO 		2
-#define ACTION_TURN_FOR		3
-#define ACTION_MOVE 		4
-#define ACTION_MOVE_TO 		5
-#define ACTION_MOVE_FOR		6
-#define ACTION_WAIT 		7
-#define ACTION_SET_SPEED 	8
-#define ACTION_SET_DIRECTION 	9
 
 struct SD sensorData;
 
@@ -32,42 +21,35 @@ volatile uint16_t targetMillis;
 volatile uint16_t currentMillis;
 volatile uint16_t overflowCount;
 
-uint8_t action;
 
-uint8_t speed;
-uint8_t direction;
+int8_t speed;
+int8_t defaultSpeed;
 
-uint8_t nextAction;
+uint8_t currentAction;
 uint8_t totalActions;
-int16_t** actionList;
+ActionList actionList;
 
 void initAutomaticMode() {
 	resetClock();
 
-	setSpeed(200);
-	setDirection(1);
+	setDefaultSpeed(200);
 
-	action = ACTION_IDLE;
-	nextAction = 0;
+	currentAction = ACTION_IDLE;
 
-	actionList = (int16_t**) calloc(4, sizeof(int16_t*));
-	for (uint8_t i=0; i<4; i++) {
-		actionList[i] = (int16_t*) calloc(2, sizeof(int16_t));
-	}
-
-	actionList[0][0] = ACTION_MOVE; 
-	actionList[0][1] = 20; 
-	actionList[1][0] = ACTION_WAIT; 
-	actionList[1][1] = 1000; 
-	actionList[2][0] = ACTION_TURN; 
-	actionList[2][1] = 180; 
-	actionList[3][0] = ACTION_MOVE_TO; 
-	actionList[3][1] = 10; 
+	initActionList(10);
+	
+	addToActionList(ACTION_MOVE, 200, 100);
+	addToActionList(ACTION_WAIT, 1000, 0);
+	addToActionList(ACTION_TURN_FOR, 500, 0);
+	addToActionList(ACTION_TURN_FOR, 500, 100);
+	addToActionList(ACTION_TURN_FOR, 500, -150);
+	addToActionList(ACTION_MOVE_TO, 10, 0);
+	addToActionList(ACTION_MOVE_TO, 50, 100);
 }
 
 void updateAutomaticMode() {
 	checkCrash();
-	switch (action) {
+	switch (currentAction) {
 		case ACTION_TURN:
 			checkTurn();
 			break;
@@ -80,6 +62,29 @@ void updateAutomaticMode() {
 	}
 }
 
+void initActionList(uint8_t size) {
+	actionList.list = (Action*) malloc(size * sizeof(Action));
+	actionList.size = size;
+	actionList.nextAction = 0;
+	actionList.usedSize = 0;
+	
+	for (uint8_t i=0; i<size; i++) {
+		Action* action = &(actionList.list[i]);
+		action->action = ACTION_IDLE;
+		action->argument = 0;
+		action->tempSpeed = 0;
+	}
+}
+
+void addToActionList(int16_t action, int16_t argument, int16_t tempSpeed) {
+	if (actionList.usedSize >= actionList.size) return;
+	
+	Action * newAction = &(actionList.list[actionList.usedSize++]);
+	newAction->action = action;
+	newAction->argument = argument;
+	newAction->tempSpeed = tempSpeed;
+}
+
 void initTimer() {
 	TIMSK0=(1<<TOIE0);
 	TCCR0B = (1<<CS02); // prescaler 256; fcpu 8000000 = 122 overflows per second
@@ -87,11 +92,11 @@ void initTimer() {
 
 ISR(TIMER0_OVF_vect)
 {
-	if ((overflowCount++) % 1.2 == 0) {
+	if ((overflowCount++) % 1 == 0) {
 		overflowCount = 1;
 		if (targetMillis != 0 && checkFuzzy(targetMillis, ++currentMillis, TIME_MARGIN)) {
 			stop();
-			action = ACTION_IDLE;
+			currentAction = ACTION_IDLE;
 			resetClock();
 		}
 	}
@@ -100,43 +105,52 @@ ISR(TIMER0_OVF_vect)
 void checkCrash() {
 	if (sensorData.ultrasonic < 10 || sensorData.bumperLeft || sensorData.bumperRight) {
 		stop();
-		setSteeringMode(SteeringMode.manual);
+		//setSteeringMode(SteeringMode.manual);
 		resetAutomaticMode();
 	}
 }
 
 void executeNextAction() {
-	uint16_t * next = actionList[nextAction];
-	switch (next[0]) {
+	if (actionList.nextAction >= actionList.usedSize)
+		actionList.nextAction = 0;
+	
+	Action next = actionList.list[actionList.nextAction++];
+	
+	
+	if (next.tempSpeed != 0) {
+		setSpeed(next.tempSpeed);
+	} else if (next.tempSpeed == -1) {
+		setSpeed(defaultSpeed * -1);
+	} else {
+		resetSpeed();
+	}
+	
+	switch (next.action) {
 		case ACTION_MOVE:
-			moveDistance(next[1]);
+			moveDistance(next.argument);
 			break;
 		case ACTION_MOVE_TO:
-			moveToDistance(next[1]);
+			moveToDistance(next.argument);
 			break;
 		case ACTION_MOVE_FOR:
-			moveFor(next[1], direction);
+			moveFor(next.argument);
 			break;
 		case ACTION_TURN:
-			turnByDegrees(next[1]);
+			turnByDegrees(next.argument);
 			break;
 		case ACTION_TURN_TO:
-			turnToDegrees(next[1]);
+			turnToDegrees(next.argument);
 			break;
 		case ACTION_TURN_FOR:
-			turnFor(next[1]);
+			turnFor(next.argument);
 			break;
 		case ACTION_WAIT:
 			resetClock();
-			targetMillis = next[1];
+			targetMillis = next.argument;
 			break;
 		case ACTION_SET_SPEED:
-			setSpeed(next[1]);
-			action = ACTION_IDLE;
-			break;
-		case ACTION_SET_DIRECTION:
-			setDirection(next[1]);
-			action = ACTION_IDLE;
+			setDefaultSpeed(next.argument);
+ 			currentAction = ACTION_IDLE;
 			break;
 	}
 }
@@ -144,21 +158,21 @@ void executeNextAction() {
 void checkTurn() {
 	if (checkFuzzy(targetDegrees, sensorData.compassDegrees, TURN_MARGIN)) {
 		stop();
-		action = ACTION_IDLE;
+		currentAction = ACTION_IDLE;
 	} else {
-		turn(200);
+		turn(speed);
 	}
 }
 
 void checkMove() {
 	if (checkFuzzy(targetDistance, sensorData.ultrasonic, MOVE_MARGIN)) {
 		stop();
-		action = ACTION_IDLE;
+		currentAction = ACTION_IDLE;
 	} else {
 		if (targetDistance < sensorData.ultrasonic) {
-			drive(200, 0, 1);
+			drive(speed, 0);
 		} else {
-			drive(200, 0, -1);
+			drive(-1 * speed, 0);
 		}
 	}
 }
@@ -169,26 +183,26 @@ int checkFuzzy(int16_t value1, int16_t value2, int16_t fuzzyness) {
 
 void turnByDegrees(int16_t degrees) {
 	targetDegrees = sensorData.compassDegrees + degrees;
-	action = ACTION_TURN;
+	currentAction = ACTION_TURN;
 }
 
 void turnToDegrees(int16_t degrees) {
 	targetDegrees = degrees;
-	action = ACTION_TURN;
+	currentAction = ACTION_TURN;
 }
 
 void turnFor(int16_t milliseconds) {
-	action = ACTION_TURN_FOR;
+	currentAction = ACTION_TURN_FOR;
 	resetClock();
 	targetMillis = milliseconds;
 	turn(speed);
 }
 
-void moveFor(int16_t milliseconds, int8_t direction) {
-	action = ACTION_MOVE_FOR;
+void moveFor(int16_t milliseconds) {
+	currentAction = ACTION_MOVE_FOR;
 	resetClock();
 	targetMillis = milliseconds;
-	drive(speed, 0, direction);
+	drive(speed, 0);
 }
 
 inline void resetClock() {
@@ -197,26 +211,30 @@ inline void resetClock() {
 }
 
 void resetAutomaticMode() {
-	nextAction = 0;
-	action = ACTION_IDLE;
+	actionList.nextAction = 0;
+	currentAction = ACTION_IDLE;
 }
 
 inline void setSpeed(int8_t s) {
 	speed = s;
 }
 
-inline void setDirection(int8_t d) {
-	direction = d;
+inline void resetSpeed() {
+	speed = defaultSpeed;
+}
+
+inline void setDefaultSpeed(int8_t s) {
+	defaultSpeed = s;
 }
 
 void moveDistance(int16_t distance) {
 	targetDistance = sensorData.ultrasonic - distance;
-	action = ACTION_MOVE;
+	currentAction = ACTION_MOVE;
 }
 
 void moveToDistance(int16_t distance) {
 	targetDistance = distance;
-	action = ACTION_MOVE;
+	currentAction = ACTION_MOVE;
 }
 
 void beginAutomaticMode(){
