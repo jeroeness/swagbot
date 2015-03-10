@@ -8,6 +8,7 @@
 #include "sensor.h"
 
 extern struct SD sensorData;
+extern struct ID instructionData;
 
 
 // negative deflection = left; positive deflection = right
@@ -47,8 +48,8 @@ int moveMotors(int8_t speedL, int8_t speedR){
 	if(speedL < -100 || speedL > 100)
 	    return 0;
 
-	sensorData.motorLeft = speedL;
-	sensorData.motorRight = speedR;
+	instructionData.motorLeft = speedL;
+	instructionData.motorRight = speedR;
 	
 	return 1;
 }

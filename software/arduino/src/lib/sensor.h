@@ -26,12 +26,12 @@ extern struct ID instructionData;
 
 union USD {
 	struct SD s;
-	uint8_t receiveData[sizeof(sensorData)];
+	uint8_t sensorArray[sizeof(sensorData)];
 };
 
 union UID {
 	struct ID i;
-	uint8_t sendData[sizeof(instructionData)];
+	uint8_t instructionArray[sizeof(instructionData)];
 };
 
 

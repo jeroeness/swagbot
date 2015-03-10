@@ -152,3 +152,82 @@
 1423435170 d:\documents\projects\swagbot\software\arduino\src\lib\pins_arduino.h
 	<avr/pgmspace.h>
 
+1425330424 source:d:\projects\c\swagbot\software\arduino\src\lib\swagbotlib.c
+
+1425985352 source:d:\projects\c\swagbot\software\arduino\src\modules\mode_manager.c
+	"mode_manager.h"
+	"manual_mode.h"
+	"automatic_mode.h"
+
+1425985297 d:\projects\c\swagbot\software\arduino\src\modules\mode_manager.h
+	<avr/io.h>
+	<stdio.h>
+
+1425988093 d:\projects\c\swagbot\software\arduino\src\modules\manual_mode.h
+
+1425996303 d:\projects\c\swagbot\software\arduino\src\modules\automatic_mode.h
+
+1426000994 source:d:\projects\c\swagbot\software\arduino\src\lib\serial.c
+	<avr/io.h>
+	<string.h>
+	<stdio.h>
+	<avr/interrupt.h>
+	<util/setbaud.h>
+	"serial.h"
+	<stdlib.h>
+
+1425994572 d:\projects\c\swagbot\software\arduino\src\lib\serial.h
+
+1426002274 source:d:\projects\c\swagbot\software\arduino\src\main.c
+	<avr/pgmspace.h>
+	<avr/io.h>
+	<avr/interrupt.h>
+	<stdlib.h>
+	"lib/swagbotlib.h"
+	"modules/communication.h"
+	"modules/mode_manager.h"
+	"modules/motor.h"
+	"lib/sensor.h"
+
+1425913594 d:\projects\c\swagbot\software\arduino\src\lib\swagbotlib.h
+
+1425996303 d:\projects\c\swagbot\software\arduino\src\modules\communication.h
+	<avr/pgmspace.h>
+
+1425996303 d:\projects\c\swagbot\software\arduino\src\modules\motor.h
+	<avr/io.h>
+	<stdio.h>
+
+1426000994 d:\projects\c\swagbot\software\arduino\src\lib\sensor.h
+
+1426000994 source:d:\projects\c\swagbot\software\arduino\src\modules\automatic_mode.c
+	<stdio.h>
+	<stdlib.h>
+	<avr/io.h>
+	<avr/interrupt.h>
+	"automatic_mode.h"
+	"motor.h"
+	"sensor.h"
+
+1426002543 source:d:\projects\c\swagbot\software\arduino\src\modules\communication.c
+	"communication.h"
+	"../lib/serial.h"
+	"mode_manager.h"
+	"../lib/sensor.h"
+	<avr/io.h>
+	<stdio.h>
+	<stdlib.h>
+
+1426000994 source:d:\projects\c\swagbot\software\arduino\src\modules\manual_mode.c
+	"manual_mode.h"
+	"motor.h"
+	"../lib/sensor.h"
+	"../lib/serial.h"
+
+1426000994 source:d:\projects\c\swagbot\software\arduino\src\modules\motor.c
+	<stdio.h>
+	<avr/io.h>
+	<avr/interrupt.h>
+	"motor.h"
+	"sensor.h"
+

@@ -39,6 +39,7 @@ void addToActionList(int16_t action, int16_t argument, int16_t tempSpeed);
 void beginAutomaticMode();
 void stopAutomaticMode();
 void resetAutomaticMode();
+void resetClock();
 
 
 typedef struct {

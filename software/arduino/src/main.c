@@ -16,6 +16,8 @@
 #include "modules/communication.h"
 #include "modules/mode_manager.h"
 #include "modules/motor.h"
+#include "modules/automatic_mode.h"
+#include "modules/i2c_lib.h"
 #include "lib/sensor.h"
 
 struct ID instructionData;
@@ -24,16 +26,19 @@ struct SD sensorData;
 int main(void){
 	cli();
 
-	// Invoke initialize for all modules
+	initAutomaticMode();
 	initCommunication();
 
 	sei();
 
+	SteeringMode s = automatic;
+	setSteeringMode(s);
+	resetAutomaticMode();
+
 	while(1){
-
-        // Invoke update for all modules
+		updateAutomaticMode();
 		updateCommunication();
-
+		i2c_write_cmd_wrap();
 	}
 
 	return 1998;
