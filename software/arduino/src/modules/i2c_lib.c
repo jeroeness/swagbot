@@ -71,9 +71,6 @@ void i2c_write_cmd_wrap(void) {
 
 
 
-
-
-
 void i2c_write_cmd(uint8_t amount) {
 	i2c_waitforidle();
 	destaddress = (0xAA & 0xFE) | 0;// write
@@ -110,7 +107,18 @@ void i2c_stop(void)
 //cant see if its a stop or a repeated START
 void i2c_SR_done(void)
 {
-	//parseInstruction();//sensor.c
+	return;
+}
+
+void i2c_MR_done(void)
+{
+	sensorData.bumperRight = sensorDataLocal.s.bumperRight;
+	sensorData.bumperLeft = sensorDataLocal.s.bumperLeft;
+	sensorData.compassDegrees = sensorDataLocal.s.compassDegrees;
+	sensorData.motorLeft = sensorDataLocal.s.motorLeft;
+	sensorData.motorRight = sensorDataLocal.s.motorRight;
+	sensorData.ultrasonic = sensorDataLocal.s.ultrasonic;
+
 	return;
 }
 
@@ -209,6 +217,7 @@ ISR(TWI_vect)
 		case 0x58:	// TWDR received, nAck was send back				MR
 			sensorDataLocal.sensorArray[rwaddress++] = TWDR;
 			i2c_stop();
+			i2c_MR_done();
 			break;
 
 
