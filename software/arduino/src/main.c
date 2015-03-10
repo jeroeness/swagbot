@@ -19,6 +19,8 @@
 #include "modules/communication.h"
 #include "modules/mode_manager.h"
 #include "modules/motor.h"
+#include "modules/automatic_mode.h"
+#include "modules/i2c_lib.h"
 
 #include "lib/sensor.h"
 
@@ -62,6 +64,10 @@ int main(void){
 	initCommunication();
 	
 	sei();
+	
+	SteeringMode s = automatic;
+	setSteeringMode(s);
+	resetAutomaticMode();
 	
 	while(1){
 		updateAutomaticMode();

@@ -1,3 +1,16 @@
+#define F_CPU 8000000
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <avr/io.h>
+#include <avr/interrupt.h>
+#include <util/delay.h>
+#include "automatic_mode.h"
+#include "motor.h"
+#include "sensor.h"
+#include "mode_manager.h"
+#include "i2c_lib.h"
+
 /*
  * i2c_lib.c
  *
@@ -8,8 +21,6 @@
  */ 
 //todo
 // startindex+rwamount fixen
-
-#include "func_protos.h"
 
 /* I2C clock in Hz */
 #ifndef I2C_CLOCK

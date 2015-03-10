@@ -8,11 +8,10 @@
 
 extern struct SD sensorData;
 
-volatile uint16_t currentMillis;
-volatile uint16_t overflowCount;
+//volatile uint16_t currentMillis;
+//volatile uint16_t overflowCount;
 
 void initUltrasonicSensor() {
-	resetClock();
 }
 
  
