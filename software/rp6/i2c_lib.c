@@ -4,23 +4,23 @@
  * Created: 3-3-2015 11:07:02
  *  Author: gerald
  *
- * v1.00
+ * v1.01
  */ 
 //todo
 // startindex+rwamount fixen
 
-#include <avr/io.h>
-#include <util/delay.h>
-#include <avr/interrupt.h>
+#include "func_protos.h"
 
 /* I2C clock in Hz */
 #ifndef I2C_CLOCK
 #define I2C_CLOCK 100000UL
 #endif
 
-uint8_t volatile sensordata[32];
-uint8_t volatile cmddata[32];
-uint8_t volatile i2cbusy, rwamount;
+extern union UID instructionData;
+extern union USD sensorData;
+
+uint8_t volatile destaddress, startindex, rwamount;
+uint8_t volatile i2cbusy;
 
 void i2c_init(uint8_t slaveaddress) {
 	TWSR = 0;	// prescaler always 0 (AVR315)
@@ -41,13 +41,10 @@ void i2c_waitforidle(void) {
 	return;
 }
 
-//cmd[0] = SLA+R/W
-//cmd[1] = startaddress
-//cmd[2...255] = data
 void i2c_write_cmd(uint8_t amount) {
 	i2c_waitforidle();
-	cmddata[0] = (0xAA & 0xFE) | 0;// write
-	cmddata[1] = 0;
+	destaddress = (0xAA & 0xFE) | 0;// write
+	startindex = 0;
 	rwamount = amount;
 	i2cbusy = 1;
 	TWCR = (1 << TWINT) | (1 << TWSTA) | (1 << TWEA) | (1 << TWEN) | (1 << TWIE);// send START condition (starts interrupt process)
@@ -56,8 +53,8 @@ void i2c_write_cmd(uint8_t amount) {
 
 void i2c_read_sensors(uint8_t amount) {
 	i2c_waitforidle();
-	cmddata[0] = (0xAA & 0xFE) | 1;// read
-	cmddata[1] = 0;
+	destaddress = (0xAA & 0xFE) | 1;// read
+	startindex = 0;
 	rwamount = amount;
 	i2cbusy = 1;
 	TWCR = (1 << TWINT) | (1 << TWSTA) | (1 << TWEA) | (1 << TWEN) | (1 << TWIE);// send START condition (starts interrupt process)
@@ -74,6 +71,13 @@ void i2c_stop(void)
 {
 	TWCR = (1 << TWINT) | (1 << TWEA) | (1 << TWSTO) | (1 << TWEN) | (1 << TWIE);
 	i2cbusy = 0;
+	return;
+}
+
+//cant see if its a stop or a repeated START
+void i2c_SR_done(void)
+{
+	parseInstruction();//sensor.c
 	return;
 }
 
@@ -101,19 +105,20 @@ ISR(TWI_vect)
 				firstwrite = 0;
 			}
 			else
-				cmddata[rwaddress++] = TWDR;
+				instructionData.instructionArray[rwaddress++] = TWDR;
 			i2c_continue();
 			break;
 
 		case 0xA0:	// STOP or repeated START received				SR
 			i2cbusy = 0;
 			i2c_continue();
+			i2c_SR_done();
 			break;
 		case 0xA8:	// SLA+R received, Ack was send back				SR
 		case 0xB0:	// arbitration lost (SLA+W/R). own SLA+R received, Ack was send	MT->ST
 		case 0xB8:	// TWDR was send, Ack received					ST
 			i2cbusy = 1;
-			TWDR = sensordata[rwaddress++];
+			TWDR = sensorData.sensorArray[rwaddress++];
 			i2c_continue();
 			break;
 		case 0xC0:	// TWDR was send, nAck received					ST
@@ -125,21 +130,21 @@ ISR(TWI_vect)
 
 		case 0x08:	// START condition was send					MR
 			i2cbusy = 1;
-			rwaddress = 1;
-			TWDR = cmddata[0] & 0xFE;//write first
+			rwaddress = 0;
+			TWDR = destaddress & 0xFE;//write first
 			i2c_continue();
 			break;
 		case 0x10:	// repeated START condition was send				MR
-			TWDR = cmddata[0];// SLA+R
+			TWDR = destaddress;// SLA+R
 			i2c_continue();
 			rwaddress = 0;
 			break;
 		case 0x18:	// SLA+W sent, Ack was received					MT
-			TWDR = cmddata[rwaddress++];
+			TWDR = startindex;
 			i2c_continue();
 			break;
 		case 0x28:	// TWDR was send, Ack received					MT
-			if (cmddata[0] & 0x01)
+			if (destaddress & 0x01)
 			{
 				TWCR = (1 << TWINT) | (1 << TWEA) | (1 << TWSTA) | (1 << TWEN) | (1 << TWIE);// send repeated START
 				break;
@@ -150,30 +155,26 @@ ISR(TWI_vect)
 			}
 			else
 			{
-				TWDR = cmddata[rwaddress++];
+				TWDR = instructionData.instructionArray[rwaddress++];
 				i2c_continue();
 			}
 			break;
+		case 0x38:	// arbitration lost (SLA+W/R or data)				MT/MR
 		case 0x40:	// SLA+R sent, Ack was received					MR
 			i2c_continue();
 			break;
 		case 0x50:	// TWDR received, Ack was send back				MR
-			sensordata[rwaddress++] = TWDR;
+			sensorData.sensorArray[rwaddress++] = TWDR;
 			if (rwaddress >= rwamount)
 			{
 				TWCR = (1 << TWINT) | (1 << TWEN) | (1 << TWIE);// next receive will not Ack'ed
-				//i2c_stop();//this was my problem
 			}
 			else
 				i2c_continue();
 			break;
 		case 0x58:	// TWDR received, nAck was send back				MR
-			sensordata[rwaddress++] = TWDR;
+			sensorData.sensorArray[rwaddress++] = TWDR;
 			i2c_stop();
-			break;
-
-		case 0x38:	// arbitration lost (SLA+W/R or data)				MT/MR
-			i2c_continue();//cancel MT/MR operations
 			break;
 
 
