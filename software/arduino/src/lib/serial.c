@@ -81,7 +81,7 @@ void serialPrint(const char *c){
         return;
     }
 
-    memcpy((char*)outputBuffer + outputBufferLength, c, len);
+    memcpy((char*)outputBuffer + outputBufferLength, c, len + 1);
     outputBufferLength += len;
 
     if (outputBufferLength == len) {
@@ -89,15 +89,38 @@ void serialPrint(const char *c){
     }
 }
 
-void serialPrintByte(const char c) {
-	char *cp = (char*)malloc(2 * sizeof(char));
+void serialPrintByte(const uint8_t byte) {
+	uint8_t c = byte >> 4;
+
+	if (c < 10) {
+		serialPrintCharacter(c + 48);
+	} else{
+		serialPrintCharacter(c + 55);
+	}
+
+	c = byte & 0x0F;
+	if (c < 10) {
+		serialPrintCharacter(c + 48);
+	} else {
+		serialPrintCharacter(c + 55);
+	}
+}
+
+void serialPrintByteSynchronous(const uint8_t byte) {
+	serialPrintByte(byte);
+	sleepUntilEmptyOutputBuffer();
+}
+
+void serialPrintCharacter(const char c) {
+	char *cp = (char *)malloc(2 * sizeof(char));
 	cp[0] = c;
 	cp[1] = 0;
-    serialPrint(ln);
+    serialPrint(cp);
+    free(cp);
 }
 
 void serialPrintCharacterSynchronous (const char c) {
-	serialPrintByte(c);
+	serialPrintCharacter(c);
 	sleepUntilEmptyOutputBuffer();
 }
 

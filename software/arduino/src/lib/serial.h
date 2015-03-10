@@ -9,10 +9,11 @@ char serialReadCharacter(char);
 
 void serialPrint(const char *);
 void serialPrintLine(const char *);
-void serialWriteCharacter(char);
-void serialPrintCharacterSynchronous(const char);
 void serialPrintSynchronous(const char *);
-void serialPrintByte(const char);
+void serialPrintCharacter(const char);
+void serialPrintCharacterSynchronous(const char);
+void serialPrintByte(const uint8_t);
+void serialPrintByteSynchronous(const uint8_t);
 
 int8_t serialAvailable();
 int8_t outputBufferWalked();
