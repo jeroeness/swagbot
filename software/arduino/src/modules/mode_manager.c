@@ -58,10 +58,10 @@ void handleKeyPressManualMode (uint8_t key) {
 			inputForward();
 			break;
 		case 'a':
-			inputBackward();
+			inputLeft();
 			break;
 		case 's':
-			inputLeft();
+			inputBackward();
 			break;
 		case 'd':
 			inputRight();

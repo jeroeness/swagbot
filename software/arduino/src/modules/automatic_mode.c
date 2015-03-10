@@ -6,6 +6,7 @@
 #include "motor.h"
 #include "sensor.h"
 #include "mode_manager.h"
+#include "../lib/serial.h"
 
 #define TURN_MARGIN 5
 #define MOVE_MARGIN 5
@@ -37,7 +38,8 @@ void initAutomaticMode() {
 
 	initActionList(10);
 	
-	addToActionList(ACTION_MOVE, 200, 50);
+	addToActionList(ACTION_MOVE_FOR, 500, 50);
+	addToActionList(ACTION_MOVE_FOR, 500, -50);
 	addToActionList(ACTION_WAIT, 1000, 0);
 	addToActionList(ACTION_TURN_FOR, 500, 0);
 	addToActionList(ACTION_TURN_FOR, 500, 50);

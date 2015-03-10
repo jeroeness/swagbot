@@ -1,4 +1,6 @@
-#define F_CPU 8000000
+#ifndef F_CPU
+#define F_CPU 16000000
+#endif
 
 #include <stdio.h>
 #include <stdlib.h>
