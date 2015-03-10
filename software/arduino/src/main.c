@@ -10,7 +10,7 @@
 #include <avr/pgmspace.h>
 #include <avr/io.h>
 #include <avr/interrupt.h>
-#include <avr/delay.h>
+#include <util/delay.h>
 #include <stdlib.h>
 
 #include "lib/swagbotlib.h"
@@ -37,10 +37,11 @@ int main(void){
 	setSteeringMode(automatic);
 	resetAutomaticMode();
 
-	i2c_write_cmd_wrap();
 
 	while(1){
- 		updateAutomaticMode();
+		i2c_write_cmd_wrap();
+ 		//updateAutomaticMode();
+		moveMotors(50,50);
 		updateCommunication();
 	}
 
