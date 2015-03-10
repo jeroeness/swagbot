@@ -1,19 +1,14 @@
-#define F_CPU 8000000
-#include <stdio.h>
-#include <util/delay.h>
-#include <avr/io.h>
-#include <avr/interrupt.h>
-
+//motor.c
 #include "func_protos.h"
 
 void initMotor(){
-	TCNT1=0x00;
+	TCNT1 = 0x00;
 	TCCR1A = (0 << WGM10) | (1 << WGM11) | (1 << COM1A1) | (1 << COM1B1);
 	TCCR1B = (1 << WGM13) | (0 << WGM12) | (1 << CS10);
 	
-	ICR1=0x00FF;
-	OCR1A=0x0050;
-	OCR1B=0x0050;
+	ICR1 = 0x00FF;
+	OCR1A = 0x0050;
+	OCR1B = 0x0050;
 	
 	TIMSK &= ~(1<< TICIE1) &~(1<< OCIE1A) &~(1<< OCIE1B) &~(1<< TOIE1);
 	
