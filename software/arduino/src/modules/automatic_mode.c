@@ -128,7 +128,6 @@ void executeNextAction() {
 
 	Action next = actionList->list[actionList->nextAction++];
 
-
 	if (next.tempSpeed != 0) {
 		setSpeed(next.tempSpeed);
 	} else if (next.tempSpeed == -1) {
