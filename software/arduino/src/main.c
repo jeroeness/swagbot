@@ -42,9 +42,13 @@ int main(void){
 	serialPrintSynchronous("end!");
 
 	while(1){
+		i2c_read_sensors(sizeof(sensorData));
  		updateAutomaticMode();
+ 		sei();
+//		serialPrintSynchronous("out of auto update");
 		//moveMotors(50,50);
 		updateCommunication();
+//		serialPrintSynchronous("out of commu update");
 	}
 
 	return 1998;

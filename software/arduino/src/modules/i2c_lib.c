@@ -231,7 +231,7 @@ ISR(TWI_vect)
 			break;
 	}
 
-	sei();
-	serialPrintByteSynchronous(TWSR & 0xF8);
+	//sei();
+	//serialPrintByteSynchronous(TWSR & 0xF8);
 
 }
