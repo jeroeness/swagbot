@@ -126,6 +126,7 @@ void executeNextAction() {
 		actionList->nextAction = 0;
 	
 	Action next = actionList->list[actionList->nextAction++];
+	serialPrintByte(next->action);
 	
 	
 	if (next.tempSpeed != 0) {
