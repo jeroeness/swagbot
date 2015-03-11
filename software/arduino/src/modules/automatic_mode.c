@@ -1,3 +1,7 @@
+#ifndef F_CPU
+#define F_CPU 16000000
+#endif
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <avr/io.h>
@@ -6,6 +10,7 @@
 #include "motor.h"
 #include "sensor.h"
 #include "mode_manager.h"
+#include "../lib/serial.h"
 
 #define TURN_MARGIN 5
 #define MOVE_MARGIN 5
@@ -13,20 +18,20 @@
 
 extern struct SD sensorData;
 
-uint16_t targetDegrees;
-uint16_t targetDistance;
+volatile uint16_t targetDegrees;
+volatile uint16_t targetDistance;
 
 volatile uint16_t targetMillis;
 volatile uint16_t currentMillis;
 volatile uint16_t overflowCount;
 
 
-int8_t speed;
-int8_t defaultSpeed;
+volatile int8_t speed;
+volatile int8_t defaultSpeed;
 
-uint8_t currentAction;
-uint8_t totalActions;
-ActionList * actionList;
+volatile uint8_t currentAction;
+volatile uint8_t totalActions;
+volatile ActionList * actionList;
 
 void initAutomaticMode() {
 	resetClock();
@@ -37,7 +42,8 @@ void initAutomaticMode() {
 
 	initActionList(10);
 	
-	addToActionList(ACTION_MOVE, 200, 50);
+	addToActionList(ACTION_MOVE_FOR, 500, 50);
+	addToActionList(ACTION_MOVE_FOR, 500, -50);
 	addToActionList(ACTION_WAIT, 1000, 0);
 	addToActionList(ACTION_TURN_FOR, 500, 0);
 	addToActionList(ACTION_TURN_FOR, 500, 50);
@@ -47,6 +53,8 @@ void initAutomaticMode() {
 }
 
 void updateAutomaticMode() {
+	sei();
+	serialPrintSynchronous("update");
 	checkCrash();
 	switch (currentAction) {
 		case ACTION_TURN:
@@ -71,6 +79,7 @@ void initActionList(uint8_t size) {
 	actionList->usedSize = 0;
 	
 	for (uint8_t i=0; i<size; i++) {
+		serialPrintByte(i);
 		Action* action = &(actionList->list[i]);
 		action->action = ACTION_IDLE;
 		action->argument = 0;
@@ -85,17 +94,19 @@ void addToActionList(int16_t action, int16_t argument, int16_t tempSpeed) {
 	newAction->action = action;
 	newAction->argument = argument;
 	newAction->tempSpeed = tempSpeed;
+
+	serialPrintByte(newAction->action);
 }
 
 void initTimer() {
 	TIMSK0=(1<<TOIE0);
-	TCCR0B = (1<<CS02); // prescaler 256; fcpu 8000000 = 122 overflows per second
+	TCCR0B = (1<<CS02) | (1<<CS00); // prescaler 1024; fcpu 16000000 = 61 overflows per second
 }
 
 ISR(TIMER0_OVF_vect)
 {
-	if ((overflowCount++) % 1 == 0) {
-		overflowCount = 1;
+	if ((++overflowCount) == 2) {
+		overflowCount = 0;
 		if (targetMillis != 0 && checkFuzzy(targetMillis, ++currentMillis, TIME_MARGIN)) {
 			stop();
 			currentAction = ACTION_IDLE;
@@ -118,6 +129,8 @@ void executeNextAction() {
 		actionList->nextAction = 0;
 	
 	Action next = actionList->list[actionList->nextAction++];
+	sei();
+	serialPrintByte(actionList->nextAction);
 	
 	
 	if (next.tempSpeed != 0) {
@@ -210,7 +223,7 @@ void moveFor(int16_t milliseconds) {
 
 inline void resetClock() {
 	currentMillis = 0;
-	overflowCount = 1;
+	overflowCount = 0;
 }
 
 void resetAutomaticMode() {

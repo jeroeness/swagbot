@@ -10,7 +10,7 @@ void inputRight() {
 }
 
 void inputLeft() {
-	turn(100);
+	turn(-100);
 }
 
 void inputBackward() {

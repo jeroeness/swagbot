@@ -6,6 +6,8 @@
 
 #include "motor.h"
 #include "sensor.h"
+#include "i2c_lib.h"
+
 
 extern struct SD sensorData;
 extern struct ID instructionData;
@@ -51,5 +53,7 @@ int moveMotors(int8_t speedL, int8_t speedR){
 	instructionData.motorLeft = speedL;
 	instructionData.motorRight = speedR;
 	
+	i2c_write_cmd_wrap();
+
 	return 1;
 }
