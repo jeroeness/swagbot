@@ -2,6 +2,7 @@
 #include "../lib/serial.h"
 #include "mode_manager.h"
 #include "../lib/sensor.h"
+#include "motor.h"
 
 #include <avr/io.h>
 #include <stdio.h>
@@ -14,6 +15,7 @@ int incomingByte = 0;
 bool connectionIsOpen = false;
 uint8_t activeKey = 0;
 int16_t keyTimer = 0;
+int16_t vebosityTimer = 0;
 
 void initCommunication() {
 	openConnection();
@@ -32,7 +34,7 @@ void closeConnection() {
 
 void updateCommunication () {
 	readInputs ();
-    //printVerbose();
+    printVerbose();
 }
 
 char* itoa(int i, char b[]){
@@ -81,27 +83,33 @@ void printVerbose() {
 	instructionData.ledStatus = 1;
 	sensorData.ultrasonic = 12;
 
+	if (vebosityTimer-- == 0) {
+        vebosityTimer = 0xFFFF;
 
-	char *str = (char*)malloc(3 * sizeof(char));
+        char *str = (char*)malloc(3 * sizeof(char));
 
-    while (!outputBufferWalked());
-    clearBuffer();
-    serialPrint("Motor Left:");
-    serialPrintLine(itoa(instructionData.motorLeft, str));
-    serialPrint("Motor Right:");
-    serialPrintLine(itoa(instructionData.motorRight, str));
+        while (!outputBufferWalked());
+        clearBuffer();
+        serialPrint("\r\n");
+        serialPrint("Motor Left:");
+        serialPrintLine(itoa(instructionData.motorLeft, str));
+        serialPrint("Motor Right:");
+        serialPrintLine(itoa(instructionData.motorRight, str));
 
-    serialPrint("LED:");
-    serialPrintLine(itoa(instructionData.ledStatus, str));
-    serialPrint("Ultrasonic:");
-    serialPrintLine(itoa(sensorData.ultrasonic, str));
+        serialPrint("LED:");
+        serialPrintLine(itoa(instructionData.ledStatus, str));
+        serialPrint("Ultrasonic:");
+        serialPrintLine(itoa(sensorData.ultrasonic, str));
 
-    serialPrint("The Right bumper:");
-    serialPrintLine(itoa(sensorData.bumperRight, str));
-    serialPrint("The left bumper:");
-    serialPrintLine(itoa(sensorData.bumperLeft, str));
+        serialPrint("The Right bumper:");
+        serialPrintLine(itoa(sensorData.bumperRight, str));
+        serialPrint("The left bumper:");
+        serialPrintLine(itoa(sensorData.bumperLeft, str));
+        serialPrintLine("------------------------------------\r\n");
 
-    free(str);
+        free(str);
+
+	}
 }
 
 void readInputs () {
@@ -122,6 +130,10 @@ void readInputs () {
 				keyTimer = 0x3000;
 
             break;
+            case 'p':
+                activeKey = 0;
+
+                break;
             case 'm':
                 setSteeringMode(manual);
 			break;
@@ -138,6 +150,6 @@ void readInputs () {
 		}
 		inputKeyDown (activeKey);
 
-		serialPrintCharacterSynchronous(activeKey);
+		//serialPrintCharacterSynchronous(activeKey);
     }
 }

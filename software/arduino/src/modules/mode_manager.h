@@ -20,4 +20,6 @@ void handleKeyReleaseManualMode (uint8_t key);
 void handleKeyPressAutomaticMode (uint8_t key);
 void handleKeyReleaseAutomaticMode (uint8_t key);
 
+void updateModeManager();
+
 #endif // MODE_MANAGER_H

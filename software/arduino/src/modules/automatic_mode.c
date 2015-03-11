@@ -36,19 +36,20 @@ volatile ActionList actionListList;
 
 void initAutomaticMode() {
 	resetClock();
+	initTimer();
 
 	setDefaultSpeed(100);
 
 	currentAction = ACTION_IDLE;
 
 	initActionList(10);
-	
-	addToActionList(ACTION_MOVE_FOR, 500, 50);
-	addToActionList(ACTION_MOVE_FOR, 500, -50);
-	addToActionList(ACTION_WAIT, 1000, 0);
-	addToActionList(ACTION_TURN_FOR, 500, 0);
-	addToActionList(ACTION_TURN_FOR, 500, 50);
-	addToActionList(ACTION_TURN_FOR, 500, -80);
+
+	addToActionList(ACTION_MOVE_FOR, 50, 50);
+	addToActionList(ACTION_MOVE_FOR, 50, -50);
+	addToActionList(ACTION_WAIT, 100, 0);
+	addToActionList(ACTION_TURN_FOR, 50, 0);
+	addToActionList(ACTION_TURN_FOR, 50, 50);
+	addToActionList(ACTION_TURN_FOR, 50, -80);
 	addToActionList(ACTION_MOVE_TO, 10, 0);
 	addToActionList(ACTION_MOVE_TO, 50, 50);
 }
@@ -70,12 +71,12 @@ void updateAutomaticMode() {
 
 void initActionList(uint8_t size) {
 	actionList = &actionListList;
-	
+
 	actionList->list = (Action*) malloc(size * sizeof(Action));
 	actionList->size = size;
 	actionList->nextAction = 0;
 	actionList->usedSize = 0;
-	
+
 	for (uint8_t i=0; i<size; i++) {
 		Action* action = &(actionList->list[i]);
 		action->action = ACTION_IDLE;
@@ -86,7 +87,7 @@ void initActionList(uint8_t size) {
 
 void addToActionList(int16_t action, int16_t argument, int16_t tempSpeed) {
 	if (actionList->usedSize >= actionList->size) return;
-	
+
 	Action * newAction = &(actionList->list[actionList->usedSize++]);
 	newAction->action = action;
 	newAction->argument = argument;
@@ -124,10 +125,10 @@ void checkCrash() {
 void executeNextAction() {
 	if (actionList->nextAction >= actionList->usedSize)
 		actionList->nextAction = 0;
-	
+
 	Action next = actionList->list[actionList->nextAction++];
-	
-	
+
+
 	if (next.tempSpeed != 0) {
 		setSpeed(next.tempSpeed);
 	} else if (next.tempSpeed == -1) {
@@ -135,7 +136,7 @@ void executeNextAction() {
 	} else {
 		resetSpeed();
 	}
-	
+
 	switch (next.action) {
 		case ACTION_MOVE:
 			moveDistance(next.argument);
@@ -157,6 +158,8 @@ void executeNextAction() {
 			break;
 		case ACTION_WAIT:
 			resetClock();
+			stop();
+			currentAction = ACTION_WAIT;
 			targetMillis = next.argument;
 			break;
 		case ACTION_SET_SPEED:
@@ -249,7 +252,7 @@ void moveToDistance(int16_t distance) {
 }
 
 void beginAutomaticMode(){
-	// do nothing
+	resetAutomaticMode();
 }
 
 void stopAutomaticMode(){

@@ -30,20 +30,19 @@ int main(void){
 
 	sei();
 
-	setSteeringMode(automatic);
-	resetAutomaticMode();
+	setSteeringMode(manual);
+	resetAutomaticMode(); //TODO init automatic mode
 
-	serialPrintSynchronous("begin!");
-	moveMotors(20,20);
+	moveMotors(20, 20);
 	i2c_write_cmd_wrap();
-	serialPrintSynchronous("end!");
 
 	while(1){
-		i2c_read_sensors(sizeof(sensorData));
- 		updateAutomaticMode();
+		//i2c_read_sensors(sizeof(sensorData));
+ 		//updateAutomaticMode();
  		sei();
 //		serialPrintSynchronous("out of auto update");
 		//moveMotors(50,50);
+		updateModeManager();
 		updateCommunication();
 //		serialPrintSynchronous("out of commu update");
 	}
