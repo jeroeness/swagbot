@@ -7,8 +7,8 @@ void initMotor(){
 	TCCR1B = (1 << WGM13) | (0 << WGM12) | (1 << CS10);
 	
 	ICR1 = 0x00FF;
-	OCR1A = 0x0050;
-	OCR1B = 0x0050;
+	OCR1A = 0x00;
+	OCR1B = 0x00;
 	
 	TIMSK &= ~(1<< TICIE1) &~(1<< OCIE1A) &~(1<< OCIE1B) &~(1<< TOIE1);
 	

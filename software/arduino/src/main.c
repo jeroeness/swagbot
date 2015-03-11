@@ -30,8 +30,7 @@ int main(void){
 
 	PORTD = 3;
 
-	DDRB = 1;
-	PORTB = 1;
+	DDRB = 1 << 7;
 
 	i2c_init(0xA8);
 	initAutomaticMode();
@@ -48,6 +47,7 @@ int main(void){
 	serialPrintSynchronous("end!");
 
 	while(1){
+		PORTB &= ~(1 << 7);
 		//i2c_write_cmd_wrap();
  		//updateAutomaticMode();
 		moveMotors(50,50);
