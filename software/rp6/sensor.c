@@ -11,7 +11,7 @@ extern union USD sensorData;
 
 void initSensors(){
 	DDRC |= 1<<PC6 | 1<<PC5 | 1<<PC4; //set leds as output (Right)
-	DDRB |= 1<<PB7 | 1<<PB1 | 1<<PB0; //set leds as output (Left)
+	DDRB |= 1<<PB7 | 1<<PB4 | 1<<PB1 | 1<<PB0; //set leds as output (Left)
 }
 
 //if any data is received by RP6 parse it with the following function
@@ -59,6 +59,10 @@ void setLed(uint8_t uLed, uint8_t uOn){
 			PORTB &= ~(1<<PB0);
 			break;
 			
+		case 0x7: //PWRON off
+			PORTB &= ~(1<<PB4);
+			break;
+		
 		case 0x11: //SL1 on
 			PORTC |= (1<<PC4);
 			break;
@@ -81,6 +85,10 @@ void setLed(uint8_t uLed, uint8_t uOn){
 			
 		case 0x16: //SL6 on
 			PORTB |= (1<<PB0);
+			break;
+			
+		case 0x17: //PWRON on
+			PORTB |= (1<<PB4);
 			break;
 		
 	}
