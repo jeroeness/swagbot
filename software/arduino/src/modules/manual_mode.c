@@ -1,9 +1,9 @@
-#include "manual_mode.h"
-#include "motor.h"
-#include "../lib/sensor.h"
-#include "../lib/serial.h"
+// manual_mode.c
 
-extern struct SD sensorData;
+#include "../globalincsanddefs.h"
+
+//extern union UID instructionData;
+extern union USD sensorData;
 
 void inputRight() {
 	turn(100);
@@ -18,9 +18,9 @@ void inputBackward() {
 }
 
 void inputForward() {
-	if(sensorData.bumperRight == 1 || sensorData.bumperLeft == 1){
+	if(sensorData.sensorStruct.bumperRight == 1 || sensorData.sensorStruct.bumperLeft == 1) {
         stop();
-    }else {
+    } else {
         moveMotors(100, 100);
     }
 }

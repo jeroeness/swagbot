@@ -1,5 +1,9 @@
+//manual_mode.h
+
 #ifndef MANUAL_MODE_H
 #define MANUAL_MODE_H
+
+#include "../globalincsanddefs.h"
 
 void inputRight();
 void inputLeft();

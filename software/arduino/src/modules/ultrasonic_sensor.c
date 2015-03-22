@@ -1,17 +1,9 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <avr/io.h>
-#include <avr/interrupt.h>
-#include "automatic_mode.h"
-#include "motor.h"
-#include "sensor.h"
+// ultrasonic_sensor.c
 
-extern struct SD sensorData;
+#include "../globalincsanddefs.h"
 
-//volatile uint16_t currentMillis;
-//volatile uint16_t overflowCount;
+//extern union UID instructionData;
+extern union USD sensorData;
 
 void initUltrasonicSensor() {
 }
-
- 

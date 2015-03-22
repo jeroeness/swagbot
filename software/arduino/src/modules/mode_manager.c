@@ -1,14 +1,14 @@
-#include "mode_manager.h"
-#include "manual_mode.h"
-#include "automatic_mode.h"
+// mode_manager.c
 
-SteeringMode steeringMode;
+#include "../globalincsanddefs.h"
+
+enum SteeringMode steeringMode;
 
 void initModeManager() {
 	steeringMode = manual;
 }
 
-void setSteeringMode(SteeringMode s) {
+void setSteeringMode(enum SteeringMode s) {
 	if (steeringMode != s) {
 		if (steeringMode == manual) {
 			stopManualMode();

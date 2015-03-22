@@ -1,25 +1,19 @@
-#ifndef F_CPU
-#define F_CPU 16000000
-#endif
+/*
+ * arduino.c
+ *
+ * Created: 14-3-2015 12:13:05
+ *  Author: -
+ */ 
 
-#include <avr/pgmspace.h>
-#include <avr/io.h>
-#include <avr/interrupt.h>
-#include <util/delay.h>
-#include <stdlib.h>
+#include "globalincsanddefs.h"
 
-#include "lib/serial.h"
-#include "modules/communication.h"
-#include "modules/mode_manager.h"
-#include "modules/motor.h"
-#include "modules/automatic_mode.h"
-#include "modules/i2c_lib.h"
-#include "lib/sensor.h"
+//extern union UID instructionData;
+//extern union USD sensorData;
+//struct ID instructionData;
+//struct SD sensorData;
 
-struct ID instructionData;
-struct SD sensorData;
-
-int main(void){
+int main(void)
+{
 	cli();
 
 	PORTD = 3;
@@ -36,10 +30,11 @@ int main(void){
 	moveMotors(20, 20);
 	i2c_write_cmd_wrap();
 
-	while(1){
+	while(1)
+	{
 		//i2c_read_sensors(sizeof(sensorData));
- 		//updateAutomaticMode();
- 		sei();
+		//updateAutomaticMode();
+		//sei();
 //		serialPrintSynchronous("out of auto update");
 		//moveMotors(50,50);
 		updateModeManager();

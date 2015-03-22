@@ -1,15 +1,9 @@
-#include "communication.h"
-#include "../lib/serial.h"
-#include "mode_manager.h"
-#include "../lib/sensor.h"
-#include "motor.h"
+// communication.c
 
-#include <avr/io.h>
-#include <stdio.h>
-#include <stdlib.h>
+#include "../globalincsanddefs.h"
 
-extern struct ID instructionData;
-extern struct SD sensorData;
+extern union UID instructionData;
+extern union USD sensorData;
 
 int incomingByte = 0;
 bool connectionIsOpen = false;
@@ -29,121 +23,119 @@ bool openConnection () {
 
 void closeConnection() {
 	serialEnd();
-    connectionIsOpen = false;
+	connectionIsOpen = false;
 }
 
 void updateCommunication () {
 	readInputs ();
-    printVerbose();
+	printVerbose();
 }
 
-char* itoa(int i, char b[]){
-    char const digit[] = "0123456789";
-    char* p = b;
-    if(i<0){
-        *p++ = '-';
-        i *= -1;
-    }
-    int shifter = i;
-    do{ //Move to where representation ends
-        ++p;
-        shifter = shifter/10;
-    }while(shifter);
-    *p = '\0';
-    do{ //Move back, inserting digits as u go
-        *--p = digit[i%10];
-        i = i/10;
-    }while(i);
-    return b;
+char* comm_itoa(int i, char b[]){
+	char const digit[] = "0123456789";
+	char* p = b;
+	if(i<0) {
+		*p++ = '-';
+		i *= -1;
+	}
+	int shifter = i;
+	do{ //Move to where representation ends
+		++p;
+		shifter = shifter/10;
+	}while(shifter);
+	*p = '\0';
+	do{ //Move back, inserting digits as you go
+		*--p = digit[i%10];
+		i = i/10;
+	}while(i);
+	return b;
 }
 
 char* uitoa(unsigned int i, char b[]){
-    char const digit[] = "0123456789";
-    char* p = b;
-    int shifter = i;
-    do{ //Move to where representation ends
-        ++p;
-        shifter = shifter/10;
-    }while(shifter);
-    *p = '\0';
-    do{ //Move back, inserting digits as u go
-        *--p = digit[i%10];
-        i = i/10;
-    }while(i);
-    return b;
+	char const digit[] = "0123456789";
+	char* p = b;
+	int shifter = i;
+	do{ //Move to where representation ends
+		++p;
+		shifter = shifter/10;
+	}while(shifter);
+	*p = '\0';
+	do{ //Move back, inserting digits as you go
+		*--p = digit[i%10];
+		i = i/10;
+	}while(i);
+	return b;
 }
 
 
 void printVerbose() {
 
-	sensorData.bumperRight = 1;
-	sensorData.bumperLeft = 1;
-	instructionData.motorLeft = 255;
-	instructionData.motorRight = 255;
-	instructionData.ledStatus = 1;
-	sensorData.ultrasonic = 12;
+	sensorData.sensorStruct.bumperRight = 1;
+	sensorData.sensorStruct.bumperLeft = 1;
+	instructionData.instructionstruct.motorLeft = 255;
+	instructionData.instructionstruct.motorRight = 255;
+	instructionData.instructionstruct.ledStatus = 1;
+	sensorData.sensorStruct.ultrasonic = 12;
 
 	if (vebosityTimer-- == 0) {
-        vebosityTimer = 0xFFFF;
+		vebosityTimer = 0xFFFF;
 
-        char *str = (char*)malloc(3 * sizeof(char));
+		char *str = (char*)malloc(3 * sizeof(char));
 
-        while (!outputBufferWalked());
-        clearBuffer();
-        serialPrint("\r\n");
-        serialPrint("Motor Left:");
-        serialPrintLine(itoa(instructionData.motorLeft, str));
-        serialPrint("Motor Right:");
-        serialPrintLine(itoa(instructionData.motorRight, str));
+		while (!outputBufferWalked());
+		clearBuffer();
+		serialPrint("\r\n");
+		serialPrint("Motor Left:");
+		serialPrintLine(comm_itoa(instructionData.instructionstruct.motorLeft, str));
+		serialPrint("Motor Right:");
+		serialPrintLine(comm_itoa(instructionData.instructionstruct.motorRight, str));
 
-        serialPrint("LED:");
-        serialPrintLine(itoa(instructionData.ledStatus, str));
-        serialPrint("Ultrasonic:");
-        serialPrintLine(itoa(sensorData.ultrasonic, str));
+		serialPrint("LED:");
+		serialPrintLine(comm_itoa(instructionData.instructionstruct.ledStatus, str));
+		serialPrint("Ultrasonic:");
+		serialPrintLine(comm_itoa(sensorData.sensorStruct.ultrasonic, str));
 
-        serialPrint("The Right bumper:");
-        serialPrintLine(itoa(sensorData.bumperRight, str));
-        serialPrint("The left bumper:");
-        serialPrintLine(itoa(sensorData.bumperLeft, str));
-        serialPrintLine("------------------------------------\r\n");
+		serialPrint("The Right bumper:");
+		serialPrintLine(comm_itoa(sensorData.sensorStruct.bumperRight, str));
+		serialPrint("The left bumper:");
+		serialPrintLine(comm_itoa(sensorData.sensorStruct.bumperLeft, str));
+		serialPrintLine("------------------------------------\r\n");
 
-        free(str);
+		free(str);
 
 	}
 }
 
 void readInputs () {
 	if (serialAvailable()) {
-        char input = serialRead();
-        switch (input) {
-            case 'w':
-            case 'a':
-            case 's':
-            case 'd':
-            	if (input != activeKey) {
+		char input = serialRead();
+		switch (input) {
+			case 'w':
+			case 'a':
+			case 's':
+			case 'd':
+				if (input != activeKey) {
 					if (activeKey) {
 						inputKeyRelease(activeKey);
 					}
 					inputKeyPress(input);
-            	}
+				}
 				activeKey = input;
 				keyTimer = 0x3000;
-
-            break;
-            case 'p':
-                activeKey = 0;
-
-                break;
-            case 'm':
-                setSteeringMode(manual);
-			break;
+				break;
+			case 'p':
+				activeKey = 0;
+				break;
+			case 'm':
+				setSteeringMode(manual);
+				break;
 			case 'n':
 				setSteeringMode(automatic);
-			break;
-        }
+				break;
+		}
     }
 
-    if (activeKey > 0) {
+	if (activeKey > 0) {
 		if (keyTimer-- == 1) {
 			inputKeyRelease(activeKey);
 			activeKey = 0;
@@ -151,5 +143,5 @@ void readInputs () {
 		inputKeyDown (activeKey);
 
 		//serialPrintCharacterSynchronous(activeKey);
-    }
+	}
 }

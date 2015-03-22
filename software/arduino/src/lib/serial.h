@@ -1,5 +1,9 @@
+// serial.h
+
 #ifndef SERIAL_H
 #define SERIAL_H
+
+#include "../globalincsanddefs.h"
 
 void serialBegin();
 void serialEnd();

@@ -1,15 +1,16 @@
+// mode_manager.h
+
 #ifndef MODE_MANAGER_H
 #define MODE_MANAGER_H
 
-#include <avr/io.h>
-#include <stdio.h>
+#include "../globalincsanddefs.h"
 
 enum SteeringMode {
 	manual,
 	automatic
 };
 
-void setSteeringMode(SteeringMode);
+void setSteeringMode(enum SteeringMode);
 void initModeManager();
 void inputKeyPress(uint8_t key);
 void inputKeyRelease(uint8_t key);
