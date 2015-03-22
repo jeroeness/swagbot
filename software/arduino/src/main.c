@@ -7,8 +7,8 @@
 
 #include "globalincsanddefs.h"
 
-//extern union UID instructionData;
-//extern union USD sensorData;
+union UID instructionData;
+union USD sensorData;
 
 
 int main(void)

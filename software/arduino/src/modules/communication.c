@@ -84,7 +84,8 @@ void printVerbose() {
 
 		while (!outputBufferWalked());
 		clearBuffer();
-		serialPrint("\r\n");
+		//serialPrint("\r\n");
+		/*
 		serialPrint("Motor Left:");
 		serialPrintLine(comm_itoa(instructionData.instructionstruct.motorLeft, str));
 		serialPrint("Motor Right:");
@@ -100,7 +101,20 @@ void printVerbose() {
 		serialPrint("The left bumper:");
 		serialPrintLine(comm_itoa(sensorData.sensorStruct.bumperLeft, str));
 		serialPrintLine("------------------------------------\r\n");
-
+*/
+		serialPrint("");
+		serialPrint(comm_itoa(instructionData.instructionstruct.motorLeft, str));
+		serialPrint(":");
+		serialPrint(comm_itoa(instructionData.instructionstruct.motorRight, str));
+		serialPrint(":");
+		serialPrint(comm_itoa(instructionData.instructionstruct.ledStatus, str));
+		serialPrint(":");
+		serialPrint(comm_itoa(sensorData.sensorStruct.ultrasonic, str));
+		serialPrint(":");
+		serialPrint(comm_itoa(sensorData.sensorStruct.bumperLeft, str));
+		serialPrint(":");
+		serialPrint(comm_itoa(sensorData.sensorStruct.bumperRight, str));
+		serialPrint(";");
 		free(str);
 
 	}

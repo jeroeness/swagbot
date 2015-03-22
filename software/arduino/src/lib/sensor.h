@@ -36,7 +36,7 @@ union UID {
 	uint8_t instructionArray[sizeof(struct ID)];
 };
 
-union UID instructionData;
-union USD sensorData;
+extern union UID instructionData;
+extern union USD sensorData;
 
 #endif
