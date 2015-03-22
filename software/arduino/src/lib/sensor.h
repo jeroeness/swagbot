@@ -15,6 +15,7 @@ struct SD {
 	int8_t motorLeft;
 	int8_t motorRight;
 	uint16_t ultrasonic;
+	uint8_t batteryPercentage;
 };
 
 struct ID {

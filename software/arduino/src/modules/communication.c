@@ -89,6 +89,15 @@ void printVerbose() {
 			sensorData.sensorStruct.ultrasonic++;
 		}
 		
+		if(sensorData.sensorStruct.batteryPercentage > 100){
+			sensorData.sensorStruct.batteryPercentage = 0;
+		}else{
+			sensorData.sensorStruct.batteryPercentage++;
+		}
+		
+		
+		
+		
 		while (!outputBufferWalked());
 		clearBuffer();
 		//serialPrint("\r\n");
@@ -121,6 +130,8 @@ void printVerbose() {
 		serialPrint(comm_itoa(sensorData.sensorStruct.bumperLeft, str));
 		serialPrint(":");
 		serialPrint(comm_itoa(sensorData.sensorStruct.bumperRight, str));
+		serialPrint(":");
+		serialPrint(comm_itoa(sensorData.sensorStruct.batteryPercentage, str));
 		serialPrint(";");
 		free(str);
 
