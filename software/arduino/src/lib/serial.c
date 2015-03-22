@@ -124,6 +124,8 @@ void serialPrintLine(const char *c) {
 void writeCharacterFromBuffer() {
 	if (!outputBufferWalked()) {
 		UDR0 = outputBuffer[outputBufferPtr++];
+	} else {
+		clearBuffer();
 	}
 }
 

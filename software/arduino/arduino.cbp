@@ -735,6 +735,13 @@
 			<Option target="Arduino Uno" />
 			<Option target="Arduino Mega 2560/ADK" />
 		</Unit>
+		<Unit filename="src/modules/i2c_lib.c">
+			<Option compilerVar="CC" />
+			<Option target="Arduino Mega 2560/ADK" />
+		</Unit>
+		<Unit filename="src/modules/i2c_lib.h">
+			<Option target="Arduino Mega 2560/ADK" />
+		</Unit>
 		<Unit filename="src/modules/manual_mode.c">
 			<Option compilerVar="CC" />
 			<Option target="Arduino Uno" />
