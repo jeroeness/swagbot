@@ -3,7 +3,7 @@
  *
  * Created: 14-3-2015 13:04:35
  *  Author: gerald
- */ 
+ */
 
 
 #ifndef GLOBALINCSANDDEFS_H_

@@ -3,14 +3,13 @@
  *
  * Created: 14-3-2015 12:13:05
  *  Author: -
- */ 
+ */
 
 #include "globalincsanddefs.h"
 
 //extern union UID instructionData;
 //extern union USD sensorData;
-//struct ID instructionData;
-//struct SD sensorData;
+
 
 int main(void)
 {
@@ -20,6 +19,7 @@ int main(void)
 
 	i2c_init(0xA8);
 	initAutomaticMode();
+
 	initCommunication();
 
 	sei();

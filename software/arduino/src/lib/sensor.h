@@ -23,17 +23,17 @@ struct ID {
 	uint8_t ledStatus; //8 all leds in one variable
 };
 
-struct SD sensorStruct;
-struct ID instructionstruct;
+//struct SD sensorStruct;
+//struct ID instructionstruct;
 
 union USD {
 	struct SD sensorStruct;
-	uint8_t sensorArray[sizeof(sensorStruct)];
+	uint8_t sensorArray[sizeof(struct SD)];
 };
 
 union UID {
 	struct ID instructionstruct;
-	uint8_t instructionArray[sizeof(instructionstruct)];
+	uint8_t instructionArray[sizeof(struct ID)];
 };
 
 union UID instructionData;
