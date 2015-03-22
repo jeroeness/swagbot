@@ -95,7 +95,11 @@ void printVerbose() {
 			sensorData.sensorStruct.batteryPercentage++;
 		}
 		
-		
+		if(sensorData.sensorStruct.compassDegrees > 244){
+			sensorData.sensorStruct.compassDegrees = 0;
+		}else{
+			sensorData.sensorStruct.compassDegrees += 10;
+		}
 		
 		
 		while (!outputBufferWalked());
@@ -132,6 +136,8 @@ void printVerbose() {
 		serialPrint(comm_itoa(sensorData.sensorStruct.bumperRight, str));
 		serialPrint(":");
 		serialPrint(comm_itoa(sensorData.sensorStruct.batteryPercentage, str));
+		serialPrint(":");
+		serialPrint(comm_itoa(sensorData.sensorStruct.compassDegrees, str));
 		serialPrint(";");
 		free(str);
 
