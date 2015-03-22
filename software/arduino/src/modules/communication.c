@@ -75,40 +75,20 @@ void printVerbose() {
 	instructionData.instructionstruct.motorLeft = 255;
 	instructionData.instructionstruct.motorRight = 255;
 	instructionData.instructionstruct.ledStatus = 1;
-	
-	
+
+
 
 	if (vebosityTimer-- == 0) {
 		vebosityTimer = 0xFFFF;
 
 		char *str = (char*)malloc(3 * sizeof(char));
-		
+
 		if(sensorData.sensorStruct.ultrasonic > 100){
 			sensorData.sensorStruct.ultrasonic = 0;
 		}else{
 			sensorData.sensorStruct.ultrasonic++;
 		}
-		
-		while (!outputBufferWalked());
-		clearBuffer();
-		//serialPrint("\r\n");
-		/*
-		serialPrint("Motor Left:");
-		serialPrintLine(comm_itoa(instructionData.instructionstruct.motorLeft, str));
-		serialPrint("Motor Right:");
-		serialPrintLine(comm_itoa(instructionData.instructionstruct.motorRight, str));
 
-		serialPrint("LED:");
-		serialPrintLine(comm_itoa(instructionData.instructionstruct.ledStatus, str));
-		serialPrint("Ultrasonic:");
-		serialPrintLine(comm_itoa(sensorData.sensorStruct.ultrasonic, str));
-
-		serialPrint("The Right bumper:");
-		serialPrintLine(comm_itoa(sensorData.sensorStruct.bumperRight, str));
-		serialPrint("The left bumper:");
-		serialPrintLine(comm_itoa(sensorData.sensorStruct.bumperLeft, str));
-		serialPrintLine("------------------------------------\r\n");
-*/
 		serialPrint("");
 		serialPrint(comm_itoa(instructionData.instructionstruct.motorLeft, str));
 		serialPrint(":");
