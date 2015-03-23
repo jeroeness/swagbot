@@ -2,17 +2,24 @@
 
 #include "../globalincsanddefs.h"
 
+#define KEYSTATESCOUNT 4
+
 extern union UID instructionData;
 extern union USD sensorData;
 
 int incomingByte = 0;
 bool connectionIsOpen = false;
-uint8_t activeKey = 0;
 int16_t keyTimer = 0;
 int16_t vebosityTimer = 0;
 
+
+int8_t *keyState;
+
+
 void initCommunication() {
 	openConnection();
+
+	keyState = (int8_t*)calloc (KEYSTATESCOUNT, sizeof (int8_t));
 }
 
 bool openConnection () {
@@ -139,6 +146,25 @@ void printVerbose() {
 	}
 }
 
+int8_t keyIndex (char key) {
+    switch (key) {
+        case 'w': return 0;
+        case 'a': return 1;
+        case 's': return 2;
+        case 'd': return 3;
+    }
+}
+
+
+char charIndex (int8_t key) {
+    switch (key) {
+        case 0: return 'w';
+        case 1: return 'a';
+        case 2: return 's';
+        case 3: return 'd';
+    }
+}
+
 void readInputs () {
 	if (serialAvailable()) {
 		char input = serialRead();
@@ -147,17 +173,15 @@ void readInputs () {
 			case 'a':
 			case 's':
 			case 'd':
-				if (input != activeKey) {
-					if (activeKey) {
-						inputKeyRelease(activeKey);
-					}
-					inputKeyPress(input);
-				}
-				activeKey = input;
-				keyTimer = 0x3000;
+			    keyState[keyIndex (input)] = 1;
+                inputKeyPress(input);
 				break;
-			case 'p':
-				activeKey = 0;
+            case 'W':
+			case 'A':
+			case 'S':
+			case 'D':
+			    keyState[keyIndex (input)] = 0;
+                inputKeyRelease(input + ('a'-'A'));
 				break;
 			case 'm':
 				setSteeringMode(manual);
@@ -168,13 +192,9 @@ void readInputs () {
 		}
     }
 
-	if (activeKey > 0) {
-		if (keyTimer-- == 1) {
-			inputKeyRelease(activeKey);
-			activeKey = 0;
-		}
-		inputKeyDown (activeKey);
-
-		//serialPrintCharacterSynchronous(activeKey);
-	}
+    for (int8_t i = 0; i < KEYSTATESCOUNT; i++) {
+        if (keyState[i]) {
+            inputKeyPress(charIndex(i));
+        }
+    }
 }

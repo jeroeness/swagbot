@@ -50,6 +50,8 @@ void closeConnection();
 void printVerbose();
 
 void readInputs ();
+int8_t keyIndex (char key);
+char charIndex (int8_t key);
 
 
 #endif
