@@ -79,8 +79,8 @@ void printVerbose() {
 
 	sensorData.sensorStruct.bumperRight = 1;
 	sensorData.sensorStruct.bumperLeft = 1;
-	instructionData.instructionstruct.motorLeft = 255;
-	instructionData.instructionstruct.motorRight = 255;
+	instructionData.instructionstruct.motorLeft = 100;
+	instructionData.instructionstruct.motorRight = -100;
 	instructionData.instructionstruct.ledStatus = 1;
 
 
@@ -91,19 +91,19 @@ void printVerbose() {
 		//char *str = (char*)malloc(3 * sizeof(char));
 
 		if(sensorData.sensorStruct.ultrasonic > 100){
-			sensorData.sensorStruct.ultrasonic = 0;
+			sensorData.sensorStruct.ultrasonic = 1;
 		}else{
 			sensorData.sensorStruct.ultrasonic++;
 		}
 
 		if(sensorData.sensorStruct.batteryPercentage > 100){
-			sensorData.sensorStruct.batteryPercentage = 0;
+			sensorData.sensorStruct.batteryPercentage = 1;
 		}else{
 			sensorData.sensorStruct.batteryPercentage++;
 		}
 
-		if(sensorData.sensorStruct.compassDegrees > 244){
-			sensorData.sensorStruct.compassDegrees = 0;
+		if(sensorData.sensorStruct.compassDegrees > 240){
+			sensorData.sensorStruct.compassDegrees = 1;
 		}else{
 			sensorData.sensorStruct.compassDegrees += 10;
 		}
@@ -129,19 +129,21 @@ void printVerbose() {
 		serialPrint(comm_itoa(sensorData.sensorStruct.compassDegrees, str));
 		serialPrint(";");*/
 
-		char *str = (char*)malloc(8 * sizeof(char));
-
+		char str[10];
+		
         uint8_t i = 0;
-		str[i++] = instructionData.instructionstruct.motorLeft;
-		str[i++] = instructionData.instructionstruct.motorRight;
+		str[i++] = instructionData.instructionstruct.motorLeft+128;
+		str[i++] = instructionData.instructionstruct.motorRight+128;
 		str[i++] = instructionData.instructionstruct.ledStatus;
 		str[i++] = sensorData.sensorStruct.ultrasonic;
 		str[i++] = sensorData.sensorStruct.bumperLeft;
 		str[i++] = sensorData.sensorStruct.bumperRight;
 		str[i++] = sensorData.sensorStruct.batteryPercentage;
 		str[i++] = sensorData.sensorStruct.compassDegrees;
+		str[i++] = 255;
+		str[i++] = 0;
+		
 		serialPrint(str);
-		free(str);
 
 	}
 }
@@ -153,6 +155,7 @@ int8_t keyIndex (char key) {
         case 's': return 2;
         case 'd': return 3;
     }
+	return 0;
 }
 
 
@@ -163,6 +166,7 @@ char charIndex (int8_t key) {
         case 2: return 's';
         case 3: return 'd';
     }
+	return ';';
 }
 
 void readInputs () {

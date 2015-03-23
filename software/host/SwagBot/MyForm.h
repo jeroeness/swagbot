@@ -81,6 +81,7 @@ namespace SwagBot {
 
 	private: System::Windows::Forms::PictureBox^  picLed1;
 	private: System::Windows::Forms::Button^  cmdRefresh;
+	private: System::Windows::Forms::Button^  button1;
 
 
 
@@ -142,6 +143,7 @@ namespace SwagBot {
 			this->pictureBox1 = (gcnew System::Windows::Forms::PictureBox());
 			this->pictureBox3 = (gcnew System::Windows::Forms::PictureBox());
 			this->cmdRefresh = (gcnew System::Windows::Forms::Button());
+			this->button1 = (gcnew System::Windows::Forms::Button());
 			this->frmSensor->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->picLed7))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->picLed6))->BeginInit();
@@ -178,6 +180,10 @@ namespace SwagBot {
 			this->cmbComm->Size = System::Drawing::Size(75, 21);
 			this->cmbComm->TabIndex = 1;
 			this->cmbComm->TabStop = false;
+			// 
+			// serialPort1
+			// 
+			this->serialPort1->DiscardNull = true;
 			// 
 			// cmdDisconnect
 			// 
@@ -466,12 +472,23 @@ namespace SwagBot {
 			this->cmdRefresh->UseVisualStyleBackColor = true;
 			this->cmdRefresh->Click += gcnew System::EventHandler(this, &MyForm::cmdRefresh_Click);
 			// 
+			// button1
+			// 
+			this->button1->Location = System::Drawing::Point(383, 67);
+			this->button1->Name = L"button1";
+			this->button1->Size = System::Drawing::Size(75, 23);
+			this->button1->TabIndex = 20;
+			this->button1->Text = L"button1";
+			this->button1->UseVisualStyleBackColor = true;
+			this->button1->Click += gcnew System::EventHandler(this, &MyForm::button1_Click);
+			// 
 			// MyForm
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->BackColor = System::Drawing::Color::WhiteSmoke;
 			this->ClientSize = System::Drawing::Size(495, 370);
+			this->Controls->Add(this->button1);
 			this->Controls->Add(this->cmdRefresh);
 			this->Controls->Add(this->picFront);
 			this->Controls->Add(this->picBack);
@@ -506,9 +523,16 @@ namespace SwagBot {
 		}
 #pragma endregion
 
-		String ^buffertest;
-		int compassDegrees = 0;
-		double PI = 3.14159265359;
+	String ^buffertest;
+	int compassDegrees = 0;
+	double PI = 3.14159265359;
+
+	public: static array<int>^ keyCode = gcnew array<int>(7) { 0x57, 0x41, 0x44, 0x53, 0x50, 0x4D, 0x4E };
+	public: static array<bool>^ keyDown = gcnew array<bool>(7) { false, false, false, false, false, false, false };
+	public: static array<char>^ keySendUp = gcnew array<char>(7) { 'W', 'A', 'D', 'S', 'P', 'M', 'N' };
+	public: static array<char>^ keySendDown = gcnew array<char>(7) { 'w', 'a', 'd', 's', 'p', 'm', 'n' };
+
+
 
 	private: System::Void MyForm_Load(System::Object^  sender, System::EventArgs^  e) {
 				 loadCommports();
@@ -541,11 +565,12 @@ namespace SwagBot {
 				 if (this->cmbComm->SelectedIndex != -1) {
 
 					 this->serialPort1->PortName = this->cmbComm->Text;
+					 this->serialPort1->Parity = System::IO::Ports::Parity::None;
+					 this->serialPort1->DataBits = 8;
+
 					 this->serialPort1->Open();
 					 if (this->serialPort1->IsOpen) {
-						 //serialPort1->Write("w");
 						 setControlstate(false);
-
 					 } else {
 						 MessageBox::Show("Could not open '" + this->cmbComm->Text + "'!");
 						 setControlstate(true);
@@ -574,67 +599,69 @@ namespace SwagBot {
 	}
 
 	private: System::Void tmrGetData_Tick(System::Object^  sender, System::EventArgs^  e) {
-				 char gchar;
-				 array<String^>^ sensordata;
+				 int gchar;
+				 array<wchar_t>^ sensordata;
 
 				 if (!this->serialPort1->IsOpen) return;
 
 				 while (this->serialPort1->BytesToRead > 0) {
-					 gchar = this->serialPort1->ReadChar();
-					 if (gchar == ';') { //end of bufferdata
-						 sensordata = buffertest->Split(':');
+					 //gchar = this->serialPort1->ReadChar();
+					 gchar = this->serialPort1->ReadByte();
+
+					 if (gchar == 255) { //end of bufferdata
+						 sensordata = buffertest->ToCharArray();//->Split(':');
 						 buffertest = "";
 						 if (sensordata->Length == 8) {
-							 this->lblRes0->Text = sensordata[0];
-							 this->lblRes1->Text = sensordata[1];
-							 int leds = Convert::ToInt16(sensordata[2]);
+							 this->lblRes0->Text = "" + (sensordata[0] - 128);
+							 this->lblRes1->Text = "" + (sensordata[1] - 128);
+							 int leds = sensordata[2];
 
-							 if (1 & leds > 0) {
+							 if (1 & leds) {
 								 this->picLed0->BackColor = Color::Lime;
 							 } else {
 								 this->picLed0->BackColor = Color::DarkGreen;
 							 }
-							 if (2 & leds > 0) {
+							 if (2 & leds) {
 								 this->picLed1->BackColor = Color::Red;
 							 } else {
 								 this->picLed1->BackColor = Color::DarkRed;
 							 }
-							 if (4 & leds > 0) {
+							 if (4 & leds) {
 								 this->picLed2->BackColor = Color::Red;
 							 } else {
 								 this->picLed2->BackColor = Color::DarkRed;
 							 }
-							 if (8 & leds > 0) {
+							 if (8 & leds) {
 								 this->picLed3->BackColor = Color::Lime;
 							 } else {
 								 this->picLed3->BackColor = Color::DarkGreen;
 							 }
-							 if (16 & leds > 0) {
+							 if (16 & leds) {
 								 this->picLed4->BackColor = Color::Red;
 							 } else {
 								 this->picLed4->BackColor = Color::DarkRed;
 							 }
-							 if (32 & leds > 0) {
+							 if (32 & leds) {
 								 this->picLed5->BackColor = Color::Red;
 							 } else {
 								 this->picLed5->BackColor = Color::DarkRed;
 							 }
-							 if (64 & leds > 0) {
+							 if (64 & leds) {
 								 this->picLed6->BackColor = Color::Red;
 							 } else {
 								 this->picLed6->BackColor = Color::DarkRed;
 							 }
-							 if (128 & leds > 0) {
+							 if (128 & leds) {
 								 this->picLed7->BackColor = Color::Red;
 							 } else {
 								 this->picLed7->BackColor = Color::DarkRed;
 							 }
 
-							 this->lblRes3->Text = sensordata[3];
-							 this->lblRes4->Text = sensordata[4];
-							 this->lblRes5->Text = sensordata[5];
-							 setPercentage(Convert::ToInt16(sensordata[6]));
-							 compassDegrees = Convert::ToInt16(sensordata[7]);
+							 this->lblRes3->Text = (Convert::ToUInt16(sensordata[3])).ToString();
+							 this->lblRes4->Text = "" + Convert::ToUInt16(sensordata[4]);
+							 this->lblRes5->Text = "" + Convert::ToUInt16(sensordata[5]);
+							 setPercentage(sensordata[6]);
+							 compassDegrees = Convert::ToUInt16(sensordata[7]);
 							 this->picCompass->Refresh();
 						 }
 					 } else {
@@ -642,31 +669,22 @@ namespace SwagBot {
 					 }
 				 }
 
-				 if (GetAsyncKeyState(0x57)) {
-					 this->serialPort1->Write("w");
+				 int i = 0;
 
-				 } else if (GetAsyncKeyState(0x41)) {
-					 this->serialPort1->Write("a");
-
-				 } else if (GetAsyncKeyState(0x44)) {
-					 this->serialPort1->Write("d");
-
-				 } else if (GetAsyncKeyState(0x53)) {
-					 this->serialPort1->Write("s");
-
-				 } else if (GetAsyncKeyState(0x53)) {
-					 this->serialPort1->Write("s");
-
-				 } else if (GetAsyncKeyState(0x50)) {
-					 this->serialPort1->Write("p");
-
-				 } else if (GetAsyncKeyState(0x4D)) {
-					 this->serialPort1->Write("m");
-
-				 } else if (GetAsyncKeyState(0x4E)) {
-					 this->serialPort1->Write("n");
-
+				 for (i = 0; i < 7; i++) {
+					 if (GetAsyncKeyState(keyCode[i])) {
+						 if (!keyDown[i]) {
+							 this->serialPort1->Write(Convert::ToString(keySendUp[i]));
+							 keyDown[i] = true;
+						 }
+					 } else {
+						 if (keyDown[i]) {
+							 keyDown[i] = false;
+							 this->serialPort1->Write(Convert::ToString(keySendUp[i]));
+						 }
+					 }
 				 }
+
 	}
 
 
@@ -693,7 +711,7 @@ namespace SwagBot {
 	}
 
 	private: double byteToDeg(int x) {
-				 return (double)x / 128 * PI - (0.499*PI);
+				 return (double)x / 128.0 * PI - (0.499*PI);
 	}
 
 	private: void picCompass_Paint(Object^ sender, System::Windows::Forms::PaintEventArgs^ e) {
@@ -748,5 +766,9 @@ namespace SwagBot {
 	private: System::Void cmdRefresh_Click(System::Object^  sender, System::EventArgs^  e) {
 				 loadCommports();
 	}
+private: System::Void button1_Click(System::Object^  sender, System::EventArgs^  e) {
+			 compassDegrees += 10;
+			 this->picCompass->Refresh();
+}
 };
 }
