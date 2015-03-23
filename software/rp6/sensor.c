@@ -156,6 +156,7 @@ void readCompass(){
 void readSensors(){
 	readBumperR();
 	readBumperL();
+	readBattery();
 	
 	//readCompass();
 }
