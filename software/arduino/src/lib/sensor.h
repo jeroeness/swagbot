@@ -9,12 +9,12 @@
 
 //SD stands for SensorData
 struct SD {
-	uint8_t bumperRight:1;
-	uint8_t bumperLeft:1;
-	uint16_t compassDegrees;
+	uint8_t bumperRight;
+	uint8_t bumperLeft;
+	uint8_t compassDegrees;
 	int8_t motorLeft;
 	int8_t motorRight;
-	uint16_t ultrasonic;
+	uint8_t ultrasonic;
 	uint8_t batteryPercentage;
 };
 

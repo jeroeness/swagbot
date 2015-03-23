@@ -75,33 +75,33 @@ void printVerbose() {
 	instructionData.instructionstruct.motorLeft = 255;
 	instructionData.instructionstruct.motorRight = 255;
 	instructionData.instructionstruct.ledStatus = 1;
-	
-	
+
+
 
 	if (vebosityTimer-- == 0) {
 		vebosityTimer = 0xFFFF;
 
-		char *str = (char*)malloc(3 * sizeof(char));
-		
+		//char *str = (char*)malloc(3 * sizeof(char));
+
 		if(sensorData.sensorStruct.ultrasonic > 100){
 			sensorData.sensorStruct.ultrasonic = 0;
 		}else{
 			sensorData.sensorStruct.ultrasonic++;
 		}
-		
+
 		if(sensorData.sensorStruct.batteryPercentage > 100){
 			sensorData.sensorStruct.batteryPercentage = 0;
 		}else{
 			sensorData.sensorStruct.batteryPercentage++;
 		}
-		
+
 		if(sensorData.sensorStruct.compassDegrees > 244){
 			sensorData.sensorStruct.compassDegrees = 0;
 		}else{
 			sensorData.sensorStruct.compassDegrees += 10;
 		}
-		
-		
+
+
 		while (!outputBufferWalked());
 		clearBuffer();
 		//serialPrint("\r\n");
@@ -122,7 +122,8 @@ void printVerbose() {
 		serialPrintLine(comm_itoa(sensorData.sensorStruct.bumperLeft, str));
 		serialPrintLine("------------------------------------\r\n");
 */
-		serialPrint("");
+
+		/*serialPrint("");
 		serialPrint(comm_itoa(instructionData.instructionstruct.motorLeft, str));
 		serialPrint(":");
 		serialPrint(comm_itoa(instructionData.instructionstruct.motorRight, str));
@@ -138,7 +139,20 @@ void printVerbose() {
 		serialPrint(comm_itoa(sensorData.sensorStruct.batteryPercentage, str));
 		serialPrint(":");
 		serialPrint(comm_itoa(sensorData.sensorStruct.compassDegrees, str));
-		serialPrint(";");
+		serialPrint(";");*/
+
+		char *str = (char*)malloc(8 * sizeof(char));
+
+        uint8_t i = 0;
+		str[i++] = instructionData.instructionstruct.motorLeft;
+		str[i++] = instructionData.instructionstruct.motorRight;
+		str[i++] = instructionData.instructionstruct.ledStatus;
+		str[i++] = sensorData.sensorStruct.ultrasonic;
+		str[i++] = sensorData.sensorStruct.bumperLeft;
+		str[i++] = sensorData.sensorStruct.bumperRight;
+		str[i++] = sensorData.sensorStruct.batteryPercentage;
+		str[i++] = sensorData.sensorStruct.compassDegrees;
+		serialPrint(str);
 		free(str);
 
 	}
