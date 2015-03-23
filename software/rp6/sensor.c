@@ -156,6 +156,30 @@ void readCompass(){
 void readSensors(){
 	readBumperR();
 	readBumperL();
+	readBattery();
 	
 	//readCompass();
+}
+
+void readBattery(){
+	uint16_t batteryValue;
+
+	ADMUX |= (1 << REFS0);
+	ADCSRA |= (1 << ADPS2);
+	ADCSRA |= (1 << ADEN);
+	
+	ADMUX |= (1 << MUX2 | 1 << MUX1 | 1 << MUX0);
+	ADCSRA |= (1 << ADSC| 1<<ADIF); 
+
+	while(~ADCSRA & (1<<ADIF));
+	batteryValue = ADC;   
+	
+	if(batteryValue < 600) {
+		sensorData.sensorStruct.batteryLow = 1;
+	}
+	else {
+	sensorData.sensorStruct.batteryLow = 0;
+	}
+	
+	sensorData.sensorStruct.batteryVoltage = batteryValue;
 }

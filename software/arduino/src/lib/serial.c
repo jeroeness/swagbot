@@ -57,6 +57,8 @@ char serialRead(void) {
 	return d;
 }
 
+
+
 void serialPrint(const char *c) {
 
 	int8_t len = strlen((char*)c);

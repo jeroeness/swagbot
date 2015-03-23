@@ -2,17 +2,24 @@
 
 #include "../globalincsanddefs.h"
 
+#define KEYSTATESCOUNT 4
+
 extern union UID instructionData;
 extern union USD sensorData;
 
 int incomingByte = 0;
 bool connectionIsOpen = false;
-uint8_t activeKey = 0;
 int16_t keyTimer = 0;
 int16_t vebosityTimer = 0;
 
+
+int8_t *keyState;
+
+
 void initCommunication() {
 	openConnection();
+
+	keyState = (int8_t*)calloc (KEYSTATESCOUNT, sizeof (int8_t));
 }
 
 bool openConnection () {
@@ -72,53 +79,39 @@ void printVerbose() {
 
 	sensorData.sensorStruct.bumperRight = 1;
 	sensorData.sensorStruct.bumperLeft = 1;
-	instructionData.instructionstruct.motorLeft = 255;
-	instructionData.instructionstruct.motorRight = 255;
+	instructionData.instructionstruct.motorLeft = 100;
+	instructionData.instructionstruct.motorRight = -100;
 	instructionData.instructionstruct.ledStatus = 1;
-	
-	
+
+
 
 	if (vebosityTimer-- == 0) {
 		vebosityTimer = 0xFFFF;
 
-		char *str = (char*)malloc(3 * sizeof(char));
-		
+		//char *str = (char*)malloc(3 * sizeof(char));
+
 		if(sensorData.sensorStruct.ultrasonic > 100){
-			sensorData.sensorStruct.ultrasonic = 0;
+			sensorData.sensorStruct.ultrasonic = 1;
 		}else{
 			sensorData.sensorStruct.ultrasonic++;
 		}
-		
+
 		if(sensorData.sensorStruct.batteryPercentage > 100){
-			sensorData.sensorStruct.batteryPercentage = 0;
+			sensorData.sensorStruct.batteryPercentage = 1;
 		}else{
 			sensorData.sensorStruct.batteryPercentage++;
 		}
-		
-		
-		
-		
+
+		if(sensorData.sensorStruct.compassDegrees > 240){
+			sensorData.sensorStruct.compassDegrees = 1;
+		}else{
+			sensorData.sensorStruct.compassDegrees += 10;
+		}
+
+
 		while (!outputBufferWalked());
 		clearBuffer();
-		//serialPrint("\r\n");
-		/*
-		serialPrint("Motor Left:");
-		serialPrintLine(comm_itoa(instructionData.instructionstruct.motorLeft, str));
-		serialPrint("Motor Right:");
-		serialPrintLine(comm_itoa(instructionData.instructionstruct.motorRight, str));
-
-		serialPrint("LED:");
-		serialPrintLine(comm_itoa(instructionData.instructionstruct.ledStatus, str));
-		serialPrint("Ultrasonic:");
-		serialPrintLine(comm_itoa(sensorData.sensorStruct.ultrasonic, str));
-
-		serialPrint("The Right bumper:");
-		serialPrintLine(comm_itoa(sensorData.sensorStruct.bumperRight, str));
-		serialPrint("The left bumper:");
-		serialPrintLine(comm_itoa(sensorData.sensorStruct.bumperLeft, str));
-		serialPrintLine("------------------------------------\r\n");
-*/
-		serialPrint("");
+		/*serialPrint("");
 		serialPrint(comm_itoa(instructionData.instructionstruct.motorLeft, str));
 		serialPrint(":");
 		serialPrint(comm_itoa(instructionData.instructionstruct.motorRight, str));
@@ -132,10 +125,48 @@ void printVerbose() {
 		serialPrint(comm_itoa(sensorData.sensorStruct.bumperRight, str));
 		serialPrint(":");
 		serialPrint(comm_itoa(sensorData.sensorStruct.batteryPercentage, str));
-		serialPrint(";");
-		free(str);
+		serialPrint(":");
+		serialPrint(comm_itoa(sensorData.sensorStruct.compassDegrees, str));
+		serialPrint(";");*/
+
+		char str[10];
+		
+        uint8_t i = 0;
+		str[i++] = instructionData.instructionstruct.motorLeft+128;
+		str[i++] = instructionData.instructionstruct.motorRight+128;
+		str[i++] = instructionData.instructionstruct.ledStatus;
+		str[i++] = sensorData.sensorStruct.ultrasonic;
+		str[i++] = sensorData.sensorStruct.bumperLeft;
+		str[i++] = sensorData.sensorStruct.bumperRight;
+		str[i++] = sensorData.sensorStruct.batteryPercentage;
+		str[i++] = sensorData.sensorStruct.compassDegrees;
+		str[i++] = 255;
+		str[i++] = 0;
+		
+		serialPrint(str);
 
 	}
+}
+
+int8_t keyIndex (char key) {
+    switch (key) {
+        case 'w': return 0;
+        case 'a': return 1;
+        case 's': return 2;
+        case 'd': return 3;
+    }
+	return 0;
+}
+
+
+char charIndex (int8_t key) {
+    switch (key) {
+        case 0: return 'w';
+        case 1: return 'a';
+        case 2: return 's';
+        case 3: return 'd';
+    }
+	return ';';
 }
 
 void readInputs () {
@@ -146,17 +177,15 @@ void readInputs () {
 			case 'a':
 			case 's':
 			case 'd':
-				if (input != activeKey) {
-					if (activeKey) {
-						inputKeyRelease(activeKey);
-					}
-					inputKeyPress(input);
-				}
-				activeKey = input;
-				keyTimer = 0x3000;
+			    keyState[keyIndex (input)] = 1;
+                inputKeyPress(input);
 				break;
-			case 'p':
-				activeKey = 0;
+            case 'W':
+			case 'A':
+			case 'S':
+			case 'D':
+			    keyState[keyIndex (input)] = 0;
+                inputKeyRelease(input + ('a'-'A'));
 				break;
 			case 'm':
 				setSteeringMode(manual);
@@ -167,13 +196,9 @@ void readInputs () {
 		}
     }
 
-	if (activeKey > 0) {
-		if (keyTimer-- == 1) {
-			inputKeyRelease(activeKey);
-			activeKey = 0;
-		}
-		inputKeyDown (activeKey);
-
-		//serialPrintCharacterSynchronous(activeKey);
-	}
+    for (int8_t i = 0; i < KEYSTATESCOUNT; i++) {
+        if (keyState[i]) {
+            inputKeyPress(charIndex(i));
+        }
+    }
 }

@@ -226,3 +226,73 @@
 
 1427031038 d:\documents\projects\swagbot\software\arduino\src\modules\ultrasonic_sensor.h
 
+1427106056 source:c:\users\14023253\swagbot\software\arduino\src\lib\serial.c
+	"../globalincsanddefs.h"
+
+1427106056 c:\users\14023253\swagbot\software\arduino\src\globalincsanddefs.h
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<stdint.h>
+	<stdbool.h>
+	<avr/io.h>
+	<avr/interrupt.h>
+	<util/delay.h>
+	"lib/sensor.h"
+	"lib/serial.h"
+	"lib/swagbotlib.h"
+	"modules/automatic_mode.h"
+	"modules/communication.h"
+	"modules/i2c_lib.h"
+	"modules/manual_mode.h"
+	"modules/mode_manager.h"
+	"modules/motor.h"
+	"modules/ultrasonic_sensor.h"
+
+1427106326 c:\users\14023253\swagbot\software\arduino\src\lib\sensor.h
+
+1427106056 c:\users\14023253\swagbot\software\arduino\src\lib\serial.h
+	"../globalincsanddefs.h"
+
+1427106056 c:\users\14023253\swagbot\software\arduino\src\lib\swagbotlib.h
+
+1427106056 c:\users\14023253\swagbot\software\arduino\src\modules\automatic_mode.h
+	"../globalincsanddefs.h"
+
+1427106056 c:\users\14023253\swagbot\software\arduino\src\modules\communication.h
+	"../globalincsanddefs.h"
+
+1427106056 c:\users\14023253\swagbot\software\arduino\src\modules\i2c_lib.h
+	"../globalincsanddefs.h"
+
+1427106056 c:\users\14023253\swagbot\software\arduino\src\modules\manual_mode.h
+	"../globalincsanddefs.h"
+
+1427106056 c:\users\14023253\swagbot\software\arduino\src\modules\mode_manager.h
+	"../globalincsanddefs.h"
+
+1427106056 c:\users\14023253\swagbot\software\arduino\src\modules\motor.h
+	"../globalincsanddefs.h"
+
+1427106056 c:\users\14023253\swagbot\software\arduino\src\modules\ultrasonic_sensor.h
+
+1427106056 source:c:\users\14023253\swagbot\software\arduino\src\lib\swagbotlib.c
+
+1427106056 source:c:\users\14023253\swagbot\software\arduino\src\main.c
+	"globalincsanddefs.h"
+
+1427106056 source:c:\users\14023253\swagbot\software\arduino\src\modules\automatic_mode.c
+	"../globalincsanddefs.h"
+
+1427106056 source:c:\users\14023253\swagbot\software\arduino\src\modules\i2c_lib.c
+	"../globalincsanddefs.h"
+
+1427106056 source:c:\users\14023253\swagbot\software\arduino\src\modules\manual_mode.c
+	"../globalincsanddefs.h"
+
+1427106056 source:c:\users\14023253\swagbot\software\arduino\src\modules\mode_manager.c
+	"../globalincsanddefs.h"
+
+1427106056 source:c:\users\14023253\swagbot\software\arduino\src\modules\motor.c
+	"../globalincsanddefs.h"
+

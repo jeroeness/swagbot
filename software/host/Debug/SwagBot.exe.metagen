@@ -17,3 +17,8 @@ Assembly System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c5619
 Class SwagBot.MyForm: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
   :System.Windows.Forms.Form
     Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Fields:
+    Int32[] keyCode : Public, Static
+    Boolean[] keyDown : Public, Static
+    SByte[] keySendUp : Public, Static
+    SByte[] keySendDown : Public, Static
