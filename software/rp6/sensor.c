@@ -180,13 +180,3 @@ void readBattery(){
 	sensorData.sensorStruct.batteryLow = 0;
 	}
 }
-
-
-
-
-
-
-
-
-
-
