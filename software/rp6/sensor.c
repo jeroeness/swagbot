@@ -179,4 +179,6 @@ void readBattery(){
 	else {
 	sensorData.sensorStruct.batteryLow = 0;
 	}
+	
+	sensorData.sensorStruct.batteryVoltage = batteryValue;
 }
