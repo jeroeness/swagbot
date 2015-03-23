@@ -14,14 +14,17 @@ union USD sensorData;
 int main(void)
 {
 	cli();
-
+	
 	PORTD = 3;
-
+	sensorData.sensorStruct.ultrasonic = 1;
+	
 	i2c_init(0xA8);
 	initAutomaticMode();
 
 	initCommunication();
-
+	
+	
+	
 	sei();
 
 	setSteeringMode(manual);

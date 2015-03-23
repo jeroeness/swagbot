@@ -18,7 +18,12 @@ Class SwagBot.MyForm: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
   :System.Windows.Forms.Form
     Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
   Fields:
+    System.String buffertest : Public
+    Int32 compassDegrees : Public
+    Double PI : Public
     Int32[] keyCode : Public, Static
     Boolean[] keyDown : Public, Static
-    SByte[] keySendUp : Public, Static
-    SByte[] keySendDown : Public, Static
+    Byte[] keySendUp : Public, Static
+    Byte[] keySendDown : Public, Static
+    System.Windows.Forms.Label[] keyLabels : Public, Static
+    Boolean[] MouseDown : Public, Static

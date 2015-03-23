@@ -13,13 +13,21 @@ void setSteeringMode(enum SteeringMode s) {
 		if (steeringMode == manual) {
 			stopManualMode();
 			beginAutomaticMode();
-			sensorData.sensorStruct.steeringMode = 1;
+			
 		} else {
 			stopAutomaticMode();
 			beginManualMode();
-			sensorData.sensorStruct.steeringMode = 0;
+			
 		}
 	}
+	
+	/*
+	if(steeringMode == manual){
+		sensorData.sensorStruct.steeringMode = 1;
+	}else if(steeringMode == automatic){
+		sensorData.sensorStruct.steeringMode = 2;
+	}*/
+	
 	steeringMode = s;
 }
 

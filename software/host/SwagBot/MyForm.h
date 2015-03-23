@@ -81,7 +81,23 @@ namespace SwagBot {
 
 	private: System::Windows::Forms::PictureBox^  picLed1;
 	private: System::Windows::Forms::Button^  cmdRefresh;
-	private: System::Windows::Forms::Button^  button1;
+
+
+	private: System::Windows::Forms::GroupBox^  frmControls;
+	private: System::Windows::Forms::Label^  lblD;
+
+	private: System::Windows::Forms::Label^  lblS;
+
+	private: System::Windows::Forms::Label^  lblA;
+
+	private: System::Windows::Forms::Label^  lblW;
+	private: System::Windows::Forms::Label^  lblP;
+	private: System::Windows::Forms::Label^  lblM;
+	private: System::Windows::Forms::Label^  lblN;
+	private: System::Windows::Forms::Label^  lblKeyInfo;
+	private: System::Windows::Forms::Label^  lblRes6;
+
+
 
 
 
@@ -119,13 +135,17 @@ namespace SwagBot {
 			this->frmSensor = (gcnew System::Windows::Forms::GroupBox());
 			this->picLed7 = (gcnew System::Windows::Forms::PictureBox());
 			this->picLed6 = (gcnew System::Windows::Forms::PictureBox());
+			this->picFront = (gcnew System::Windows::Forms::PictureBox());
+			this->picBack = (gcnew System::Windows::Forms::PictureBox());
 			this->picLed5 = (gcnew System::Windows::Forms::PictureBox());
 			this->picLed4 = (gcnew System::Windows::Forms::PictureBox());
+			this->pictureBox1 = (gcnew System::Windows::Forms::PictureBox());
 			this->picLed3 = (gcnew System::Windows::Forms::PictureBox());
 			this->picLed2 = (gcnew System::Windows::Forms::PictureBox());
 			this->picLed1 = (gcnew System::Windows::Forms::PictureBox());
 			this->picLed0 = (gcnew System::Windows::Forms::PictureBox());
 			this->label6 = (gcnew System::Windows::Forms::Label());
+			this->pictureBox3 = (gcnew System::Windows::Forms::PictureBox());
 			this->lblRes5 = (gcnew System::Windows::Forms::Label());
 			this->lblRes4 = (gcnew System::Windows::Forms::Label());
 			this->lblRes3 = (gcnew System::Windows::Forms::Label());
@@ -138,33 +158,39 @@ namespace SwagBot {
 			this->lblRes0 = (gcnew System::Windows::Forms::Label());
 			this->lblSensor = (gcnew System::Windows::Forms::Label());
 			this->picCompass = (gcnew System::Windows::Forms::PictureBox());
-			this->picFront = (gcnew System::Windows::Forms::PictureBox());
-			this->picBack = (gcnew System::Windows::Forms::PictureBox());
-			this->pictureBox1 = (gcnew System::Windows::Forms::PictureBox());
-			this->pictureBox3 = (gcnew System::Windows::Forms::PictureBox());
 			this->cmdRefresh = (gcnew System::Windows::Forms::Button());
-			this->button1 = (gcnew System::Windows::Forms::Button());
+			this->frmControls = (gcnew System::Windows::Forms::GroupBox());
+			this->lblKeyInfo = (gcnew System::Windows::Forms::Label());
+			this->lblN = (gcnew System::Windows::Forms::Label());
+			this->lblD = (gcnew System::Windows::Forms::Label());
+			this->lblM = (gcnew System::Windows::Forms::Label());
+			this->lblS = (gcnew System::Windows::Forms::Label());
+			this->lblA = (gcnew System::Windows::Forms::Label());
+			this->lblP = (gcnew System::Windows::Forms::Label());
+			this->lblW = (gcnew System::Windows::Forms::Label());
+			this->lblRes6 = (gcnew System::Windows::Forms::Label());
 			this->frmSensor->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->picLed7))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->picLed6))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->picFront))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->picBack))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->picLed5))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->picLed4))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->picLed3))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->picLed2))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->picLed1))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->picLed0))->BeginInit();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->picCompass))->BeginInit();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->picFront))->BeginInit();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->picBack))->BeginInit();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox3))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->picCompass))->BeginInit();
+			this->frmControls->SuspendLayout();
 			this->SuspendLayout();
 			// 
 			// cmdConnect
 			// 
-			this->cmdConnect->Location = System::Drawing::Point(174, 11);
+			this->cmdConnect->Location = System::Drawing::Point(179, 11);
 			this->cmdConnect->Name = L"cmdConnect";
-			this->cmdConnect->Size = System::Drawing::Size(75, 23);
+			this->cmdConnect->Size = System::Drawing::Size(81, 23);
 			this->cmdConnect->TabIndex = 0;
 			this->cmdConnect->TabStop = false;
 			this->cmdConnect->Text = L"Connect";
@@ -188,9 +214,9 @@ namespace SwagBot {
 			// cmdDisconnect
 			// 
 			this->cmdDisconnect->Enabled = false;
-			this->cmdDisconnect->Location = System::Drawing::Point(255, 11);
+			this->cmdDisconnect->Location = System::Drawing::Point(266, 11);
 			this->cmdDisconnect->Name = L"cmdDisconnect";
-			this->cmdDisconnect->Size = System::Drawing::Size(75, 23);
+			this->cmdDisconnect->Size = System::Drawing::Size(81, 23);
 			this->cmdDisconnect->TabIndex = 2;
 			this->cmdDisconnect->TabStop = false;
 			this->cmdDisconnect->Text = L"Disconnect";
@@ -204,10 +230,15 @@ namespace SwagBot {
 			// 
 			// frmSensor
 			// 
+			this->frmSensor->Controls->Add(this->lblRes6);
 			this->frmSensor->Controls->Add(this->picLed7);
 			this->frmSensor->Controls->Add(this->picLed6);
+			this->frmSensor->Controls->Add(this->picFront);
+			this->frmSensor->Controls->Add(this->picBack);
 			this->frmSensor->Controls->Add(this->picLed5);
+			this->frmSensor->Controls->Add(this->pictureBox3);
 			this->frmSensor->Controls->Add(this->picLed4);
+			this->frmSensor->Controls->Add(this->pictureBox1);
 			this->frmSensor->Controls->Add(this->picLed3);
 			this->frmSensor->Controls->Add(this->picLed2);
 			this->frmSensor->Controls->Add(this->picLed1);
@@ -224,9 +255,9 @@ namespace SwagBot {
 			this->frmSensor->Controls->Add(this->label1);
 			this->frmSensor->Controls->Add(this->lblRes0);
 			this->frmSensor->Controls->Add(this->lblSensor);
-			this->frmSensor->Location = System::Drawing::Point(12, 67);
+			this->frmSensor->Location = System::Drawing::Point(12, 40);
 			this->frmSensor->Name = L"frmSensor";
-			this->frmSensor->Size = System::Drawing::Size(322, 108);
+			this->frmSensor->Size = System::Drawing::Size(333, 109);
 			this->frmSensor->TabIndex = 4;
 			this->frmSensor->TabStop = false;
 			this->frmSensor->Text = L"Live SensorData";
@@ -252,6 +283,26 @@ namespace SwagBot {
 			this->picLed6->TabIndex = 23;
 			this->picLed6->TabStop = false;
 			// 
+			// picFront
+			// 
+			this->picFront->BackColor = System::Drawing::Color::Lime;
+			this->picFront->Location = System::Drawing::Point(305, 72);
+			this->picFront->Name = L"picFront";
+			this->picFront->Size = System::Drawing::Size(17, 24);
+			this->picFront->TabIndex = 18;
+			this->picFront->TabStop = false;
+			this->picFront->Click += gcnew System::EventHandler(this, &MyForm::picFront_Click);
+			// 
+			// picBack
+			// 
+			this->picBack->BackColor = System::Drawing::Color::White;
+			this->picBack->Location = System::Drawing::Point(303, 38);
+			this->picBack->Name = L"picBack";
+			this->picBack->Size = System::Drawing::Size(21, 60);
+			this->picBack->TabIndex = 16;
+			this->picBack->TabStop = false;
+			this->picBack->Click += gcnew System::EventHandler(this, &MyForm::picBack_Click);
+			// 
 			// picLed5
 			// 
 			this->picLed5->BackColor = System::Drawing::Color::DarkRed;
@@ -271,6 +322,16 @@ namespace SwagBot {
 			this->picLed4->Size = System::Drawing::Size(8, 11);
 			this->picLed4->TabIndex = 21;
 			this->picLed4->TabStop = false;
+			// 
+			// pictureBox1
+			// 
+			this->pictureBox1->BackColor = System::Drawing::Color::Gray;
+			this->pictureBox1->Location = System::Drawing::Point(301, 36);
+			this->pictureBox1->Name = L"pictureBox1";
+			this->pictureBox1->Size = System::Drawing::Size(25, 64);
+			this->pictureBox1->TabIndex = 5;
+			this->pictureBox1->TabStop = false;
+			this->pictureBox1->Click += gcnew System::EventHandler(this, &MyForm::pictureBox1_Click);
 			// 
 			// picLed3
 			// 
@@ -320,6 +381,16 @@ namespace SwagBot {
 			this->label6->Size = System::Drawing::Size(37, 13);
 			this->label6->TabIndex = 16;
 			this->label6->Text = L"Mode:";
+			// 
+			// pictureBox3
+			// 
+			this->pictureBox3->BackColor = System::Drawing::Color::Gray;
+			this->pictureBox3->Location = System::Drawing::Point(308, 32);
+			this->pictureBox3->Name = L"pictureBox3";
+			this->pictureBox3->Size = System::Drawing::Size(11, 10);
+			this->pictureBox3->TabIndex = 17;
+			this->pictureBox3->TabStop = false;
+			this->pictureBox3->Click += gcnew System::EventHandler(this, &MyForm::pictureBox3_Click);
 			// 
 			// lblRes5
 			// 
@@ -417,7 +488,7 @@ namespace SwagBot {
 			// 
 			// picCompass
 			// 
-			this->picCompass->Location = System::Drawing::Point(12, 181);
+			this->picCompass->Location = System::Drawing::Point(185, 162);
 			this->picCompass->Name = L"picCompass";
 			this->picCompass->Size = System::Drawing::Size(160, 160);
 			this->picCompass->TabIndex = 5;
@@ -425,350 +496,629 @@ namespace SwagBot {
 			this->picCompass->Click += gcnew System::EventHandler(this, &MyForm::picCompass_Click);
 			this->picCompass->Paint += gcnew System::Windows::Forms::PaintEventHandler(this, &MyForm::picCompass_Paint);
 			// 
-			// picFront
-			// 
-			this->picFront->BackColor = System::Drawing::Color::Lime;
-			this->picFront->Location = System::Drawing::Point(188, 224);
-			this->picFront->Name = L"picFront";
-			this->picFront->Size = System::Drawing::Size(35, 113);
-			this->picFront->TabIndex = 18;
-			this->picFront->TabStop = false;
-			// 
-			// picBack
-			// 
-			this->picBack->BackColor = System::Drawing::Color::White;
-			this->picBack->Location = System::Drawing::Point(186, 189);
-			this->picBack->Name = L"picBack";
-			this->picBack->Size = System::Drawing::Size(39, 150);
-			this->picBack->TabIndex = 16;
-			this->picBack->TabStop = false;
-			// 
-			// pictureBox1
-			// 
-			this->pictureBox1->BackColor = System::Drawing::Color::Gray;
-			this->pictureBox1->Location = System::Drawing::Point(184, 187);
-			this->pictureBox1->Name = L"pictureBox1";
-			this->pictureBox1->Size = System::Drawing::Size(43, 154);
-			this->pictureBox1->TabIndex = 5;
-			this->pictureBox1->TabStop = false;
-			// 
-			// pictureBox3
-			// 
-			this->pictureBox3->BackColor = System::Drawing::Color::Gray;
-			this->pictureBox3->Location = System::Drawing::Point(194, 181);
-			this->pictureBox3->Name = L"pictureBox3";
-			this->pictureBox3->Size = System::Drawing::Size(23, 15);
-			this->pictureBox3->TabIndex = 17;
-			this->pictureBox3->TabStop = false;
-			// 
 			// cmdRefresh
 			// 
 			this->cmdRefresh->Location = System::Drawing::Point(93, 11);
 			this->cmdRefresh->Name = L"cmdRefresh";
-			this->cmdRefresh->Size = System::Drawing::Size(75, 23);
+			this->cmdRefresh->Size = System::Drawing::Size(80, 23);
 			this->cmdRefresh->TabIndex = 19;
 			this->cmdRefresh->TabStop = false;
 			this->cmdRefresh->Text = L"Refresh";
 			this->cmdRefresh->UseVisualStyleBackColor = true;
 			this->cmdRefresh->Click += gcnew System::EventHandler(this, &MyForm::cmdRefresh_Click);
 			// 
-			// button1
+			// frmControls
 			// 
-			this->button1->Location = System::Drawing::Point(383, 67);
-			this->button1->Name = L"button1";
-			this->button1->Size = System::Drawing::Size(75, 23);
-			this->button1->TabIndex = 20;
-			this->button1->Text = L"button1";
-			this->button1->UseVisualStyleBackColor = true;
-			this->button1->Click += gcnew System::EventHandler(this, &MyForm::button1_Click);
+			this->frmControls->Controls->Add(this->lblKeyInfo);
+			this->frmControls->Controls->Add(this->lblN);
+			this->frmControls->Controls->Add(this->lblD);
+			this->frmControls->Controls->Add(this->lblM);
+			this->frmControls->Controls->Add(this->lblS);
+			this->frmControls->Controls->Add(this->lblA);
+			this->frmControls->Controls->Add(this->lblP);
+			this->frmControls->Controls->Add(this->lblW);
+			this->frmControls->Location = System::Drawing::Point(12, 155);
+			this->frmControls->Name = L"frmControls";
+			this->frmControls->Size = System::Drawing::Size(165, 167);
+			this->frmControls->TabIndex = 22;
+			this->frmControls->TabStop = false;
+			this->frmControls->Text = L"Controls";
+			this->frmControls->Enter += gcnew System::EventHandler(this, &MyForm::frmControls_Enter);
+			// 
+			// lblKeyInfo
+			// 
+			this->lblKeyInfo->Location = System::Drawing::Point(7, 145);
+			this->lblKeyInfo->Name = L"lblKeyInfo";
+			this->lblKeyInfo->Size = System::Drawing::Size(151, 13);
+			this->lblKeyInfo->TabIndex = 29;
+			// 
+			// lblN
+			// 
+			this->lblN->BackColor = System::Drawing::Color::White;
+			this->lblN->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
+			this->lblN->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 15.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->lblN->Location = System::Drawing::Point(59, 113);
+			this->lblN->Name = L"lblN";
+			this->lblN->Size = System::Drawing::Size(47, 25);
+			this->lblN->TabIndex = 28;
+			this->lblN->Text = L"N";
+			this->lblN->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
+			this->lblN->MouseDown += gcnew System::Windows::Forms::MouseEventHandler(this, &MyForm::lblN_MouseDown);
+			this->lblN->MouseEnter += gcnew System::EventHandler(this, &MyForm::lblN_MouseEnter);
+			this->lblN->MouseLeave += gcnew System::EventHandler(this, &MyForm::lblN_MouseLeave);
+			this->lblN->MouseUp += gcnew System::Windows::Forms::MouseEventHandler(this, &MyForm::lblN_MouseUp);
+			// 
+			// lblD
+			// 
+			this->lblD->BackColor = System::Drawing::Color::White;
+			this->lblD->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
+			this->lblD->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 15.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->lblD->Location = System::Drawing::Point(112, 61);
+			this->lblD->Name = L"lblD";
+			this->lblD->Size = System::Drawing::Size(47, 41);
+			this->lblD->TabIndex = 25;
+			this->lblD->Text = L"D";
+			this->lblD->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
+			this->lblD->MouseDown += gcnew System::Windows::Forms::MouseEventHandler(this, &MyForm::lblD_MouseDown);
+			this->lblD->MouseEnter += gcnew System::EventHandler(this, &MyForm::lblD_MouseEnter);
+			this->lblD->MouseLeave += gcnew System::EventHandler(this, &MyForm::lblD_MouseLeave);
+			this->lblD->MouseUp += gcnew System::Windows::Forms::MouseEventHandler(this, &MyForm::lblD_MouseUp);
+			// 
+			// lblM
+			// 
+			this->lblM->AccessibleDescription = L"";
+			this->lblM->BackColor = System::Drawing::Color::White;
+			this->lblM->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
+			this->lblM->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 15.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->lblM->Location = System::Drawing::Point(6, 113);
+			this->lblM->Name = L"lblM";
+			this->lblM->Size = System::Drawing::Size(47, 25);
+			this->lblM->TabIndex = 27;
+			this->lblM->Tag = L"hallsodisodisod asd";
+			this->lblM->Text = L"M";
+			this->lblM->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
+			this->lblM->MouseDown += gcnew System::Windows::Forms::MouseEventHandler(this, &MyForm::lblM_MouseDown);
+			this->lblM->MouseEnter += gcnew System::EventHandler(this, &MyForm::lblM_MouseEnter);
+			this->lblM->MouseLeave += gcnew System::EventHandler(this, &MyForm::lblM_MouseLeave);
+			this->lblM->MouseUp += gcnew System::Windows::Forms::MouseEventHandler(this, &MyForm::lblM_MouseUp);
+			// 
+			// lblS
+			// 
+			this->lblS->BackColor = System::Drawing::Color::White;
+			this->lblS->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
+			this->lblS->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 15.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->lblS->Location = System::Drawing::Point(59, 61);
+			this->lblS->Name = L"lblS";
+			this->lblS->Size = System::Drawing::Size(47, 41);
+			this->lblS->TabIndex = 24;
+			this->lblS->Text = L"S";
+			this->lblS->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
+			this->lblS->MouseDown += gcnew System::Windows::Forms::MouseEventHandler(this, &MyForm::lblS_MouseDown);
+			this->lblS->MouseEnter += gcnew System::EventHandler(this, &MyForm::lblS_MouseEnter);
+			this->lblS->MouseLeave += gcnew System::EventHandler(this, &MyForm::lblS_MouseLeave);
+			this->lblS->MouseUp += gcnew System::Windows::Forms::MouseEventHandler(this, &MyForm::lblS_MouseUp);
+			// 
+			// lblA
+			// 
+			this->lblA->BackColor = System::Drawing::Color::White;
+			this->lblA->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
+			this->lblA->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 15.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->lblA->Location = System::Drawing::Point(6, 61);
+			this->lblA->Name = L"lblA";
+			this->lblA->Size = System::Drawing::Size(47, 41);
+			this->lblA->TabIndex = 23;
+			this->lblA->Text = L"A";
+			this->lblA->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
+			this->lblA->MouseDown += gcnew System::Windows::Forms::MouseEventHandler(this, &MyForm::lblA_MouseDown);
+			this->lblA->MouseEnter += gcnew System::EventHandler(this, &MyForm::lblA_MouseEnter);
+			this->lblA->MouseLeave += gcnew System::EventHandler(this, &MyForm::lblA_MouseLeave);
+			this->lblA->MouseUp += gcnew System::Windows::Forms::MouseEventHandler(this, &MyForm::lblA_MouseUp);
+			// 
+			// lblP
+			// 
+			this->lblP->BackColor = System::Drawing::Color::White;
+			this->lblP->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
+			this->lblP->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 15.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->lblP->Location = System::Drawing::Point(112, 113);
+			this->lblP->Name = L"lblP";
+			this->lblP->Size = System::Drawing::Size(47, 25);
+			this->lblP->TabIndex = 26;
+			this->lblP->Text = L"P";
+			this->lblP->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
+			this->lblP->MouseDown += gcnew System::Windows::Forms::MouseEventHandler(this, &MyForm::lblP_MouseDown);
+			this->lblP->MouseEnter += gcnew System::EventHandler(this, &MyForm::lblP_MouseEnter);
+			this->lblP->MouseLeave += gcnew System::EventHandler(this, &MyForm::lblP_MouseLeave);
+			this->lblP->MouseUp += gcnew System::Windows::Forms::MouseEventHandler(this, &MyForm::lblP_MouseUp);
+			// 
+			// lblW
+			// 
+			this->lblW->BackColor = System::Drawing::Color::White;
+			this->lblW->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
+			this->lblW->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 15.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->lblW->Location = System::Drawing::Point(59, 14);
+			this->lblW->Name = L"lblW";
+			this->lblW->Size = System::Drawing::Size(47, 41);
+			this->lblW->TabIndex = 22;
+			this->lblW->Text = L"W";
+			this->lblW->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
+			this->lblW->Click += gcnew System::EventHandler(this, &MyForm::lblW_Click);
+			this->lblW->MouseDown += gcnew System::Windows::Forms::MouseEventHandler(this, &MyForm::lblW_MouseDown);
+			this->lblW->MouseEnter += gcnew System::EventHandler(this, &MyForm::lblW_MouseEnter);
+			this->lblW->MouseLeave += gcnew System::EventHandler(this, &MyForm::lblW_MouseLeave);
+			this->lblW->MouseUp += gcnew System::Windows::Forms::MouseEventHandler(this, &MyForm::lblW_MouseUp);
+			// 
+			// lblRes6
+			// 
+			this->lblRes6->Location = System::Drawing::Point(235, 16);
+			this->lblRes6->Name = L"lblRes6";
+			this->lblRes6->Size = System::Drawing::Size(78, 13);
+			this->lblRes6->TabIndex = 25;
+			this->lblRes6->Text = L"N/A";
 			// 
 			// MyForm
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->BackColor = System::Drawing::Color::WhiteSmoke;
-			this->ClientSize = System::Drawing::Size(495, 370);
-			this->Controls->Add(this->button1);
+			this->ClientSize = System::Drawing::Size(356, 333);
+			this->Controls->Add(this->frmControls);
 			this->Controls->Add(this->cmdRefresh);
-			this->Controls->Add(this->picFront);
-			this->Controls->Add(this->picBack);
 			this->Controls->Add(this->picCompass);
-			this->Controls->Add(this->pictureBox1);
 			this->Controls->Add(this->frmSensor);
 			this->Controls->Add(this->cmdDisconnect);
 			this->Controls->Add(this->cmbComm);
 			this->Controls->Add(this->cmdConnect);
-			this->Controls->Add(this->pictureBox3);
 			this->KeyPreview = true;
 			this->Name = L"MyForm";
-			this->Text = L"MyForm";
+			this->Text = L"SwagBot Controller v1.302.999 rev: 30202";
 			this->Load += gcnew System::EventHandler(this, &MyForm::MyForm_Load);
 			this->frmSensor->ResumeLayout(false);
 			this->frmSensor->PerformLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->picLed7))->EndInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->picLed6))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->picFront))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->picBack))->EndInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->picLed5))->EndInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->picLed4))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->EndInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->picLed3))->EndInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->picLed2))->EndInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->picLed1))->EndInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->picLed0))->EndInit();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->picCompass))->EndInit();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->picFront))->EndInit();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->picBack))->EndInit();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->EndInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox3))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->picCompass))->EndInit();
+			this->frmControls->ResumeLayout(false);
 			this->ResumeLayout(false);
 
 		}
 #pragma endregion
 
-	String ^buffertest;
-	int compassDegrees = 0;
-	double PI = 3.14159265359;
 
-	public: static array<int>^ keyCode = gcnew array<int>(7) { 0x57, 0x41, 0x44, 0x53, 0x50, 0x4D, 0x4E };
-	public: static array<bool>^ keyDown = gcnew array<bool>(7) { false, false, false, false, false, false, false };
-	public: static array<char>^ keySendUp = gcnew array<char>(7) { 'W', 'A', 'D', 'S', 'P', 'M', 'N' };
-	public: static array<char>^ keySendDown = gcnew array<char>(7) { 'w', 'a', 'd', 's', 'p', 'm', 'n' };
+#define KEY_UP true
+#define KEY_DOWN false
 
+	public:
+		static array<int>^ keyCode = gcnew array<int>(7) { 0x57, 0x41, 0x44, 0x53, 0x50, 0x4D, 0x4E };
+		static array<bool>^ keyDown = gcnew array<bool>(7) { false, false, false, false, false, false, false };
+		static array<unsigned char>^ keySendUp = gcnew array<unsigned char>(7) { 'W', 'A', 'D','S', 'P', 'M', 'N' }; //Convert::ToChar('W')
+		static array<unsigned char>^ keySendDown = gcnew array<unsigned char>(7) { 'w', 'a', 'd', 's', 'p', 'm', 'n' };
+		static array<Label^>^ keyLabels = gcnew array<Label^>(7) {};
+		static array<bool>^ MouseDown = gcnew array<bool>(7) {};
 
-
-	private: System::Void MyForm_Load(System::Object^  sender, System::EventArgs^  e) {
-				 loadCommports();
-				 setPercentage(100);
-
-	}
-
-	private: System::Void MyForm_KeyDown(Object^ sender, System::Windows::Forms::KeyEventArgs^ e) {
-				 e->SuppressKeyPress = true;
-	}
+		String ^buffertest;
+		int compassDegrees = 0;
+		double PI = 3.14159265359;
 
 
-	private: System::Void MyForm_Unload(System::Object^  sender, System::EventArgs^  e) {
-				 if (this->serialPort1->IsOpen) {
-					 this->serialPort1->Close();
-				 }
-	}
 
-	private: void loadCommports() {
-				this->cmbComm->Items->Clear();
-				this->cmbComm->Items->AddRange(serialPort1->GetPortNames());
-				if (this->cmbComm->Items->Count > 0) {
-					this->cmbComm->SelectedIndex = 0;
+	private:
+		System::Void lblW_MouseUp(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
+			MouseDown[0] = false;
+			this->TriggerKeyState(0, KEY_UP);
+		}
+
+		System::Void lblW_MouseDown(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
+			MouseDown[0] = true;
+			this->TriggerKeyState(0, KEY_DOWN);
+		}
+
+		System::Void lblW_MouseLeave(System::Object^ sender, System::EventArgs^) {
+			this->lblKeyInfo->Text = "";
+		}
+
+		System::Void lblW_MouseEnter(System::Object^ sender, System::EventArgs^) {
+			this->lblKeyInfo->Text = "Forward";
+		}
+
+
+		System::Void lblA_MouseUp(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
+			MouseDown[1] = false;
+			this->TriggerKeyState(1, KEY_UP);
+		}
+
+		System::Void lblA_MouseDown(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
+			MouseDown[1] = true;
+			this->TriggerKeyState(1, KEY_DOWN);
+		}
+
+		System::Void lblA_MouseLeave(System::Object^ sender, System::EventArgs^) {
+			this->lblKeyInfo->Text = "";
+		}
+
+		System::Void lblA_MouseEnter(System::Object^ sender, System::EventArgs^) {
+			this->lblKeyInfo->Text = "Left";
+		}
+
+
+		System::Void lblD_MouseUp(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
+			MouseDown[2] = false;
+			this->TriggerKeyState(2, KEY_UP);
+		}
+
+		System::Void lblD_MouseDown(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
+			MouseDown[2] = true;
+			this->TriggerKeyState(2, KEY_DOWN);
+		}
+
+		System::Void lblD_MouseLeave(System::Object^ sender, System::EventArgs^) {
+			this->lblKeyInfo->Text = "";
+		}
+
+		System::Void lblD_MouseEnter(System::Object^ sender, System::EventArgs^) {
+			this->lblKeyInfo->Text = "Right";
+		}
+
+
+		System::Void lblS_MouseUp(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
+			MouseDown[3] = false;
+			this->TriggerKeyState(3, KEY_UP);
+		}
+
+		System::Void lblS_MouseDown(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
+			MouseDown[3] = true;
+			this->TriggerKeyState(3, KEY_DOWN);
+		}
+
+		System::Void lblS_MouseLeave(System::Object^ sender, System::EventArgs^) {
+			this->lblKeyInfo->Text = "";
+		}
+
+		System::Void lblS_MouseEnter(System::Object^ sender, System::EventArgs^) {
+			this->lblKeyInfo->Text = "Back";
+		}
+
+
+		System::Void lblP_MouseUp(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
+			MouseDown[4] = false;
+			this->TriggerKeyState(4, KEY_UP);
+		}
+
+		System::Void lblP_MouseDown(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
+			MouseDown[4] = true;
+			this->TriggerKeyState(4, KEY_DOWN);
+		}
+
+		System::Void lblP_MouseLeave(System::Object^ sender, System::EventArgs^) {
+			this->lblKeyInfo->Text = "";
+		}
+
+		System::Void lblP_MouseEnter(System::Object^ sender, System::EventArgs^) {
+			this->lblKeyInfo->Text = "Get SensorData";
+		}
+
+
+		System::Void lblM_MouseUp(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
+			MouseDown[5] = false;
+			this->TriggerKeyState(5, KEY_UP);
+		}
+
+		System::Void lblM_MouseDown(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
+			MouseDown[5] = true;
+			this->TriggerKeyState(5, KEY_DOWN);
+		}
+
+		System::Void lblM_MouseLeave(System::Object^ sender, System::EventArgs^) {
+			this->lblKeyInfo->Text = "";
+		}
+
+		System::Void lblM_MouseEnter(System::Object^ sender, System::EventArgs^) {
+			this->lblKeyInfo->Text = "Manual Mode";
+		}
+
+
+		System::Void lblN_MouseUp(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
+			MouseDown[6] = false;
+			this->TriggerKeyState(6, KEY_UP);
+		}
+
+		System::Void lblN_MouseDown(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
+			MouseDown[6] = true;
+			this->TriggerKeyState(6, KEY_DOWN);
+		}
+
+		System::Void lblN_MouseLeave(System::Object^ sender, System::EventArgs^) {
+			this->lblKeyInfo->Text = "";
+		}
+
+		System::Void lblN_MouseEnter(System::Object^ sender, System::EventArgs^) {
+			this->lblKeyInfo->Text = "Automatic Mode";
+		}
+
+		void TriggerKeyState(int whatKey, bool whatState) {
+			if (!this->serialPort1->IsOpen) return;
+
+			if (whatState) {
+				if (!keyDown[whatKey] && MouseDown[whatKey] == false) {
+					this->serialPort1->Write(keySendDown, whatKey, 1);
+					keyDown[whatKey] = true;
+					keyLabels[whatKey]->BackColor = Color::White;
 				}
-	}
+			} else {
+				if (keyDown[whatKey]) {
+					keyDown[whatKey] = false;
+					this->serialPort1->Write(keySendUp, whatKey, 1);
+					keyLabels[whatKey]->BackColor = Color::Gray;
+				}
+			}
+		}
 
 
 
-	private: System::Void cmdConnect_Click(System::Object^  sender, System::EventArgs^  e) {
-				 if (this->cmbComm->SelectedIndex != -1) {
+		System::Void MyForm_Load(System::Object^  sender, System::EventArgs^  e) {
+			loadCommports();
+			setPercentage(100);
+			keyLabels[0] = lblW;
+			keyLabels[1] = lblA;
+			keyLabels[2] = lblD;
+			keyLabels[3] = lblS;
+			keyLabels[4] = lblP;
+			keyLabels[5] = lblM;
+			keyLabels[6] = lblN;
 
-					 this->serialPort1->PortName = this->cmbComm->Text;
-					 this->serialPort1->Parity = System::IO::Ports::Parity::None;
-					 this->serialPort1->DataBits = 8;
+		}
 
-					 this->serialPort1->Open();
-					 if (this->serialPort1->IsOpen) {
-						 setControlstate(false);
-					 } else {
-						 MessageBox::Show("Could not open '" + this->cmbComm->Text + "'!");
-						 setControlstate(true);
-					 }
-				 }
-	}
-
-	private: void setControlstate(bool EnableControls) {
-				 if (!EnableControls) {
-					 this->tmrGetData->Enabled = true;
-
-					 this->cmdDisconnect->Enabled = true;
-					 this->cmdConnect->Enabled = false;
-					 this->cmdRefresh->Enabled = false;
-
-					 this->cmbComm->Enabled = false;
-
-					 this->Focus();
-				 } else {
-					 this->cmdDisconnect->Enabled = false;
-					 this->cmdConnect->Enabled = true;
-					 this->cmdRefresh->Enabled = true;
-
-					 this->cmbComm->Enabled = true;
-				 }
-	}
-
-	private: System::Void tmrGetData_Tick(System::Object^  sender, System::EventArgs^  e) {
-				 int gchar;
-				 array<wchar_t>^ sensordata;
-
-				 if (!this->serialPort1->IsOpen) return;
-
-				 while (this->serialPort1->BytesToRead > 0) {
-					 //gchar = this->serialPort1->ReadChar();
-					 gchar = this->serialPort1->ReadByte();
-
-					 if (gchar == 255) { //end of bufferdata
-						 sensordata = buffertest->ToCharArray();//->Split(':');
-						 buffertest = "";
-						 if (sensordata->Length == 8) {
-							 this->lblRes0->Text = "" + (sensordata[0] - 128);
-							 this->lblRes1->Text = "" + (sensordata[1] - 128);
-							 int leds = sensordata[2];
-
-							 if (1 & leds) {
-								 this->picLed0->BackColor = Color::Lime;
-							 } else {
-								 this->picLed0->BackColor = Color::DarkGreen;
-							 }
-							 if (2 & leds) {
-								 this->picLed1->BackColor = Color::Red;
-							 } else {
-								 this->picLed1->BackColor = Color::DarkRed;
-							 }
-							 if (4 & leds) {
-								 this->picLed2->BackColor = Color::Red;
-							 } else {
-								 this->picLed2->BackColor = Color::DarkRed;
-							 }
-							 if (8 & leds) {
-								 this->picLed3->BackColor = Color::Lime;
-							 } else {
-								 this->picLed3->BackColor = Color::DarkGreen;
-							 }
-							 if (16 & leds) {
-								 this->picLed4->BackColor = Color::Red;
-							 } else {
-								 this->picLed4->BackColor = Color::DarkRed;
-							 }
-							 if (32 & leds) {
-								 this->picLed5->BackColor = Color::Red;
-							 } else {
-								 this->picLed5->BackColor = Color::DarkRed;
-							 }
-							 if (64 & leds) {
-								 this->picLed6->BackColor = Color::Red;
-							 } else {
-								 this->picLed6->BackColor = Color::DarkRed;
-							 }
-							 if (128 & leds) {
-								 this->picLed7->BackColor = Color::Red;
-							 } else {
-								 this->picLed7->BackColor = Color::DarkRed;
-							 }
-
-							 this->lblRes3->Text = (Convert::ToUInt16(sensordata[3])).ToString();
-							 this->lblRes4->Text = "" + Convert::ToUInt16(sensordata[4]);
-							 this->lblRes5->Text = "" + Convert::ToUInt16(sensordata[5]);
-							 setPercentage(sensordata[6]);
-							 compassDegrees = Convert::ToUInt16(sensordata[7]);
-							 this->picCompass->Refresh();
-						 }
-					 } else {
-						 buffertest += "" + Convert::ToChar(gchar);
-					 }
-				 }
-
-				 int i = 0;
-
-				 for (i = 0; i < 7; i++) {
-					 if (GetAsyncKeyState(keyCode[i])) {
-						 if (!keyDown[i]) {
-							 this->serialPort1->Write(Convert::ToString(keySendUp[i]));
-							 keyDown[i] = true;
-						 }
-					 } else {
-						 if (keyDown[i]) {
-							 keyDown[i] = false;
-							 this->serialPort1->Write(Convert::ToString(keySendUp[i]));
-						 }
-					 }
-				 }
-
-	}
+		System::Void MyForm_KeyDown(Object^ sender, System::Windows::Forms::KeyEventArgs^ e) {
+			e->SuppressKeyPress = true;
+		}
 
 
-	private: System::Void groupBox1_Enter(System::Object^  sender, System::EventArgs^  e) {
+		System::Void MyForm_Unload(System::Object^  sender, System::EventArgs^  e) {
+			if (this->serialPort1->IsOpen) {
+				this->serialPort1->Close();
+			}
+		}
 
-	}
-
-	private: System::Void cmdDisconnect_Click(System::Object^  sender, System::EventArgs^  e) {
-				 if (this->serialPort1->IsOpen) {
-					 this->tmrGetData->Enabled = false;
-					 this->serialPort1->Close();
-					 setControlstate(true);
-				 }
-	}
-
-	private: void setPercentage(int percentage) {
-				 if (percentage < 0) percentage = 0;
-				 if (percentage > 100) percentage = 100;
-
-				 this->picFront->Height = (this->picBack->Height - 4) / 100.0 * percentage;
-				 this->picFront->Top = this->picBack->Top + (this->picBack->Height - this->picFront->Height - 2);
-
-				 this->picFront->Refresh();
-	}
-
-	private: double byteToDeg(int x) {
-				 return (double)x / 128.0 * PI - (0.499*PI);
-	}
-
-	private: void picCompass_Paint(Object^ sender, System::Windows::Forms::PaintEventArgs^ e) {
-				 Pen^ redPen = gcnew Pen(Color::Red, 3.0f);
-				 Pen^ blackPen = gcnew Pen(Color::Black, 2.0f);
-				 Pen^ backgroundPen = gcnew Pen(Color::Gray, 3.0f);
-				 StringFormat^ alignText = gcnew StringFormat;
-				 String ^ degrees = "" + Math::Round(compassDegrees / 255.0 * 360.0);
-
-				 System::Drawing::Font^ myFont = gcnew System::Drawing::Font("consolas", 14);
-
-				 int size = 160 / 2;
+		void loadCommports() {
+			this->cmbComm->Items->Clear();
+			this->cmbComm->Items->AddRange(serialPort1->GetPortNames());
+			if (this->cmbComm->Items->Count > 0) {
+				this->cmbComm->SelectedIndex = 0;
+			}
+		}
 
 
-				 // Create points that define line.
-				 Point point1 = Point(size, size);
 
-				 e->Graphics->SmoothingMode = System::Drawing::Drawing2D::SmoothingMode::AntiAlias;
+		System::Void cmdConnect_Click(System::Object^  sender, System::EventArgs^  e) {
+			if (this->cmbComm->SelectedIndex != -1) {
 
-				 float x = byteToDeg(compassDegrees);
-				 Point point2 = Point(Math::Cos(x) * (size*0.7) + size, Math::Sin(x) * (size*0.7) + size);
-				 Point point3 = Point(Math::Cos(x) * (-size*0.7) + size, Math::Sin(x) * (-size*0.7) + size);
+				this->serialPort1->PortName = this->cmbComm->Text;
+				this->serialPort1->Parity = System::IO::Ports::Parity::None;
+				this->serialPort1->DataBits = 8;
+
+				this->serialPort1->Open();
+				if (this->serialPort1->IsOpen) {
+					setControlstate(false);
+				} else {
+					MessageBox::Show("Could not open '" + this->cmbComm->Text + "'!");
+					setControlstate(true);
+				}
+			}
+		}
+
+		void setControlstate(bool EnableControls) {
+			if (!EnableControls) {
+				this->tmrGetData->Enabled = true;
+
+				this->cmdDisconnect->Enabled = true;
+				this->cmdConnect->Enabled = false;
+				this->cmdRefresh->Enabled = false;
+
+				this->cmbComm->Enabled = false;
+
+				this->Focus();
+			} else {
+				this->cmdDisconnect->Enabled = false;
+				this->cmdConnect->Enabled = true;
+				this->cmdRefresh->Enabled = true;
+
+				this->cmbComm->Enabled = true;
+			}
+		}
+
+		System::Void tmrGetData_Tick(System::Object^  sender, System::EventArgs^  e) {
+			int gchar;
+			array<wchar_t>^ sensordata;
+
+			if (!this->serialPort1->IsOpen) return;
+
+			while (this->serialPort1->BytesToRead > 0) {
+				//gchar = this->serialPort1->ReadChar();
+				gchar = this->serialPort1->ReadByte();
+
+				if (gchar == 255) { //end of bufferdata
+					sensordata = buffertest->ToCharArray();//->Split(':');
+					buffertest = "";
+					if (sensordata->Length == 9) {
+						this->lblRes0->Text = "" + (sensordata[0] - 128);
+						this->lblRes1->Text = "" + (sensordata[1] - 128);
+						int leds = sensordata[2];
+
+						if (1 & leds) {
+							this->picLed0->BackColor = Color::Lime;
+						} else {
+							this->picLed0->BackColor = Color::DarkGreen;
+						}
+						if (2 & leds) {
+							this->picLed1->BackColor = Color::Red;
+						} else {
+							this->picLed1->BackColor = Color::DarkRed;
+						}
+						if (4 & leds) {
+							this->picLed2->BackColor = Color::Red;
+						} else {
+							this->picLed2->BackColor = Color::DarkRed;
+						}
+						if (8 & leds) {
+							this->picLed3->BackColor = Color::Lime;
+						} else {
+							this->picLed3->BackColor = Color::DarkGreen;
+						}
+						if (16 & leds) {
+							this->picLed4->BackColor = Color::Red;
+						} else {
+							this->picLed4->BackColor = Color::DarkRed;
+						}
+						if (32 & leds) {
+							this->picLed5->BackColor = Color::Red;
+						} else {
+							this->picLed5->BackColor = Color::DarkRed;
+						}
+						if (64 & leds) {
+							this->picLed6->BackColor = Color::Red;
+						} else {
+							this->picLed6->BackColor = Color::DarkRed;
+						}
+						if (128 & leds) {
+							this->picLed7->BackColor = Color::Red;
+						} else {
+							this->picLed7->BackColor = Color::DarkRed;
+						}
+
+						this->lblRes3->Text = (Convert::ToUInt16(sensordata[3])).ToString();
+						this->lblRes4->Text = "" + Convert::ToUInt16(sensordata[4]);
+						this->lblRes5->Text = "" + Convert::ToUInt16(sensordata[5]);
+						setPercentage(sensordata[6]);
+						compassDegrees = Convert::ToUInt16(sensordata[7]);
+						this->picCompass->Refresh();
+
+						if (sensordata[8] == 1) {
+							this->lblRes6->Text = "Manual Mode";
+						} else {
+							this->lblRes6->Text = "Automatic Mode";
+						}
+
+					}
+				} else {
+					buffertest += "" + Convert::ToChar(gchar);
+				}
+			}
+
+			int i = 0;
+
+			for (i = 0; i < 7; i++) {
+				this->TriggerKeyState(i, !GetAsyncKeyState(keyCode[i]));
+			}
+
+		}
 
 
-				 e->Graphics->DrawEllipse(backgroundPen, 2, 2, size * 2 - 4, size * 2 - 4);
-				 e->Graphics->FillEllipse(Brushes::White, 2, 2, size * 2 - 4, size * 2 - 4);
+		System::Void groupBox1_Enter(System::Object^  sender, System::EventArgs^  e) {
 
-				 e->Graphics->DrawLine(redPen, point1, point2);
-				 e->Graphics->DrawLine(blackPen, point1, point3);
+		}
 
-				 e->Graphics->FillEllipse(Brushes::White, (int)(size - 14 * 1.5), (int)(size - 14 * 1.5), (int)(14 * 3), (int)(14 * 3));
+		System::Void cmdDisconnect_Click(System::Object^  sender, System::EventArgs^  e) {
+			if (this->serialPort1->IsOpen) {
+				this->tmrGetData->Enabled = false;
+				this->serialPort1->Close();
+				setControlstate(true);
+			}
+		}
+
+		void setPercentage(int percentage) {
+			if (percentage < 0) percentage = 0;
+			if (percentage > 100) percentage = 100;
+
+			this->picFront->Height = (this->picBack->Height - 4) / 100.0 * percentage;
+			this->picFront->Top = this->picBack->Top + (this->picBack->Height - this->picFront->Height - 2);
+
+			this->picFront->Refresh();
+		}
+
+		double byteToDeg(int x) {
+			return (double)x / 128.0 * PI - (0.499*PI);
+		}
+
+		void picCompass_Paint(Object^ sender, System::Windows::Forms::PaintEventArgs^ e) {
+			Pen^ redPen = gcnew Pen(Color::Red, 3.0f);
+			Pen^ blackPen = gcnew Pen(Color::Black, 2.0f);
+			Pen^ backgroundPen = gcnew Pen(Color::Gray, 3.0f);
+			StringFormat^ alignText = gcnew StringFormat;
+			String ^ degrees = "" + Math::Round(compassDegrees / 255.0 * 360.0);
+
+			System::Drawing::Font^ myFont = gcnew System::Drawing::Font("consolas", 14);
+
+			int size = 160 / 2;
 
 
-				 alignText->Alignment = StringAlignment::Center;
-				 alignText->LineAlignment = StringAlignment::Center;
+			// Create points that define line.
+			Point point1 = Point(size, size);
 
-				 e->Graphics->DrawString(degrees, myFont, Brushes::Blue, point1.X, point1.Y, alignText);
+			e->Graphics->SmoothingMode = System::Drawing::Drawing2D::SmoothingMode::AntiAlias;
 
-				 e->Graphics->DrawString("N", myFont, Brushes::Blue, size, 15, alignText);
-				 e->Graphics->DrawString("E", myFont, Brushes::Blue, size * 2 - 10, size, alignText);
-				 e->Graphics->DrawString("S", myFont, Brushes::Blue, size, size * 2 - 10, alignText);
-				 e->Graphics->DrawString("W", myFont, Brushes::Blue, 10, size, alignText);
-
-	}
+			float x = byteToDeg(compassDegrees);
+			Point point2 = Point(Math::Cos(x) * (size*0.7) + size, Math::Sin(x) * (size*0.7) + size);
+			Point point3 = Point(Math::Cos(x) * (-size*0.7) + size, Math::Sin(x) * (-size*0.7) + size);
 
 
-	private: System::Void picCompass_Click(System::Object^  sender, System::EventArgs^  e) {
-				 this->picCompass->Refresh();
-	}
+			e->Graphics->DrawEllipse(backgroundPen, 2, 2, size * 2 - 4, size * 2 - 4);
+			e->Graphics->FillEllipse(Brushes::White, 2, 2, size * 2 - 4, size * 2 - 4);
+
+			e->Graphics->DrawLine(redPen, point1, point2);
+			e->Graphics->DrawLine(blackPen, point1, point3);
+
+			e->Graphics->FillEllipse(Brushes::White, (int)(size - 14 * 1.5), (int)(size - 14 * 1.5), (int)(14 * 3), (int)(14 * 3));
 
 
-	private: System::Void cmdRefresh_Click(System::Object^  sender, System::EventArgs^  e) {
-				 loadCommports();
-	}
-private: System::Void button1_Click(System::Object^  sender, System::EventArgs^  e) {
-			 compassDegrees += 10;
-			 this->picCompass->Refresh();
+			alignText->Alignment = StringAlignment::Center;
+			alignText->LineAlignment = StringAlignment::Center;
+
+			e->Graphics->DrawString(degrees, myFont, Brushes::Blue, point1.X, point1.Y, alignText);
+
+			e->Graphics->DrawString("N", myFont, Brushes::Blue, size, 15, alignText);
+			e->Graphics->DrawString("E", myFont, Brushes::Blue, size * 2 - 10, size, alignText);
+			e->Graphics->DrawString("S", myFont, Brushes::Blue, size, size * 2 - 10, alignText);
+			e->Graphics->DrawString("W", myFont, Brushes::Blue, 10, size, alignText);
+
+		}
+
+
+		System::Void picCompass_Click(System::Object^  sender, System::EventArgs^  e) {
+			this->picCompass->Refresh();
+		}
+
+
+		System::Void cmdRefresh_Click(System::Object^  sender, System::EventArgs^  e) {
+			loadCommports();
+		}
+
+private: System::Void lblW_Click(System::Object^  sender, System::EventArgs^  e) {
+}
+private: System::Void frmControls_Enter(System::Object^  sender, System::EventArgs^  e) {
+}
+private: System::Void picFront_Click(System::Object^  sender, System::EventArgs^  e) {
+}
+private: System::Void picBack_Click(System::Object^  sender, System::EventArgs^  e) {
+}
+private: System::Void pictureBox1_Click(System::Object^  sender, System::EventArgs^  e) {
+}
+private: System::Void pictureBox3_Click(System::Object^  sender, System::EventArgs^  e) {
 }
 };
 }

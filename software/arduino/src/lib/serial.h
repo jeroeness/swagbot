@@ -19,7 +19,7 @@ void serialPrintCharacterSynchronous(const char);
 void serialPrintByte(const uint8_t);
 void serialPrintByteSynchronous(const uint8_t);
 
-int8_t serialAvailable();
+uint16_t serialAvailable();
 int8_t outputBufferWalked();
 void sleepUntilEmptyOutputBuffer();
 void writeCharacterFromBuffer();

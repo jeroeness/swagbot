@@ -10,14 +10,18 @@
 #define BAUD_PRESCALER (((F_CPU / (BAUD * 16UL))) - 1)
 #endif
 
-#define OUTPUTBUFFER_SIZE 1600
+#define OUTPUTBUFFER_SIZE 600
+#define INPUTBUFFER_SIZE 100
 
 const char *newLineCharacters = "\r\n";
 
 volatile char outputBuffer[OUTPUTBUFFER_SIZE];
 int16_t outputBufferLength;
 volatile int8_t outputBufferPtr;
-volatile char inputBuffer;
+volatile char inputBuffer[INPUTBUFFER_SIZE];
+uint16_t inputBufferLength;
+volatile int8_t inputBufferPtr;
+
 
 void serialBegin() {
 	UBRR0H = (uint8_t)(BAUD_PRESCALER >> 8);
@@ -36,8 +40,9 @@ void serialEnd() {
 }
 
 ISR(USART0_RX_vect) {
-	inputBuffer = UDR0;
-
+	//inputBuffer = UDR0;
+	
+	inputBuffer[inputBufferLength++] = UDR0;
 	//TODO Write callbacks here
 }
 
@@ -45,15 +50,22 @@ ISR(USART0_TX_vect) {
 	writeCharacterFromBuffer();
 }
 
-int8_t serialAvailable() {
-	return UDR0;
+uint16_t serialAvailable() {
+	return inputBufferLength;
 }
 
 char serialRead(void) {
-	char d = inputBuffer;
-	if (d) {
-		inputBuffer = 0;
+	uint16_t i = 0;
+	if(inputBufferLength <= 0) return 0;
+	
+	char d = inputBuffer[0];
+	
+	//get the first char and shift the rest of the buffer to the beginning.
+	for(i = 1; i < inputBufferLength; i++){
+		inputBuffer[i-1] = inputBuffer[i];
 	}
+	inputBufferLength--; //we just took one char so decrease the buffer size
+	
 	return d;
 }
 
