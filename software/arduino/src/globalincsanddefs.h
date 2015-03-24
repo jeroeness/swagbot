@@ -9,7 +9,9 @@
 #ifndef GLOBALINCSANDDEFS_H_
 #define GLOBALINCSANDDEFS_H_
 
+#ifndef F_CPU
 #define F_CPU 16000000
+#endif // F_CPU
 
 #include <stdio.h>
 #include <stdlib.h>

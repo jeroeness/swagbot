@@ -40,9 +40,9 @@ void serialEnd() {
 }
 
 ISR(USART0_RX_vect) {
-	//inputBuffer = UDR0;
-
-	inputBuffer[inputBufferLength++] = UDR0;
+	if (inputBufferLength < INPUTBUFFER_SIZE) {
+		inputBuffer[inputBufferLength++] = UDR0;
+	}
 	//TODO Write callbacks here
 }
 
