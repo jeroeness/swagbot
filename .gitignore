@@ -36,3 +36,4 @@
 
 # VS
 software/host/SwagBot/Debug/*
+*.sdf
