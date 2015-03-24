@@ -133,11 +133,13 @@ namespace SwagBot {
 			this->cmdDisconnect = (gcnew System::Windows::Forms::Button());
 			this->tmrGetData = (gcnew System::Windows::Forms::Timer(this->components));
 			this->frmSensor = (gcnew System::Windows::Forms::GroupBox());
+			this->lblRes6 = (gcnew System::Windows::Forms::Label());
 			this->picLed7 = (gcnew System::Windows::Forms::PictureBox());
 			this->picLed6 = (gcnew System::Windows::Forms::PictureBox());
 			this->picFront = (gcnew System::Windows::Forms::PictureBox());
 			this->picBack = (gcnew System::Windows::Forms::PictureBox());
 			this->picLed5 = (gcnew System::Windows::Forms::PictureBox());
+			this->pictureBox3 = (gcnew System::Windows::Forms::PictureBox());
 			this->picLed4 = (gcnew System::Windows::Forms::PictureBox());
 			this->pictureBox1 = (gcnew System::Windows::Forms::PictureBox());
 			this->picLed3 = (gcnew System::Windows::Forms::PictureBox());
@@ -145,7 +147,6 @@ namespace SwagBot {
 			this->picLed1 = (gcnew System::Windows::Forms::PictureBox());
 			this->picLed0 = (gcnew System::Windows::Forms::PictureBox());
 			this->label6 = (gcnew System::Windows::Forms::Label());
-			this->pictureBox3 = (gcnew System::Windows::Forms::PictureBox());
 			this->lblRes5 = (gcnew System::Windows::Forms::Label());
 			this->lblRes4 = (gcnew System::Windows::Forms::Label());
 			this->lblRes3 = (gcnew System::Windows::Forms::Label());
@@ -168,20 +169,19 @@ namespace SwagBot {
 			this->lblA = (gcnew System::Windows::Forms::Label());
 			this->lblP = (gcnew System::Windows::Forms::Label());
 			this->lblW = (gcnew System::Windows::Forms::Label());
-			this->lblRes6 = (gcnew System::Windows::Forms::Label());
 			this->frmSensor->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->picLed7))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->picLed6))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->picFront))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->picBack))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->picLed5))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox3))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->picLed4))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->picLed3))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->picLed2))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->picLed1))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->picLed0))->BeginInit();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox3))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->picCompass))->BeginInit();
 			this->frmControls->SuspendLayout();
 			this->SuspendLayout();
@@ -261,7 +261,14 @@ namespace SwagBot {
 			this->frmSensor->TabIndex = 4;
 			this->frmSensor->TabStop = false;
 			this->frmSensor->Text = L"Live SensorData";
-			this->frmSensor->Enter += gcnew System::EventHandler(this, &MyForm::groupBox1_Enter);
+			// 
+			// lblRes6
+			// 
+			this->lblRes6->Location = System::Drawing::Point(235, 16);
+			this->lblRes6->Name = L"lblRes6";
+			this->lblRes6->Size = System::Drawing::Size(78, 13);
+			this->lblRes6->TabIndex = 25;
+			this->lblRes6->Text = L"N/A";
 			// 
 			// picLed7
 			// 
@@ -272,10 +279,11 @@ namespace SwagBot {
 			this->picLed7->Size = System::Drawing::Size(8, 11);
 			this->picLed7->TabIndex = 24;
 			this->picLed7->TabStop = false;
+			this->picLed7->Visible = false;
 			// 
 			// picLed6
 			// 
-			this->picLed6->BackColor = System::Drawing::Color::DarkRed;
+			this->picLed6->BackColor = System::Drawing::Color::Olive;
 			this->picLed6->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
 			this->picLed6->Location = System::Drawing::Point(173, 44);
 			this->picLed6->Name = L"picLed6";
@@ -291,7 +299,6 @@ namespace SwagBot {
 			this->picFront->Size = System::Drawing::Size(17, 24);
 			this->picFront->TabIndex = 18;
 			this->picFront->TabStop = false;
-			this->picFront->Click += gcnew System::EventHandler(this, &MyForm::picFront_Click);
 			// 
 			// picBack
 			// 
@@ -301,7 +308,6 @@ namespace SwagBot {
 			this->picBack->Size = System::Drawing::Size(21, 60);
 			this->picBack->TabIndex = 16;
 			this->picBack->TabStop = false;
-			this->picBack->Click += gcnew System::EventHandler(this, &MyForm::picBack_Click);
 			// 
 			// picLed5
 			// 
@@ -312,6 +318,15 @@ namespace SwagBot {
 			this->picLed5->Size = System::Drawing::Size(8, 11);
 			this->picLed5->TabIndex = 22;
 			this->picLed5->TabStop = false;
+			// 
+			// pictureBox3
+			// 
+			this->pictureBox3->BackColor = System::Drawing::Color::Gray;
+			this->pictureBox3->Location = System::Drawing::Point(308, 32);
+			this->pictureBox3->Name = L"pictureBox3";
+			this->pictureBox3->Size = System::Drawing::Size(11, 10);
+			this->pictureBox3->TabIndex = 17;
+			this->pictureBox3->TabStop = false;
 			// 
 			// picLed4
 			// 
@@ -331,7 +346,6 @@ namespace SwagBot {
 			this->pictureBox1->Size = System::Drawing::Size(25, 64);
 			this->pictureBox1->TabIndex = 5;
 			this->pictureBox1->TabStop = false;
-			this->pictureBox1->Click += gcnew System::EventHandler(this, &MyForm::pictureBox1_Click);
 			// 
 			// picLed3
 			// 
@@ -381,16 +395,6 @@ namespace SwagBot {
 			this->label6->Size = System::Drawing::Size(37, 13);
 			this->label6->TabIndex = 16;
 			this->label6->Text = L"Mode:";
-			// 
-			// pictureBox3
-			// 
-			this->pictureBox3->BackColor = System::Drawing::Color::Gray;
-			this->pictureBox3->Location = System::Drawing::Point(308, 32);
-			this->pictureBox3->Name = L"pictureBox3";
-			this->pictureBox3->Size = System::Drawing::Size(11, 10);
-			this->pictureBox3->TabIndex = 17;
-			this->pictureBox3->TabStop = false;
-			this->pictureBox3->Click += gcnew System::EventHandler(this, &MyForm::pictureBox3_Click);
 			// 
 			// lblRes5
 			// 
@@ -523,7 +527,6 @@ namespace SwagBot {
 			this->frmControls->TabIndex = 22;
 			this->frmControls->TabStop = false;
 			this->frmControls->Text = L"Controls";
-			this->frmControls->Enter += gcnew System::EventHandler(this, &MyForm::frmControls_Enter);
 			// 
 			// lblKeyInfo
 			// 
@@ -648,19 +651,10 @@ namespace SwagBot {
 			this->lblW->TabIndex = 22;
 			this->lblW->Text = L"W";
 			this->lblW->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
-			this->lblW->Click += gcnew System::EventHandler(this, &MyForm::lblW_Click);
 			this->lblW->MouseDown += gcnew System::Windows::Forms::MouseEventHandler(this, &MyForm::lblW_MouseDown);
 			this->lblW->MouseEnter += gcnew System::EventHandler(this, &MyForm::lblW_MouseEnter);
 			this->lblW->MouseLeave += gcnew System::EventHandler(this, &MyForm::lblW_MouseLeave);
 			this->lblW->MouseUp += gcnew System::Windows::Forms::MouseEventHandler(this, &MyForm::lblW_MouseUp);
-			// 
-			// lblRes6
-			// 
-			this->lblRes6->Location = System::Drawing::Point(235, 16);
-			this->lblRes6->Name = L"lblRes6";
-			this->lblRes6->Size = System::Drawing::Size(78, 13);
-			this->lblRes6->TabIndex = 25;
-			this->lblRes6->Text = L"N/A";
 			// 
 			// MyForm
 			// 
@@ -686,13 +680,13 @@ namespace SwagBot {
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->picFront))->EndInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->picBack))->EndInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->picLed5))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox3))->EndInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->picLed4))->EndInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->EndInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->picLed3))->EndInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->picLed2))->EndInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->picLed1))->EndInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->picLed0))->EndInit();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox3))->EndInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->picCompass))->EndInit();
 			this->frmControls->ResumeLayout(false);
 			this->ResumeLayout(false);
@@ -707,7 +701,7 @@ namespace SwagBot {
 	public:
 		static array<int>^ keyCode = gcnew array<int>(7) { 0x57, 0x41, 0x44, 0x53, 0x50, 0x4D, 0x4E };
 		static array<bool>^ keyDown = gcnew array<bool>(7) { false, false, false, false, false, false, false };
-		static array<unsigned char>^ keySendUp = gcnew array<unsigned char>(7) { 'W', 'A', 'D','S', 'P', 'M', 'N' }; //Convert::ToChar('W')
+		static array<unsigned char>^ keySendUp = gcnew array<unsigned char>(7) { 'W', 'A', 'D', 'S', 'P', 'M', 'N' }; //Convert::ToChar('W')
 		static array<unsigned char>^ keySendDown = gcnew array<unsigned char>(7) { 'w', 'a', 'd', 's', 'p', 'm', 'n' };
 		static array<Label^>^ keyLabels = gcnew array<Label^>(7) {};
 		static array<bool>^ MouseDown = gcnew array<bool>(7) {};
@@ -719,137 +713,7 @@ namespace SwagBot {
 
 
 	private:
-		System::Void lblW_MouseUp(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
-			MouseDown[0] = false;
-			this->TriggerKeyState(0, KEY_UP);
-		}
 
-		System::Void lblW_MouseDown(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
-			MouseDown[0] = true;
-			this->TriggerKeyState(0, KEY_DOWN);
-		}
-
-		System::Void lblW_MouseLeave(System::Object^ sender, System::EventArgs^) {
-			this->lblKeyInfo->Text = "";
-		}
-
-		System::Void lblW_MouseEnter(System::Object^ sender, System::EventArgs^) {
-			this->lblKeyInfo->Text = "Forward";
-		}
-
-
-		System::Void lblA_MouseUp(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
-			MouseDown[1] = false;
-			this->TriggerKeyState(1, KEY_UP);
-		}
-
-		System::Void lblA_MouseDown(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
-			MouseDown[1] = true;
-			this->TriggerKeyState(1, KEY_DOWN);
-		}
-
-		System::Void lblA_MouseLeave(System::Object^ sender, System::EventArgs^) {
-			this->lblKeyInfo->Text = "";
-		}
-
-		System::Void lblA_MouseEnter(System::Object^ sender, System::EventArgs^) {
-			this->lblKeyInfo->Text = "Left";
-		}
-
-
-		System::Void lblD_MouseUp(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
-			MouseDown[2] = false;
-			this->TriggerKeyState(2, KEY_UP);
-		}
-
-		System::Void lblD_MouseDown(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
-			MouseDown[2] = true;
-			this->TriggerKeyState(2, KEY_DOWN);
-		}
-
-		System::Void lblD_MouseLeave(System::Object^ sender, System::EventArgs^) {
-			this->lblKeyInfo->Text = "";
-		}
-
-		System::Void lblD_MouseEnter(System::Object^ sender, System::EventArgs^) {
-			this->lblKeyInfo->Text = "Right";
-		}
-
-
-		System::Void lblS_MouseUp(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
-			MouseDown[3] = false;
-			this->TriggerKeyState(3, KEY_UP);
-		}
-
-		System::Void lblS_MouseDown(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
-			MouseDown[3] = true;
-			this->TriggerKeyState(3, KEY_DOWN);
-		}
-
-		System::Void lblS_MouseLeave(System::Object^ sender, System::EventArgs^) {
-			this->lblKeyInfo->Text = "";
-		}
-
-		System::Void lblS_MouseEnter(System::Object^ sender, System::EventArgs^) {
-			this->lblKeyInfo->Text = "Back";
-		}
-
-
-		System::Void lblP_MouseUp(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
-			MouseDown[4] = false;
-			this->TriggerKeyState(4, KEY_UP);
-		}
-
-		System::Void lblP_MouseDown(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
-			MouseDown[4] = true;
-			this->TriggerKeyState(4, KEY_DOWN);
-		}
-
-		System::Void lblP_MouseLeave(System::Object^ sender, System::EventArgs^) {
-			this->lblKeyInfo->Text = "";
-		}
-
-		System::Void lblP_MouseEnter(System::Object^ sender, System::EventArgs^) {
-			this->lblKeyInfo->Text = "Get SensorData";
-		}
-
-
-		System::Void lblM_MouseUp(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
-			MouseDown[5] = false;
-			this->TriggerKeyState(5, KEY_UP);
-		}
-
-		System::Void lblM_MouseDown(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
-			MouseDown[5] = true;
-			this->TriggerKeyState(5, KEY_DOWN);
-		}
-
-		System::Void lblM_MouseLeave(System::Object^ sender, System::EventArgs^) {
-			this->lblKeyInfo->Text = "";
-		}
-
-		System::Void lblM_MouseEnter(System::Object^ sender, System::EventArgs^) {
-			this->lblKeyInfo->Text = "Manual Mode";
-		}
-
-
-		System::Void lblN_MouseUp(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
-			MouseDown[6] = false;
-			this->TriggerKeyState(6, KEY_UP);
-		}
-
-		System::Void lblN_MouseDown(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
-			MouseDown[6] = true;
-			this->TriggerKeyState(6, KEY_DOWN);
-		}
-
-		System::Void lblN_MouseLeave(System::Object^ sender, System::EventArgs^) {
-			this->lblKeyInfo->Text = "";
-		}
-
-		System::Void lblN_MouseEnter(System::Object^ sender, System::EventArgs^) {
-			this->lblKeyInfo->Text = "Automatic Mode";
-		}
 
 		void TriggerKeyState(int whatKey, bool whatState) {
 			if (!this->serialPort1->IsOpen) return;
@@ -991,9 +855,9 @@ namespace SwagBot {
 							this->picLed5->BackColor = Color::DarkRed;
 						}
 						if (64 & leds) {
-							this->picLed6->BackColor = Color::Red;
+							this->picLed6->BackColor = Color::Yellow;
 						} else {
-							this->picLed6->BackColor = Color::DarkRed;
+							this->picLed6->BackColor = Color::Olive;
 						}
 						if (128 & leds) {
 							this->picLed7->BackColor = Color::Red;
@@ -1028,10 +892,6 @@ namespace SwagBot {
 
 		}
 
-
-		System::Void groupBox1_Enter(System::Object^  sender, System::EventArgs^  e) {
-
-		}
 
 		System::Void cmdDisconnect_Click(System::Object^  sender, System::EventArgs^  e) {
 			if (this->serialPort1->IsOpen) {
@@ -1098,27 +958,140 @@ namespace SwagBot {
 
 		}
 
-
+	private:
 		System::Void picCompass_Click(System::Object^  sender, System::EventArgs^  e) {
 			this->picCompass->Refresh();
 		}
-
 
 		System::Void cmdRefresh_Click(System::Object^  sender, System::EventArgs^  e) {
 			loadCommports();
 		}
 
-private: System::Void lblW_Click(System::Object^  sender, System::EventArgs^  e) {
-}
-private: System::Void frmControls_Enter(System::Object^  sender, System::EventArgs^  e) {
-}
-private: System::Void picFront_Click(System::Object^  sender, System::EventArgs^  e) {
-}
-private: System::Void picBack_Click(System::Object^  sender, System::EventArgs^  e) {
-}
-private: System::Void pictureBox1_Click(System::Object^  sender, System::EventArgs^  e) {
-}
-private: System::Void pictureBox3_Click(System::Object^  sender, System::EventArgs^  e) {
-}
-};
+		System::Void lblW_MouseUp(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
+			MouseDown[0] = false;
+			this->TriggerKeyState(0, KEY_UP);
+		}
+
+		System::Void lblW_MouseDown(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
+			MouseDown[0] = true;
+			this->TriggerKeyState(0, KEY_DOWN);
+		}
+
+		System::Void lblW_MouseLeave(System::Object^ sender, System::EventArgs^) {
+			this->lblKeyInfo->Text = "";
+		}
+
+		System::Void lblW_MouseEnter(System::Object^ sender, System::EventArgs^) {
+			this->lblKeyInfo->Text = "Forward";
+		}
+
+		System::Void lblA_MouseUp(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
+			MouseDown[1] = false;
+			this->TriggerKeyState(1, KEY_UP);
+		}
+
+		System::Void lblA_MouseDown(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
+			MouseDown[1] = true;
+			this->TriggerKeyState(1, KEY_DOWN);
+		}
+
+		System::Void lblA_MouseLeave(System::Object^ sender, System::EventArgs^) {
+			this->lblKeyInfo->Text = "";
+		}
+
+		System::Void lblA_MouseEnter(System::Object^ sender, System::EventArgs^) {
+			this->lblKeyInfo->Text = "Left";
+		}
+
+		System::Void lblD_MouseUp(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
+			MouseDown[2] = false;
+			this->TriggerKeyState(2, KEY_UP);
+		}
+
+		System::Void lblD_MouseDown(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
+			MouseDown[2] = true;
+			this->TriggerKeyState(2, KEY_DOWN);
+		}
+
+		System::Void lblD_MouseLeave(System::Object^ sender, System::EventArgs^) {
+			this->lblKeyInfo->Text = "";
+		}
+
+		System::Void lblD_MouseEnter(System::Object^ sender, System::EventArgs^) {
+			this->lblKeyInfo->Text = "Right";
+		}
+
+		System::Void lblS_MouseUp(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
+			MouseDown[3] = false;
+			this->TriggerKeyState(3, KEY_UP);
+		}
+
+		System::Void lblS_MouseDown(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
+			MouseDown[3] = true;
+			this->TriggerKeyState(3, KEY_DOWN);
+		}
+
+		System::Void lblS_MouseLeave(System::Object^ sender, System::EventArgs^) {
+			this->lblKeyInfo->Text = "";
+		}
+
+		System::Void lblS_MouseEnter(System::Object^ sender, System::EventArgs^) {
+			this->lblKeyInfo->Text = "Back";
+		}
+
+		System::Void lblP_MouseUp(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
+			MouseDown[4] = false;
+			this->TriggerKeyState(4, KEY_UP);
+		}
+
+		System::Void lblP_MouseDown(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
+			MouseDown[4] = true;
+			this->TriggerKeyState(4, KEY_DOWN);
+		}
+
+		System::Void lblP_MouseLeave(System::Object^ sender, System::EventArgs^) {
+			this->lblKeyInfo->Text = "";
+		}
+
+		System::Void lblP_MouseEnter(System::Object^ sender, System::EventArgs^) {
+			this->lblKeyInfo->Text = "Get SensorData";
+		}
+
+		System::Void lblM_MouseUp(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
+			MouseDown[5] = false;
+			this->TriggerKeyState(5, KEY_UP);
+		}
+
+		System::Void lblM_MouseDown(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
+			MouseDown[5] = true;
+			this->TriggerKeyState(5, KEY_DOWN);
+		}
+
+		System::Void lblM_MouseLeave(System::Object^ sender, System::EventArgs^) {
+			this->lblKeyInfo->Text = "";
+		}
+
+		System::Void lblM_MouseEnter(System::Object^ sender, System::EventArgs^) {
+			this->lblKeyInfo->Text = "Manual Mode";
+		}
+
+		System::Void lblN_MouseUp(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
+			MouseDown[6] = false;
+			this->TriggerKeyState(6, KEY_UP);
+		}
+
+		System::Void lblN_MouseDown(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
+			MouseDown[6] = true;
+			this->TriggerKeyState(6, KEY_DOWN);
+		}
+
+		System::Void lblN_MouseLeave(System::Object^ sender, System::EventArgs^) {
+			this->lblKeyInfo->Text = "";
+		}
+
+		System::Void lblN_MouseEnter(System::Object^ sender, System::EventArgs^) {
+			this->lblKeyInfo->Text = "Automatic Mode";
+		}
+
+	};
 }
