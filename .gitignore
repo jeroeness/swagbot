@@ -33,3 +33,8 @@
 # Codeblocks
 *.layout
 *.depend
+
+# VS
+software/host/SwagBot/Debug/*
+software/host/Debug/*
+*.sdf
