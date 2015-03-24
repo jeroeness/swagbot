@@ -41,7 +41,7 @@ void serialEnd() {
 
 ISR(USART0_RX_vect) {
 	//inputBuffer = UDR0;
-	
+
 	inputBuffer[inputBufferLength++] = UDR0;
 	//TODO Write callbacks here
 }
@@ -57,23 +57,25 @@ uint16_t serialAvailable() {
 char serialRead(void) {
 	uint16_t i = 0;
 	if(inputBufferLength <= 0) return 0;
-	
+
 	char d = inputBuffer[0];
-	
+
 	//get the first char and shift the rest of the buffer to the beginning.
 	for(i = 1; i < inputBufferLength; i++){
 		inputBuffer[i-1] = inputBuffer[i];
 	}
 	inputBufferLength--; //we just took one char so decrease the buffer size
-	
+
 	return d;
 }
 
 
 
 void serialPrint(const char *c) {
+	serialPrint(c, strlen((char*)c));
+}
 
-	int8_t len = strlen((char*)c);
+void serialPrint(const char *c, int8_t len) {
 
 	if (len + outputBufferLength >= OUTPUTBUFFER_SIZE) {
 		//TODO stressled
@@ -111,11 +113,10 @@ void serialPrintByteSynchronous(const uint8_t byte) {
 }
 
 void serialPrintCharacter(const char c) {
-	char *cp = (char *)malloc(2 * sizeof(char));
+	char cp [2];
 	cp[0] = c;
 	cp[1] = 0;
-	serialPrint(cp);
-	free(cp);
+	serialPrint(cp, 1);
 }
 
 void serialPrintCharacterSynchronous (const char c) {
@@ -123,16 +124,25 @@ void serialPrintCharacterSynchronous (const char c) {
 	sleepUntilEmptyOutputBuffer();
 }
 
-void serialPrintSynchronous (const char *c) {
-	serialPrint(c);
+void serialPrintSynchronous (const char *c, int8_t len) {
+	serialPrint(c, len);
 	sleepUntilEmptyOutputBuffer();
 }
 
-void serialPrintLine(const char *c) {
-	char *ln = (char*)malloc((strlen(c) + 3) * sizeof(char));
-	memcpy(ln, c, strlen(c) + 1);
+void serialPrintSynchronous (const char *c) {
+	serialPrintSynchronous(c, strlen(c));
+}
+
+void serialPrintLine(const char *c, int8_t len) {
+
+	char *ln = (char*)malloc((len + 3) * sizeof(char));
+	memcpy(ln, c, len + 1);
 	strcat(ln, newLineCharacters);
-	serialPrint(ln);
+	serialPrint(ln, len);
+}
+
+void serialPrintLine(const char *c) {
+	serialPrintLine(c, strlen(c));
 }
 
 void writeCharacterFromBuffer() {
@@ -144,7 +154,7 @@ void writeCharacterFromBuffer() {
 }
 
 int8_t outputBufferWalked() {
-	return outputBuffer[outputBufferPtr] == 0;
+	return outputBufferPtr >= outputBufferLength;
 }
 
 void sleepUntilEmptyOutputBuffer() {
