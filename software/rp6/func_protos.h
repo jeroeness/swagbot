@@ -41,12 +41,11 @@ int moveMotors(int8_t speedL, int8_t speedR);
 struct SD{
 	uint8_t bumperRight:1;
 	uint8_t bumperLeft:1;
-	uint16_t compassDegrees;
+	uint8_t compassDegrees;
 	int8_t motorLeft;
 	int8_t motorRight;
-	int16_t ultrasonic;
-	int8_t batteryLow;
-	uint16_t batteryVoltage;
+	uint8_t ultrasonic;
+	uint8_t batteryPercentage;
 };
 
 struct ID{

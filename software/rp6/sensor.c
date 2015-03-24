@@ -174,12 +174,7 @@ void readBattery(){
 	while(~ADCSRA & (1<<ADIF));
 	batteryValue = ADC;   
 	
-	if(batteryValue < 600) {
-		sensorData.sensorStruct.batteryLow = 1;
-	}
-	else {
-	sensorData.sensorStruct.batteryLow = 0;
-	}
-	
-	sensorData.sensorStruct.batteryVoltage = batteryValue;
+	sensorData.sensorStruct.batteryPercentage = ((99.0 / 1023.0) * batteryValue) + 1.0; 
 }
+
+

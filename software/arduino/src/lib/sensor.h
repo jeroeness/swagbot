@@ -9,8 +9,8 @@
 
 //SD stands for SensorData
 struct SD {
-	uint8_t bumperRight;
-	uint8_t bumperLeft;
+	uint8_t bumperRight:1;
+	uint8_t bumperLeft:1;
 	uint8_t compassDegrees;
 	int8_t motorLeft;
 	int8_t motorRight;
@@ -39,5 +39,7 @@ union UID {
 
 extern union UID instructionData;
 extern union USD sensorData;
+
+void updateBatteryLeds();
 
 #endif

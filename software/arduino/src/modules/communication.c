@@ -20,7 +20,13 @@ int8_t *keyState;
 
 void initCommunication() {
 	openConnection();
-
+	sensorData.sensorStruct.batteryPercentage = 1;
+	sensorData.sensorStruct.bumperRight = 1;
+	sensorData.sensorStruct.bumperLeft = 1;
+	instructionData.instructionstruct.motorLeft = 0;
+	instructionData.instructionstruct.motorRight = 0;
+	instructionData.instructionstruct.ledStatus = 1<<7;
+	
 	keyState = (int8_t*)calloc (KEYSTATESCOUNT, sizeof (int8_t));
 }
 
@@ -79,11 +85,7 @@ char* uitoa(unsigned int i, char b[]){
 
 void printVerbose() {
 
-	sensorData.sensorStruct.bumperRight = 1;
-	sensorData.sensorStruct.bumperLeft = 1;
-	instructionData.instructionstruct.motorLeft = 100;
-	instructionData.instructionstruct.motorRight = -100;
-	instructionData.instructionstruct.ledStatus = 1;
+	
 
 
 
@@ -104,11 +106,12 @@ void printVerbose() {
 			
 		//}
 		
+		/*
 		if(sensorData.sensorStruct.batteryPercentage > 100){
 			sensorData.sensorStruct.batteryPercentage = 1;
 		}else{
 			sensorData.sensorStruct.batteryPercentage++;
-		}
+		}*/
 
 		if(sensorData.sensorStruct.compassDegrees > 240){
 			sensorData.sensorStruct.compassDegrees = 1;

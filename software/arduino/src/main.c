@@ -37,12 +37,10 @@ int main(void)
 	{
 		//i2c_read_sensors(sizeof(sensorData));
 		//updateAutomaticMode();
-		//sei();
-//		serialPrintSynchronous("out of auto update");
 		//moveMotors(50,50);
 		updateModeManager();
 		updateCommunication();
-//		serialPrintSynchronous("out of commu update");
+		updateBatteryLeds();
 	}
 
 	return 1998;
