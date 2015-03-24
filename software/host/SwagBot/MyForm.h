@@ -96,6 +96,9 @@ namespace SwagBot {
 	private: System::Windows::Forms::Label^  lblN;
 	private: System::Windows::Forms::Label^  lblKeyInfo;
 	private: System::Windows::Forms::Label^  lblRes6;
+	private: System::Windows::Forms::StatusStrip^  sStrip;
+	private: System::Windows::Forms::ToolStripStatusLabel^  lblStatus;
+
 
 
 
@@ -169,6 +172,8 @@ namespace SwagBot {
 			this->lblA = (gcnew System::Windows::Forms::Label());
 			this->lblP = (gcnew System::Windows::Forms::Label());
 			this->lblW = (gcnew System::Windows::Forms::Label());
+			this->sStrip = (gcnew System::Windows::Forms::StatusStrip());
+			this->lblStatus = (gcnew System::Windows::Forms::ToolStripStatusLabel());
 			this->frmSensor->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->picLed7))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->picLed6))->BeginInit();
@@ -184,6 +189,7 @@ namespace SwagBot {
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->picLed0))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->picCompass))->BeginInit();
 			this->frmControls->SuspendLayout();
+			this->sStrip->SuspendLayout();
 			this->SuspendLayout();
 			// 
 			// cmdConnect
@@ -206,10 +212,6 @@ namespace SwagBot {
 			this->cmbComm->Size = System::Drawing::Size(75, 21);
 			this->cmbComm->TabIndex = 1;
 			this->cmbComm->TabStop = false;
-			// 
-			// serialPort1
-			// 
-			this->serialPort1->DiscardNull = true;
 			// 
 			// cmdDisconnect
 			// 
@@ -656,12 +658,28 @@ namespace SwagBot {
 			this->lblW->MouseLeave += gcnew System::EventHandler(this, &MyForm::lblW_MouseLeave);
 			this->lblW->MouseUp += gcnew System::Windows::Forms::MouseEventHandler(this, &MyForm::lblW_MouseUp);
 			// 
+			// sStrip
+			// 
+			this->sStrip->Items->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(1) { this->lblStatus });
+			this->sStrip->Location = System::Drawing::Point(0, 334);
+			this->sStrip->Name = L"sStrip";
+			this->sStrip->Size = System::Drawing::Size(356, 22);
+			this->sStrip->TabIndex = 23;
+			this->sStrip->Text = L"statusStrip1";
+			// 
+			// lblStatus
+			// 
+			this->lblStatus->Name = L"lblStatus";
+			this->lblStatus->Size = System::Drawing::Size(118, 17);
+			this->lblStatus->Text = L"toolStripStatusLabel1";
+			// 
 			// MyForm
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->BackColor = System::Drawing::Color::WhiteSmoke;
-			this->ClientSize = System::Drawing::Size(356, 333);
+			this->ClientSize = System::Drawing::Size(356, 356);
+			this->Controls->Add(this->sStrip);
 			this->Controls->Add(this->frmControls);
 			this->Controls->Add(this->cmdRefresh);
 			this->Controls->Add(this->picCompass);
@@ -689,22 +707,28 @@ namespace SwagBot {
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->picLed0))->EndInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->picCompass))->EndInit();
 			this->frmControls->ResumeLayout(false);
+			this->sStrip->ResumeLayout(false);
+			this->sStrip->PerformLayout();
 			this->ResumeLayout(false);
+			this->PerformLayout();
 
 		}
 #pragma endregion
 
 
-#define KEY_UP true
-#define KEY_DOWN false
+#define KEY_UP false
+#define KEY_DOWN true
 
-	public:
+	private:
 		static array<int>^ keyCode = gcnew array<int>(7) { 0x57, 0x41, 0x44, 0x53, 0x50, 0x4D, 0x4E };
 		static array<bool>^ keyDown = gcnew array<bool>(7) { false, false, false, false, false, false, false };
 		static array<unsigned char>^ keySendUp = gcnew array<unsigned char>(7) { 'W', 'A', 'D', 'S', 'P', 'M', 'N' }; //Convert::ToChar('W')
 		static array<unsigned char>^ keySendDown = gcnew array<unsigned char>(7) { 'w', 'a', 'd', 's', 'p', 'm', 'n' };
 		static array<Label^>^ keyLabels = gcnew array<Label^>(7) {};
 		static array<bool>^ MouseDown = gcnew array<bool>(7) {};
+
+		array<int>^ databuffer = gcnew array<int>(100);
+		int bufferlen = 0;
 
 		String ^buffertest;
 		int compassDegrees = 0;
@@ -718,19 +742,40 @@ namespace SwagBot {
 		void TriggerKeyState(int whatKey, bool whatState) {
 			if (!this->serialPort1->IsOpen) return;
 
+			if (whatState) { //if key was pressed
+				if (keyDown[whatKey] == false) {
+					keyDown[whatKey] = true;
+					this->serialPort1->Write(keySendDown, whatKey, 1);
+					keyLabels[whatKey]->BackColor = Color::Gray;
+				}
+			} else {
+				if (keyDown[whatKey] == true && MouseDown[whatKey] == false) {
+					keyDown[whatKey] = false;
+					this->serialPort1->Write(keySendUp, whatKey, 1);
+					keyLabels[whatKey]->BackColor = Color::White;
+				}
+			}
+
+			if (MouseDown[whatKey] == true) {
+				keyLabels[whatKey]->BackColor = Color::Gray;
+			} else {
+				keyLabels[whatKey]->BackColor = Color::White;
+			}
+
+			/*
 			if (whatState) {
 				if (!keyDown[whatKey] && MouseDown[whatKey] == false) {
 					this->serialPort1->Write(keySendDown, whatKey, 1);
 					keyDown[whatKey] = true;
-					keyLabels[whatKey]->BackColor = Color::White;
+					keyLabels[whatKey]->BackColor = Color::Gray;
 				}
 			} else {
 				if (keyDown[whatKey]) {
 					keyDown[whatKey] = false;
 					this->serialPort1->Write(keySendUp, whatKey, 1);
-					keyLabels[whatKey]->BackColor = Color::Gray;
+					
 				}
-			}
+			}*/
 		}
 
 
@@ -745,6 +790,12 @@ namespace SwagBot {
 			keyLabels[4] = lblP;
 			keyLabels[5] = lblM;
 			keyLabels[6] = lblN;
+
+			int i = 0;
+
+			for (i = 0; i < 7; i++) {
+				GetAsyncKeyState(keyCode[i]);
+			}
 
 		}
 
@@ -778,9 +829,10 @@ namespace SwagBot {
 
 				this->serialPort1->Open();
 				if (this->serialPort1->IsOpen) {
+					setStatusMessage("Connected!",false);
 					setControlstate(false);
 				} else {
-					MessageBox::Show("Could not open '" + this->cmbComm->Text + "'!");
+					setStatusMessage("Could not open '" + this->cmbComm->Text + "'!",true);
 					setControlstate(true);
 				}
 			}
@@ -808,7 +860,8 @@ namespace SwagBot {
 
 		System::Void tmrGetData_Tick(System::Object^  sender, System::EventArgs^  e) {
 			int gchar;
-			array<wchar_t>^ sensordata;
+			array<int>^ sensordata = gcnew array<int>(11);
+			int i = 0;
 
 			if (!this->serialPort1->IsOpen) return;
 
@@ -816,82 +869,102 @@ namespace SwagBot {
 				//gchar = this->serialPort1->ReadChar();
 				gchar = this->serialPort1->ReadByte();
 
-				if (gchar == 255) { //end of bufferdata
-					sensordata = buffertest->ToCharArray();//->Split(':');
-					buffertest = "";
-					if (sensordata->Length == 9) {
-						this->lblRes0->Text = "" + (sensordata[0] - 128);
-						this->lblRes1->Text = "" + (sensordata[1] - 128);
-						int leds = sensordata[2];
-
-						if (1 & leds) {
-							this->picLed0->BackColor = Color::Lime;
-						} else {
-							this->picLed0->BackColor = Color::DarkGreen;
-						}
-						if (2 & leds) {
-							this->picLed1->BackColor = Color::Red;
-						} else {
-							this->picLed1->BackColor = Color::DarkRed;
-						}
-						if (4 & leds) {
-							this->picLed2->BackColor = Color::Red;
-						} else {
-							this->picLed2->BackColor = Color::DarkRed;
-						}
-						if (8 & leds) {
-							this->picLed3->BackColor = Color::Lime;
-						} else {
-							this->picLed3->BackColor = Color::DarkGreen;
-						}
-						if (16 & leds) {
-							this->picLed4->BackColor = Color::Red;
-						} else {
-							this->picLed4->BackColor = Color::DarkRed;
-						}
-						if (32 & leds) {
-							this->picLed5->BackColor = Color::Red;
-						} else {
-							this->picLed5->BackColor = Color::DarkRed;
-						}
-						if (64 & leds) {
-							this->picLed6->BackColor = Color::Yellow;
-						} else {
-							this->picLed6->BackColor = Color::Olive;
-						}
-						if (128 & leds) {
-							this->picLed7->BackColor = Color::Red;
-						} else {
-							this->picLed7->BackColor = Color::DarkRed;
-						}
-
-						this->lblRes3->Text = (Convert::ToUInt16(sensordata[3])).ToString();
-						this->lblRes4->Text = "" + Convert::ToUInt16(sensordata[4]);
-						this->lblRes5->Text = "" + Convert::ToUInt16(sensordata[5]);
-						setPercentage(sensordata[6]);
-						compassDegrees = Convert::ToUInt16(sensordata[7]);
-						this->picCompass->Refresh();
-
-						if (sensordata[8] == 1) {
-							this->lblRes6->Text = "Manual Mode";
-						} else {
-							this->lblRes6->Text = "Automatic Mode";
-						}
-
+				if (gchar == 255 && bufferlen > 8) { //end of bufferdata
+					//->Split(':');
+					
+					for (i = 0; i < 9; i++) {
+						sensordata[i] = databuffer[bufferlen-9+i];
 					}
+
+					bufferlen = 0;
+
+
+					this->lblRes0->Text = "" + (sensordata[0] - 128);
+					this->lblRes1->Text = "" + (sensordata[1] - 128);
+					int leds = sensordata[2];
+
+					if (1 & leds) {
+						this->picLed0->BackColor = Color::Lime;
+					} else {
+						this->picLed0->BackColor = Color::DarkGreen;
+					}
+					if (2 & leds) {
+						this->picLed1->BackColor = Color::Red;
+					} else {
+						this->picLed1->BackColor = Color::DarkRed;
+					}
+					if (4 & leds) {
+						this->picLed2->BackColor = Color::Red;
+					} else {
+						this->picLed2->BackColor = Color::DarkRed;
+					}
+					if (8 & leds) {
+						this->picLed3->BackColor = Color::Lime;
+					} else {
+						this->picLed3->BackColor = Color::DarkGreen;
+					}
+					if (16 & leds) {
+						this->picLed4->BackColor = Color::Red;
+					} else {
+						this->picLed4->BackColor = Color::DarkRed;
+					}
+					if (32 & leds) {
+						this->picLed5->BackColor = Color::Red;
+					} else {
+						this->picLed5->BackColor = Color::DarkRed;
+					}
+					if (64 & leds) {
+						this->picLed6->BackColor = Color::Yellow;
+					} else {
+						this->picLed6->BackColor = Color::Olive;
+					}
+					if (128 & leds) {
+						this->picLed7->BackColor = Color::Red;
+					} else {
+						this->picLed7->BackColor = Color::DarkRed;
+					}
+
+					this->lblRes3->Text = "" + sensordata[3];
+					this->lblRes4->Text = "" + sensordata[4];
+					this->lblRes5->Text = "" + sensordata[5];
+					setPercentage(sensordata[6]);
+					compassDegrees = sensordata[7];
+					this->picCompass->Refresh();
+
+					if (sensordata[8] == 0) {
+						this->lblRes6->Text = "Manual Mode";
+					} else {
+						this->lblRes6->Text = "Automatic Mode";
+					}
+
 				} else {
-					buffertest += "" + Convert::ToChar(gchar);
+					if (bufferlen < 100-1) {
+						databuffer[bufferlen++] = gchar;
+					}else{
+						setStatusMessage("BUFFER OVERLOAD",true);
+						bufferlen = 0;
+						databuffer[bufferlen] = 0;
+					}
+					//buffertest += "" + Convert::ToChar(gchar);
 				}
 			}
 
-			int i = 0;
-
 			for (i = 0; i < 7; i++) {
-				this->TriggerKeyState(i, !GetAsyncKeyState(keyCode[i]));
+				this->TriggerKeyState(i, GetAsyncKeyState(keyCode[i]));
 			}
 
 		}
 
+		void setStatusMessage(String ^ nMessage,bool isError){
+			if (isError) {
+				this->lblStatus->Text = nMessage;
+				this->lblStatus->ForeColor = Color::Red;
+			} else {
+				this->lblStatus->Text = nMessage;
+				this->lblStatus->ForeColor = Color::Black;
+			}
+
+		}
 
 		System::Void cmdDisconnect_Click(System::Object^  sender, System::EventArgs^  e) {
 			if (this->serialPort1->IsOpen) {

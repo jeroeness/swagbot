@@ -21,12 +21,12 @@ int8_t *keyState;
 void initCommunication() {
 	openConnection();
 	sensorData.sensorStruct.batteryPercentage = 1;
-	sensorData.sensorStruct.bumperRight = 1;
-	sensorData.sensorStruct.bumperLeft = 1;
+	sensorData.sensorStruct.bumperRight = 0;
+	sensorData.sensorStruct.bumperLeft = 0;
 	instructionData.instructionstruct.motorLeft = 0;
 	instructionData.instructionstruct.motorRight = 0;
 	instructionData.instructionstruct.ledStatus = 1<<7;
-	
+
 	keyState = (int8_t*)calloc (KEYSTATESCOUNT, sizeof (int8_t));
 }
 
@@ -85,7 +85,7 @@ char* uitoa(unsigned int i, char b[]){
 
 void printVerbose() {
 
-	
+
 
 
 
@@ -99,13 +99,13 @@ void printVerbose() {
 		}else{
 			sensorData.sensorStruct.ultrasonic++;
 		}*/
-		
+
 		//sensorData.sensorStruct.ultrasonic = 1;
-		
+
 		//if(sensorData.sensorStruct.ultrasonic == 0 || sensorData.sensorStruct.ultrasonic == 255){
-			
+
 		//}
-		
+
 		/*
 		if(sensorData.sensorStruct.batteryPercentage > 100){
 			sensorData.sensorStruct.batteryPercentage = 1;
@@ -114,7 +114,7 @@ void printVerbose() {
 		}*/
 
 		if(sensorData.sensorStruct.compassDegrees > 240){
-			sensorData.sensorStruct.compassDegrees = 1;
+			sensorData.sensorStruct.compassDegrees = 0;
 		}else{
 			sensorData.sensorStruct.compassDegrees += 10;
 		}
@@ -138,10 +138,11 @@ void printVerbose() {
 		serialPrint(comm_itoa(sensorData.sensorStruct.batteryPercentage, str));
 		serialPrint(":");
 		serialPrint(comm_itoa(sensorData.sensorStruct.compassDegrees, str));
+		serialPrint(comm_itoa(sensorData.sensorStruct.compassDegrees, str));
 		serialPrint(";");*/
 
 		char str[11];
-		
+
         uint8_t i = 0;
 		str[i++] = instructionData.instructionstruct.motorLeft+128;
 		str[i++] = instructionData.instructionstruct.motorRight+128;
@@ -152,14 +153,20 @@ void printVerbose() {
 		str[i++] = sensorData.sensorStruct.batteryPercentage;
 		str[i++] = sensorData.sensorStruct.compassDegrees;
 		if(steeringMode == manual){
-			str[i++] = 1;
+			str[i++] = 0;
 		}else{
-			str[i++] = 2;
+			str[i++] = 1;
 		}
 		str[i++] = 255;
 		str[i++] = 0;
-		
-		serialPrint(str);
+
+		for (i = 0; i < 10; i++) {
+			if (str[i] == 255) {
+				str[i]--;
+			}
+		}
+
+		serialPrint(str, 11);
 
 	}
 }
@@ -188,7 +195,7 @@ char charIndex (int8_t key) {
 void readInputs () {
 	while(serialAvailable()){
 		char input = serialRead();
-		
+
 		if(input == 0){
 			sensorData.sensorStruct.ultrasonic = 1;
 		}else if(input == 255){
@@ -196,14 +203,14 @@ void readInputs () {
 		}else{
 			sensorData.sensorStruct.ultrasonic = input;
 		}
-		
+
 		switch (input) {
 			case 'w':
 			case 'a':
 			case 's':
 			case 'd':
 			    keyState[keyIndex (input)] = 1;
-                //inputKeyPress(input);
+                inputKeyPress(input);
 				break;
             case 'W':
 			case 'A':
@@ -213,21 +220,21 @@ void readInputs () {
                 inputKeyRelease(input + ('a'-'A'));
 				break;
 			case 'm':
-				
+
 				setSteeringMode(manual);
 				break;
 			case 'n':
 				setSteeringMode(automatic);
 				break;
-		} 
+		}
     }
-	
-	/*
+
+/*
     for (int8_t i = 0; i < KEYSTATESCOUNT; i++) {
         if (keyState[i]) {
             inputKeyPress(charIndex(i));
         }
-    }*/
-	
-	
+    }
+*/
+
 }
