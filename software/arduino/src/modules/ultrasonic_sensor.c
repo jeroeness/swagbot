@@ -30,7 +30,7 @@ void UltrasonicSensorRead(void)
 	TCNT5 = 0;
 
 	uint16_t register timeoutcounter = 10000;//todo: calculate a good value
-	while (PINL & (1 << PL1))// wait for the pulse that needs to be measured
+	while (!(PINL & (1 << PL1)))// wait for the pulse that needs to be measured  //can also be done with icr edge interrupt (see if this works first)
 	{
 		if (!timeoutcounter--)
 		{
