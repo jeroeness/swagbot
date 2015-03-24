@@ -720,14 +720,14 @@ namespace SwagBot {
 
 			if (whatState) {
 				if (!keyDown[whatKey] && MouseDown[whatKey] == false) {
-					this->serialPort1->Write(keySendDown, whatKey, 1);
+					//this->serialPort1->Write(keySendDown, whatKey, 1);
 					keyDown[whatKey] = true;
 					keyLabels[whatKey]->BackColor = Color::White;
 				}
 			} else {
 				if (keyDown[whatKey]) {
 					keyDown[whatKey] = false;
-					this->serialPort1->Write(keySendUp, whatKey, 1);
+					//this->serialPort1->Write(keySendUp, whatKey, 1);
 					keyLabels[whatKey]->BackColor = Color::Gray;
 				}
 			}
@@ -763,13 +763,18 @@ namespace SwagBot {
 			this->cmbComm->Items->Clear();
 			this->cmbComm->Items->AddRange(serialPort1->GetPortNames());
 			if (this->cmbComm->Items->Count > 0) {
-				this->cmbComm->SelectedIndex = 0;
+				this->cmbComm->SelectedIndex = this->cmbComm->Items->Count-1;
 			}
+			Connect();
 		}
 
 
 
 		System::Void cmdConnect_Click(System::Object^  sender, System::EventArgs^  e) {
+			Connect();
+		}
+
+		void Connect() {
 			if (this->cmbComm->SelectedIndex != -1) {
 
 				this->serialPort1->PortName = this->cmbComm->Text;
@@ -779,7 +784,8 @@ namespace SwagBot {
 				this->serialPort1->Open();
 				if (this->serialPort1->IsOpen) {
 					setControlstate(false);
-				} else {
+				}
+				else {
 					MessageBox::Show("Could not open '" + this->cmbComm->Text + "'!");
 					setControlstate(true);
 				}

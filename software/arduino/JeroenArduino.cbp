@@ -545,17 +545,14 @@
 				<Linker>
 					<Add option="-s" />
 					<Add option="-mmcu=$(MCU)" />
-					<Add option='&quot;$(PROJECT_DIR)${TARGET_OUTPUT_DIR}/lib_${BOARD_ID}_${MCU_CLOCK}.a&quot;' />
-					<Add option='&quot;$(PROJECT_DIR)${TARGET_OUTPUT_DIR}/core_${BOARD_ID}_${MCU_CLOCK}.a&quot;' />
 					<Add option="-Wl,-Map=$(TARGET_OUTPUT_FILE).map,--cref" />
 				</Linker>
 				<ExtraCommands>
-					<Add before='$(TARGET_COMPILER_DIR)ArduinoUploader &quot;$(PROJECT_DIR).&quot; $(BOARD_ID) - $(MCU_CLOCK) 0 &quot;$(PROJECT_DIR)${TARGET_OUTPUT_DIR}/lib_${BOARD_ID}_${MCU_CLOCK}.a&quot; &quot;$(PROJECT_DIR)${TARGET_OUTPUT_DIR}/core_${BOARD_ID}_${MCU_CLOCK}.a&quot;' />
 					<Add after='avr-objcopy -O ihex -R .eeprom -R .eesafe &quot;$(TARGET_OUTPUT_FILE)&quot; &quot;$(TARGET_OUTPUT_FILE).hex&quot;' />
 					<Add after='avr-objcopy --no-change-warnings -j .eeprom --change-section-lma .eeprom=0 -O ihex &quot;$(TARGET_OUTPUT_FILE)&quot; &quot;$(TARGET_OUTPUT_FILE).eep.hex&quot;' />
 					<Add after='avr-size --mcu=$(MCU) --format=avr &quot;$(TARGET_OUTPUT_FILE)&quot;' />
 					<Add after='cmd /c &quot;avr-objdump -h -S $(TARGET_OUTPUT_FILE) &gt; $(TARGET_OUTPUT_FILE).lss&quot;' />
-					<Add after="$(PROJECT_DIR)flash.bat $(PROJECT_DIR) $(TARGET_OUTPUT_FILE).hex $(PORT)" />
+					<Add after="$(PROJECT_DIR)jeroenFlash.bat $(PROJECT_DIR) $(TARGET_OUTPUT_FILE).hex $(PORT)" />
 				</ExtraCommands>
 				<Environment>
 					<Variable name="BOARD" value="Arduino Mega 2560\ADK" />
@@ -686,8 +683,8 @@
 		<Compiler>
 			<Add directory="." />
 		</Compiler>
-		<Unit filename="src/lib/pins_arduino.h">
-			<Option target="Arduino Uno" />
+		<Unit filename="src/lib/sensor.c">
+			<Option compilerVar="CC" />
 			<Option target="Arduino Mega 2560/ADK" />
 		</Unit>
 		<Unit filename="src/lib/sensor.h">
@@ -767,6 +764,13 @@
 		</Unit>
 		<Unit filename="src/modules/motor.h">
 			<Option target="Arduino Uno" />
+			<Option target="Arduino Mega 2560/ADK" />
+		</Unit>
+		<Unit filename="src/modules/ultrasonic_sensor.c">
+			<Option compilerVar="CC" />
+			<Option target="Arduino Mega 2560/ADK" />
+		</Unit>
+		<Unit filename="src/modules/ultrasonic_sensor.h">
 			<Option target="Arduino Mega 2560/ADK" />
 		</Unit>
 		<Extensions>
