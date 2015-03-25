@@ -173,15 +173,6 @@ char charIndex (int8_t key) {
 	return 'w';
 }
 
-void CheckInputPresses(){
-	for (int8_t i = 0; i < KEYSTATESCOUNT; i++) {
-        if (keyState[i] == 1) {
-            inputKeyPress(charIndex(i));
-			return;
-        }
-    }
-}
-
 void readInputs () {
 	while(serialAvailable()){
 		char input = serialRead();
@@ -202,7 +193,6 @@ void readInputs () {
                 inputKeyRelease(input + ('a'-'A'));
 				break;
 			case 'm':
-
 				setSteeringMode(manual);
 				break;
 			case 'n':
@@ -226,12 +216,12 @@ void readInputs () {
 	//if i2c is connected this loop will drastically slowdown the arduino process. WHY?
 	//because this function is triggered as fast as it can. This loop will be so much to handle in that way
 	//that it will slow down the custom timers like 0x8FFF values.
-	/*
+
     for (int8_t i = 0; i < KEYSTATESCOUNT; i++) {
         if (keyState[i] == 1) {
-            inputKeyPress(charIndex(i));
+            inputKeyDown(charIndex(i));
         }
-    }*/
+    }
 
 
 }
