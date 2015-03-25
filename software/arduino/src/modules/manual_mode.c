@@ -5,34 +5,53 @@
 //extern union UID instructionData;
 extern union USD sensorData;
 
+int8_t forward;
+int8_t direction;
+uint8_t collision;
+
 void inputRight() {
-	turn(100);
+	direction = 60;
 }
 
 void inputLeft() {
-	turn(-100);
+	direction = -60;
 }
 
 void inputBackward() {
-	moveMotors(-100, -100);
+	forward = -90;
 }
 
 void inputForward() {
-	if(sensorData.sensorStruct.bumperRight == 1 || sensorData.sensorStruct.bumperLeft == 1) {
-        stop();
-    } else {
-        moveMotors(100, 100);
-    }
+	//TODO dit gaat niet werken, dit moet in update uitgevoerd worden!
+	//if(sensorData.sensorStruct.bumperRight == 1 || sensorData.sensorStruct.bumperLeft == 1) {
+    forward = 90;
 }
 
-void inputStop(){
-	stop();
-}
 
 void stopManualMode() {
 	stop();
 }
 
 void beginManualMode() {
+	forward = 0;
+	direction = 0;
+	collision = 0;
 	//Do nothing
+}
+
+void stopForward() {
+	forward = forward > 0 ? 0 : forward;
+}
+void stopLeft() {
+	direction = direction < 0 ? 0 : direction;
+}
+void stopBackward() {
+	forward = forward < 0 ? 0 : forward;
+}
+void stopright() {
+	direction = direction > 0 ? 0 : direction;
+}
+
+void alterCourse () {
+    moveMotors(min(forward + direction, 100), min(forward - direction, 100));
 }
