@@ -1,18 +1,18 @@
-﻿Build started 24-03-15 9:07:13 PM.
+﻿Build started 25-03-15 1:13:16 AM.
      1>Project "D:\Github\swagbot\software\host\SwagBot\SwagBot.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /AI"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5.1\\" /AI"C:\Program Files (x86)\Windows Kits\8.1\References\CommonConfiguration\Neutral" /AI"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5.1\Facades\\" /Zi /clr /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _UNICODE /D UNICODE /EHa /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /TP /FU"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5.1\mscorlib.dll" /FU"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5.1\System.Data.dll" /FU"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5.1\System.dll" /FU"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5.1\System.Drawing.dll" /FU"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5.1\System.Windows.Forms.dll" /FU"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5.1\System.Xml.dll" /analyze- /errorReport:prompt /clr:nostdlib MyForm.cpp
          MyForm.cpp
-     1>d:\github\swagbot\software\host\swagbot\MyForm.h(953): warning C4800: 'SHORT' : forcing value to bool 'true' or 'false' (performance warning)
-     1>d:\github\swagbot\software\host\swagbot\MyForm.h(981): warning C4244: 'argument' : conversion from 'double' to 'int', possible loss of data
-     1>d:\github\swagbot\software\host\swagbot\MyForm.h(1008): warning C4244: 'initializing' : conversion from 'double' to 'float', possible loss of data
-     1>d:\github\swagbot\software\host\swagbot\MyForm.h(1009): warning C4244: 'argument' : conversion from 'double' to 'int', possible loss of data
-     1>d:\github\swagbot\software\host\swagbot\MyForm.h(1010): warning C4244: 'argument' : conversion from 'double' to 'int', possible loss of data
-     1>d:\github\swagbot\software\host\swagbot\MyForm.h(1025): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
-     1>d:\github\swagbot\software\host\swagbot\MyForm.h(1027): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
-     1>d:\github\swagbot\software\host\swagbot\MyForm.h(1028): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
-     1>d:\github\swagbot\software\host\swagbot\MyForm.h(1029): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
-     1>d:\github\swagbot\software\host\swagbot\MyForm.h(1030): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+     1>d:\github\swagbot\software\host\swagbot\MyForm.h(996): warning C4800: 'SHORT' : forcing value to bool 'true' or 'false' (performance warning)
+     1>d:\github\swagbot\software\host\swagbot\MyForm.h(1044): warning C4244: 'argument' : conversion from 'double' to 'int', possible loss of data
+     1>d:\github\swagbot\software\host\swagbot\MyForm.h(1071): warning C4244: 'initializing' : conversion from 'double' to 'float', possible loss of data
+     1>d:\github\swagbot\software\host\swagbot\MyForm.h(1072): warning C4244: 'argument' : conversion from 'double' to 'int', possible loss of data
+     1>d:\github\swagbot\software\host\swagbot\MyForm.h(1073): warning C4244: 'argument' : conversion from 'double' to 'int', possible loss of data
+     1>d:\github\swagbot\software\host\swagbot\MyForm.h(1088): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+     1>d:\github\swagbot\software\host\swagbot\MyForm.h(1090): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+     1>d:\github\swagbot\software\host\swagbot\MyForm.h(1091): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+     1>d:\github\swagbot\software\host\swagbot\MyForm.h(1092): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+     1>d:\github\swagbot\software\host\swagbot\MyForm.h(1093): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
        Link:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"D:\Github\swagbot\software\host\Debug\SwagBot.exe" /INCREMENTAL /NOLOGO User32.lib /ASSEMBLYRESOURCE:Debug\SwagBot.MyForm.resources /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"D:\Github\swagbot\software\host\Debug\SwagBot.pdb" /ASSEMBLYDEBUG /SUBSYSTEM:WINDOWS /TLBID:1 /ENTRY:"Main" /DYNAMICBASE /FIXED:NO /NXCOMPAT /MACHINE:X86 Debug\MyForm.obj
          "Debug\.NETFramework,Version=v4.5.1.AssemblyAttributes.obj"
@@ -21,4 +21,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:00.75
+Time Elapsed 00:00:00.68

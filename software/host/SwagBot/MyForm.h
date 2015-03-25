@@ -98,6 +98,9 @@ namespace SwagBot {
 	private: System::Windows::Forms::Label^  lblRes6;
 	private: System::Windows::Forms::StatusStrip^  sStrip;
 	private: System::Windows::Forms::ToolStripStatusLabel^  lblStatus;
+	private: System::Windows::Forms::Timer^  tmrAlive;
+	private: System::Windows::Forms::ToolStripStatusLabel^  lblConnection;
+
 
 
 
@@ -174,6 +177,8 @@ namespace SwagBot {
 			this->lblW = (gcnew System::Windows::Forms::Label());
 			this->sStrip = (gcnew System::Windows::Forms::StatusStrip());
 			this->lblStatus = (gcnew System::Windows::Forms::ToolStripStatusLabel());
+			this->lblConnection = (gcnew System::Windows::Forms::ToolStripStatusLabel());
+			this->tmrAlive = (gcnew System::Windows::Forms::Timer(this->components));
 			this->frmSensor->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->picLed7))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->picLed6))->BeginInit();
@@ -212,6 +217,10 @@ namespace SwagBot {
 			this->cmbComm->Size = System::Drawing::Size(75, 21);
 			this->cmbComm->TabIndex = 1;
 			this->cmbComm->TabStop = false;
+			// 
+			// serialPort1
+			// 
+			this->serialPort1->WriteTimeout = 500;
 			// 
 			// cmdDisconnect
 			// 
@@ -660,7 +669,7 @@ namespace SwagBot {
 			// 
 			// sStrip
 			// 
-			this->sStrip->Items->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(1) { this->lblStatus });
+			this->sStrip->Items->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(2) { this->lblStatus, this->lblConnection });
 			this->sStrip->Location = System::Drawing::Point(0, 334);
 			this->sStrip->Name = L"sStrip";
 			this->sStrip->Size = System::Drawing::Size(356, 22);
@@ -670,8 +679,22 @@ namespace SwagBot {
 			// lblStatus
 			// 
 			this->lblStatus->Name = L"lblStatus";
-			this->lblStatus->Size = System::Drawing::Size(118, 17);
-			this->lblStatus->Text = L"toolStripStatusLabel1";
+			this->lblStatus->Size = System::Drawing::Size(196, 17);
+			this->lblStatus->Text = L"Select CommPort and click connect";
+			// 
+			// lblConnection
+			// 
+			this->lblConnection->ForeColor = System::Drawing::Color::Red;
+			this->lblConnection->Name = L"lblConnection";
+			this->lblConnection->Size = System::Drawing::Size(145, 17);
+			this->lblConnection->Spring = true;
+			this->lblConnection->Text = L"TimeOuts: 0";
+			this->lblConnection->TextAlign = System::Drawing::ContentAlignment::MiddleRight;
+			// 
+			// tmrAlive
+			// 
+			this->tmrAlive->Interval = 300;
+			this->tmrAlive->Tick += gcnew System::EventHandler(this, &MyForm::tmrAlive_Tick);
 			// 
 			// MyForm
 			// 
@@ -722,13 +745,15 @@ namespace SwagBot {
 	private:
 		static array<int>^ keyCode = gcnew array<int>(7) { 0x57, 0x41, 0x44, 0x53, 0x50, 0x4D, 0x4E };
 		static array<bool>^ keyDown = gcnew array<bool>(7) { false, false, false, false, false, false, false };
-		static array<unsigned char>^ keySendUp = gcnew array<unsigned char>(7) { 'W', 'A', 'D', 'S', 'P', 'M', 'N' }; //Convert::ToChar('W')
-		static array<unsigned char>^ keySendDown = gcnew array<unsigned char>(7) { 'w', 'a', 'd', 's', 'p', 'm', 'n' };
+		static array<unsigned char>^ keySendUp = gcnew array<unsigned char>(8) { 'W', 'A', 'D', 'S', 'P', 'M', 'N', 'F' }; 
+		static array<unsigned char>^ keySendDown = gcnew array<unsigned char>(8) { 'w', 'a', 'd', 's', 'p', 'm', 'n', 'f' };
 		static array<Label^>^ keyLabels = gcnew array<Label^>(7) {};
 		static array<bool>^ MouseDown = gcnew array<bool>(7) {};
 
 		array<int>^ databuffer = gcnew array<int>(100);
 		int bufferlen = 0;
+
+		int TimeOutCount = 0;
 
 		String ^buffertest;
 		int compassDegrees = 0;
@@ -737,8 +762,7 @@ namespace SwagBot {
 
 
 	private:
-
-
+		
 		void TriggerKeyState(int whatKey, bool whatState) {
 			if (!this->serialPort1->IsOpen) return;
 
@@ -747,16 +771,18 @@ namespace SwagBot {
 					keyDown[whatKey] = true;
 					this->serialPort1->Write(keySendDown, whatKey, 1);
 					keyLabels[whatKey]->BackColor = Color::Gray;
+					//return;
 				}
 			} else {
 				if (keyDown[whatKey] == true && MouseDown[whatKey] == false) {
 					keyDown[whatKey] = false;
 					this->serialPort1->Write(keySendUp, whatKey, 1);
+					this->serialPort1->Write(keySendUp, whatKey, 1);//send the key twice to be sure the arduino gets it.
 					keyLabels[whatKey]->BackColor = Color::White;
 				}
 			}
 
-			if (MouseDown[whatKey] == true) {
+			if (MouseDown[whatKey] == true || keyDown[whatKey] == true) {
 				keyLabels[whatKey]->BackColor = Color::Gray;
 			} else {
 				keyLabels[whatKey]->BackColor = Color::White;
@@ -776,13 +802,6 @@ namespace SwagBot {
 			keyLabels[4] = lblP;
 			keyLabels[5] = lblM;
 			keyLabels[6] = lblN;
-
-			int i = 0;
-
-			for (i = 0; i < 7; i++) {
-				GetAsyncKeyState(keyCode[i]);
-			}
-
 		}
 
 		System::Void MyForm_KeyDown(Object^ sender, System::Windows::Forms::KeyEventArgs^ e) {
@@ -801,8 +820,8 @@ namespace SwagBot {
 			this->cmbComm->Items->AddRange(serialPort1->GetPortNames());
 			if (this->cmbComm->Items->Count > 0) {
 				this->cmbComm->SelectedIndex = this->cmbComm->Items->Count-1;
+				Connect();
 			}
-			Connect();
 		}
 
 
@@ -812,6 +831,11 @@ namespace SwagBot {
 		}
 
 		void Connect() {
+			if (this->serialPort1->IsOpen) { 
+				Disconnect();
+				return;
+			}
+
 			if (this->cmbComm->SelectedIndex != -1) {
 
 				this->serialPort1->PortName = this->cmbComm->Text;
@@ -832,6 +856,7 @@ namespace SwagBot {
 		void setControlstate(bool EnableControls) {
 			if (!EnableControls) {
 				this->tmrGetData->Enabled = true;
+				this->tmrAlive->Enabled = true;
 
 				this->cmdDisconnect->Enabled = true;
 				this->cmdConnect->Enabled = false;
@@ -846,6 +871,22 @@ namespace SwagBot {
 				this->cmdRefresh->Enabled = true;
 
 				this->cmbComm->Enabled = true;
+				
+			}
+		}
+
+		System::Void tmrAlive_Tick(System::Object^  sender, System::EventArgs^  e) {
+			if (!this->serialPort1->IsOpen) return;
+			
+			this->serialPort1->Write(keySendUp,7,1); //send ack to arduino
+
+			TimeOutCount++;
+			if (TimeOutCount > 3 && TimeOutCount < 10) {
+				setStatusMessage("Timing out...", false);
+			} else if (TimeOutCount == 10) {
+				setStatusMessage("Connection Lost!", true);
+				ForceReconnect();
+				TimeOutCount = 0;
 			}
 		}
 
@@ -859,16 +900,17 @@ namespace SwagBot {
 			while (this->serialPort1->BytesToRead > 0) {
 				//gchar = this->serialPort1->ReadChar();
 				gchar = this->serialPort1->ReadByte();
+				TimeOutCount = 0;
 
-				if (gchar == 255 && bufferlen > 8) { //end of bufferdata
-					//->Split(':');
+				if (gchar == 255 && bufferlen >= 10) { //end of bufferdata
 					
-					for (i = 0; i < 9; i++) {
-						sensordata[i] = databuffer[bufferlen-9+i];
+					setStatusMessage("Connected!", false);
+
+					for (i = 0; i < 10; i++) {
+						sensordata[i] = databuffer[bufferlen-10+i];
 					}
 
 					bufferlen = 0;
-
 
 					this->lblRes0->Text = "" + (sensordata[0] - 128);
 					this->lblRes1->Text = "" + (sensordata[1] - 128);
@@ -927,14 +969,24 @@ namespace SwagBot {
 					} else {
 						this->lblRes6->Text = "Automatic Mode";
 					}
+					this->lblConnection->Text = "TimeOuts: " + sensordata[9];
+					if (sensordata[9] > 8) {
+						this->lblConnection->ForeColor = Color::Red;
+					} else if (sensordata[9] > 8) {
+						this->lblConnection->ForeColor = Color::Olive;
+					} else {
+						this->lblConnection->ForeColor = Color::Black;
+					}
 
 				} else {
 					if (bufferlen < 100-1) {
 						databuffer[bufferlen++] = gchar;
 					}else{
-						setStatusMessage("BUFFER OVERLOAD",true);
+						setStatusMessage("Buffer Overflow!",true);
+						ForceReconnect();
 						bufferlen = 0;
 						databuffer[bufferlen] = 0;
+						return;
 					}
 					//buffertest += "" + Convert::ToChar(gchar);
 				}
@@ -946,6 +998,22 @@ namespace SwagBot {
 
 		}
 
+		void ForceReconnect() {
+			Application::DoEvents();
+			Sleep(1000);
+			Application::DoEvents();
+			setStatusMessage("Resetting Arduino...", false);
+			this->serialPort1->DtrEnable = true;
+			Sleep(20);
+			this->serialPort1->DtrEnable = false;
+			Sleep(10);
+			Disconnect();
+			Application::DoEvents();
+			Sleep(1000);
+			Application::DoEvents();
+			Connect();
+		}
+
 		void setStatusMessage(String ^ nMessage,bool isError){
 			if (isError) {
 				this->lblStatus->Text = nMessage;
@@ -954,15 +1022,19 @@ namespace SwagBot {
 				this->lblStatus->Text = nMessage;
 				this->lblStatus->ForeColor = Color::Black;
 			}
-
 		}
 
-		System::Void cmdDisconnect_Click(System::Object^  sender, System::EventArgs^  e) {
+		void Disconnect() {
 			if (this->serialPort1->IsOpen) {
 				this->tmrGetData->Enabled = false;
+				this->tmrAlive->Enabled = false;
 				this->serialPort1->Close();
 				setControlstate(true);
 			}
+		}
+
+		System::Void cmdDisconnect_Click(System::Object^  sender, System::EventArgs^  e) {
+			Disconnect();
 		}
 
 		void setPercentage(int percentage) {
@@ -1157,5 +1229,5 @@ namespace SwagBot {
 			this->lblKeyInfo->Text = "Automatic Mode";
 		}
 
-	};
+};
 }
