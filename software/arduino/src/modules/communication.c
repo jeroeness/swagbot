@@ -94,6 +94,7 @@ void printVerbose() {
 
 
 	if (vebosityTimer-- == 0) {
+
 		vebosityTimer = 0x5FFF;
 
 

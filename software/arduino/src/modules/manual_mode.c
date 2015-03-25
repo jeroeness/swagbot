@@ -10,11 +10,11 @@ int8_t direction;
 uint8_t collision;
 
 void inputRight() {
-	direction = 60;
+	direction = 120;
 }
 
 void inputLeft() {
-	direction = -60;
+	direction = -120;
 }
 
 void inputBackward() {
