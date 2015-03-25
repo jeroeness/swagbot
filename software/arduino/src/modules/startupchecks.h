@@ -5,4 +5,6 @@
 
 #include "../globalincsanddefs.h"
 
+void checkSensors();
+
 #endif // STARTUPCHECKS.H
