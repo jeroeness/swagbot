@@ -6,5 +6,6 @@
 #include "../globalincsanddefs.h"
 
 void diagnostics();
+void checkPassed();
 
 #endif // STARTUPCHECKS.H

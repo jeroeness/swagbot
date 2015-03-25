@@ -28,6 +28,8 @@ int main(void)
 	
 	sei();
 
+	//diagnostics();
+	
 	setSteeringMode(manual);
 	resetAutomaticMode(); //TODO init automatic mode
 
