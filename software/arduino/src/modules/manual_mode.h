@@ -18,6 +18,8 @@ void stopright();
 void stopManualMode();
 void beginManualMode();
 
+void manualModecheckCollision();
+
 void alterCourse ();
 
 #endif // MANUAL_MODE_H

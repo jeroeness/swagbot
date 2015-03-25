@@ -34,7 +34,7 @@ void inputKeyDown (uint8_t key) {
 	if (steeringMode == automatic) {
         //handleKeyDownAutomaticMode(key);
 	} else {
-		//handleKeyDownManualMode(key);
+		handleKeyDownManualMode(key);
 	}
 }
 
@@ -101,4 +101,14 @@ void handleKeyReleaseManualMode (uint8_t key) {
 			break;
 	}
     alterCourse();
+}
+
+void handleKeyDownManualMode (uint8_t key) {
+
+	switch (key) {
+		case 'w':
+			manualModecheckCollision();
+			break;
+	}
+
 }

@@ -19,12 +19,12 @@ void inputLeft() {
 
 void inputBackward() {
 	forward = -90;
+	collision = 0;
 }
 
 void inputForward() {
-	//TODO dit gaat niet werken, dit moet in update uitgevoerd worden!
-	//if(sensorData.sensorStruct.bumperRight == 1 || sensorData.sensorStruct.bumperLeft == 1) {
     forward = 90;
+    collision = 0;
 }
 
 
@@ -54,4 +54,15 @@ void stopright() {
 
 void alterCourse () {
     moveMotors(min(forward + direction, 100), min(forward - direction, 100));
+}
+
+void manualModecheckCollision () {
+	uint8_t c = sensorData.sensorStruct.bumperRight == 1 || sensorData.sensorStruct.bumperLeft == 1;
+	if (c != collision && c) {
+		//TODO when we know for sure the bumperdata is correct we can uncomment this line
+        //forward = min(0, forward);
+		alterCourse();
+		collision = c;
+	}
+
 }
