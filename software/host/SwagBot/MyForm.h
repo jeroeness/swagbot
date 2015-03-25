@@ -993,7 +993,7 @@ namespace SwagBot {
 			}
 
 			for (i = 0; i < 7; i++) {
-				this->TriggerKeyState(i, GetAsyncKeyState(keyCode[i]));
+				this->TriggerKeyState(i, GetAsyncKeyState(keyCode[i]) != 0);
 			}
 
 		}

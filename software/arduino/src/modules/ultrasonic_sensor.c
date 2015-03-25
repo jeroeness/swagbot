@@ -10,7 +10,7 @@ void initUltrasonicSensor(void)
 {
 	DDRL &= ~(1 << PL1);
 	PORTL &= ~(1 << PL1);
-	sensorStruct.ultrasonic = 0;
+	sensorData.sensorStruct.ultrasonic = 0;
 }
 
 void UltrasonicSensorRead(void)
@@ -36,7 +36,7 @@ void UltrasonicSensorRead(void)
 		{
 			//(can give error)
 
-			sensorStruct.ultrasonic = 255;
+			sensorData.sensorStruct.ultrasonic = 255;
 			return;
 		}
 		asm("nop");//a delay
@@ -51,7 +51,7 @@ ISR(TIMER5_CAPT_vect)
 {
 	//the pulselength has been stored in ICR5
 	
-	sensorStruct.ultrasonic = (ICR5 >> 8);//to 8bit value
+	sensorData.sensorStruct.ultrasonic = (ICR5 >> 8);//to 8bit value
 	
 	//timer off
 	TIMSK5 &= ~((1 << ICIE5) | (1 << OCIE5A));//inputcapture interrupt and OCR5A(overflow) interrupt  off
