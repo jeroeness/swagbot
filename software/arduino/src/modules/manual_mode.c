@@ -53,7 +53,13 @@ void stopright() {
 }
 
 void alterCourse () {
-    moveMotors(min(forward + direction, 100), min(forward - direction, 100));
+	if (forward == 90) {
+		moveMotors(min(forward + direction, 100), min(forward - direction, 100));
+	} else if (forward == -90) {
+		moveMotors(max(forward + direction, -100), max(forward - direction, -100));
+	} else  {
+		moveMotors(forward + direction, forward - direction);
+	}
 }
 
 void manualModecheckCollision () {
