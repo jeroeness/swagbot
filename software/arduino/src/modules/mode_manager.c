@@ -82,15 +82,23 @@ void handleKeyPressManualMode (uint8_t key) {
 			inputRight();
 			break;
 	}
+    alterCourse();
 }
 
 void handleKeyReleaseManualMode (uint8_t key) {
 	switch (key) {
 		case 'w':
+			stopForward();
+			break;
 		case 'a':
+			stopLeft();
+			break;
 		case 's':
+			stopBackward();
+			break;
 		case 'd':
-			stopManualMode();
+			stopright();
 			break;
 	}
+    alterCourse();
 }
