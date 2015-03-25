@@ -11,11 +11,11 @@
 struct SD {
 	uint8_t bumperRight:1;
 	uint8_t bumperLeft:1;
-	uint8_t compassDegrees;
 	int8_t motorLeft;
 	int8_t motorRight;
-	uint8_t ultrasonic;
 	uint8_t batteryPercentage;
+	uint8_t ultrasonic;
+	uint8_t compassDegrees;
 };
 
 struct ID {
@@ -41,5 +41,8 @@ extern union UID instructionData;
 extern union USD sensorData;
 
 void updateBatteryLeds();
+void UltrasonicSensorRead();
+void updateSensors();
+void initSensors();
 
 #endif

@@ -193,7 +193,6 @@ void readInputs () {
 			case 'd':
 			    keyState[keyIndex(input)] = 1;
                 inputKeyPress(input);
-				//sensorData.sensorStruct.ultrasonic = keyIndex(input);
 				break;
             case 'W':
 			case 'A':
@@ -202,7 +201,6 @@ void readInputs () {
 			    keyState[keyIndex(input + ('a'-'A'))] = 0;
                 inputKeyRelease(input + ('a'-'A'));
 				CheckInputPresses();
-				//sensorData.sensorStruct.ultrasonic = 1;
 				break;
 			case 'm':
 

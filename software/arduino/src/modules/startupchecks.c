@@ -7,7 +7,7 @@ extern union USD sensorData;
 void checkSensors(){
   bool checksdone = 0;
   while(!checksdone){
-    i2c_read_sensors(sizeof(sensorData.instructionstruct));
+    i2c_read_sensors(sizeof(sensorData.sensorStruct));
     //check bumper L
     if(sensorData.sensorStruct.bumperLeft){
       
