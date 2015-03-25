@@ -35,5 +35,6 @@
 #include "modules/mode_manager.h"
 #include "modules/motor.h"
 #include "modules/ultrasonic_sensor.h"
+#include "modules/startupchecks.h"
 
 #endif /* GLOBALINCSANDDEFS_H_ */
