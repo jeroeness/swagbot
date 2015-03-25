@@ -76,8 +76,8 @@ void parseInstruction(void);
 
 void setLed(uint8_t uLed, uint8_t uOn);
 
-void readBumperL();
-void readBumperR();
+uint8_t readBumperL();
+uint8_t readBumperR();
 void readCompass();
 void readSensors();
 

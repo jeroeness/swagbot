@@ -802,6 +802,8 @@ namespace SwagBot {
 			keyLabels[4] = lblP;
 			keyLabels[5] = lblM;
 			keyLabels[6] = lblN;
+
+			Connect();
 		}
 
 		System::Void MyForm_KeyDown(Object^ sender, System::Windows::Forms::KeyEventArgs^ e) {
@@ -820,7 +822,7 @@ namespace SwagBot {
 			this->cmbComm->Items->AddRange(serialPort1->GetPortNames());
 			if (this->cmbComm->Items->Count > 0) {
 				this->cmbComm->SelectedIndex = this->cmbComm->Items->Count-1;
-				Connect();
+				
 			}
 		}
 
@@ -959,7 +961,7 @@ namespace SwagBot {
 
 					this->lblRes3->Text = "" + sensordata[3];
 					this->lblRes4->Text = "" + sensordata[4];
-					this->lblRes5->Text = "" + sensordata[6];
+					this->lblRes5->Text = "" + sensordata[5];
 					setPercentage(sensordata[6]);
 					compassDegrees = sensordata[7];
 					this->picCompass->Refresh();
