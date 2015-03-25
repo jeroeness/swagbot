@@ -27,11 +27,11 @@ void initCommunication() {
 	instructionData.instructionstruct.motorRight = 0;
 	instructionData.instructionstruct.ledStatus = 1<<7;
 	sensorData.sensorStruct.ultrasonic = 0;
-	
+
 	for (int8_t i = 0; i < KEYSTATESCOUNT; i++) {
         keyState[i] = 0;
     }
-	
+
 }
 
 bool openConnection () {
@@ -94,9 +94,10 @@ void printVerbose() {
 
 
 	if (vebosityTimer-- == 0) {
-		vebosityTimer = 0x8FFF;
-		
-		
+
+		vebosityTimer = 0x5FFF;
+
+
 		if(sensorData.sensorStruct.compassDegrees > 240){
 			sensorData.sensorStruct.compassDegrees = 0;
 		}else{
@@ -107,7 +108,7 @@ void printVerbose() {
 		while (!outputBufferWalked());
 		clearBuffer();
 		const uint8_t dl = 11; //datalength
-		
+
 		char str[dl];
 
         uint8_t i = 0;
@@ -121,8 +122,8 @@ void printVerbose() {
 		str[i++] = sensorData.sensorStruct.compassDegrees;
 		str[i++] = (steeringMode == manual ? 0 : 1);
 		str[i++] = connectionTimeOut; //this one is the connection strength (for timeout posibilities)
-		
-		
+
+
 		str[i++] = 255;
 
 		for (i = 0; i < dl-1; i++) {
@@ -132,15 +133,15 @@ void printVerbose() {
 		}
 
 		serialPrint(str, dl);
-		
-		
+
+
 		connectionTimeOut++;
 		if(connectionTimeOut > 4){ //about 2 seconds i hope then connection timeout?
 			//do something with the timout? automatic mode?
 		}
-		
-		
-		
+
+
+
 	}
 }
 
@@ -157,29 +158,20 @@ int8_t keyIndex (char key) {
 
 char charIndex (int8_t key) {
     switch (key) {
-        case 0: 
+        case 0:
 			return 'w';
 			break;
-        case 1: 
+        case 1:
 			return 'a';
 			break;
-        case 2: 
+        case 2:
 			return 's';
 			break;
-        case 3: 
+        case 3:
 			return 'd';
 			break;
     }
 	return 'w';
-}
-
-void CheckInputPresses(){
-	for (int8_t i = 0; i < KEYSTATESCOUNT; i++) {
-        if (keyState[i] == 1) {
-            inputKeyPress(charIndex(i));
-			return;
-        }
-    }
 }
 
 void readInputs () {
@@ -193,7 +185,6 @@ void readInputs () {
 			case 'd':
 			    keyState[keyIndex(input)] = 1;
                 inputKeyPress(input);
-				//sensorData.sensorStruct.ultrasonic = keyIndex(input);
 				break;
             case 'W':
 			case 'A':
@@ -201,40 +192,37 @@ void readInputs () {
 			case 'D':
 			    keyState[keyIndex(input + ('a'-'A'))] = 0;
                 inputKeyRelease(input + ('a'-'A'));
-				CheckInputPresses();
-				//sensorData.sensorStruct.ultrasonic = 1;
-				break;
+			    break;
 			case 'm':
-
 				setSteeringMode(manual);
 				break;
 			case 'n':
 				setSteeringMode(automatic);
 				break;
-				
+
 			case 'f': //keepconnection alive
 			case 'F': //keepconnection alive
 				connectionTimeOut = 0;
 				break;
 		}
     }
-	
+
 	//the following loop is not needed because:
 	//we set on the keypress: the motor speeds
 	//those values will never change in the struct so no need for this loop
 	//this loop hangs the transmitter because of the 12c_lib wires not to be connected to the arduino
 	//this results in an timeout of the i2c_lib. I will send 2 chars after eachother in the GUI on keyUp to be sure
 	//the motors will be off btw.
-	
+
 	//if i2c is connected this loop will drastically slowdown the arduino process. WHY?
 	//because this function is triggered as fast as it can. This loop will be so much to handle in that way
 	//that it will slow down the custom timers like 0x8FFF values.
-	/*
+
     for (int8_t i = 0; i < KEYSTATESCOUNT; i++) {
         if (keyState[i] == 1) {
-            inputKeyPress(charIndex(i));
+            inputKeyDown(charIndex(i));
         }
-    }*/
+    }
 
 
 }

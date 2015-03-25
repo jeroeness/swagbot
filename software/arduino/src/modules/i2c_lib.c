@@ -48,7 +48,10 @@ void i2c_write_cmd_wrap(void) {
 	return;
 }
 
-
+void i2c_read_sensors_wrap(void) {
+	i2c_read_sensors(sizeof(sensorData)-3);
+	return;
+}
 
 void i2c_write_cmd(uint8_t amount) {
 	i2c_waitforidle();

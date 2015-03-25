@@ -12,5 +12,6 @@ void i2c_write_cmd(uint8_t);
 void i2c_read_sensors(uint8_t amount);
 void i2c_continue(void);
 void i2c_stop(void);
+void i2c_read_sensors_wrap(void);
 
 #endif

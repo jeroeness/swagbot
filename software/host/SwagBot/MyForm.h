@@ -802,6 +802,8 @@ namespace SwagBot {
 			keyLabels[4] = lblP;
 			keyLabels[5] = lblM;
 			keyLabels[6] = lblN;
+
+			Connect();
 		}
 
 		System::Void MyForm_KeyDown(Object^ sender, System::Windows::Forms::KeyEventArgs^ e) {
@@ -820,7 +822,7 @@ namespace SwagBot {
 			this->cmbComm->Items->AddRange(serialPort1->GetPortNames());
 			if (this->cmbComm->Items->Count > 0) {
 				this->cmbComm->SelectedIndex = this->cmbComm->Items->Count-1;
-				Connect();
+				
 			}
 		}
 
