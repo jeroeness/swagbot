@@ -4,29 +4,33 @@
 
 extern union USD sensorData;
 
-void checkSensors(){
-  bool checksdone = 0;
-  while(!checksdone){
-    i2c_read_sensors(sizeof(sensorData.instructionstruct));
-    //check bumper L
-    if(sensorData.sensorStruct.bumperLeft){
-      
-    }
-    
-    //check bumper R
-    if(sensorData.sensorStruct.bumperLeft){
-      
-    }
-    
-    //check sonar
-    //if(sensorData.sensorStruct.ultrasonic >= something){
-    
-    //}
-    
-    //check compas????
-    
-    
-  }
-  //_delay_ms()
-  
+void diagnostics(){
+	int step = 4;
+	while(step < 4){
+		i2c_read_sensors(sizeof(sensorData.sensorStruct));
+		
+		//compass
+		if(step==0 && sensorData.sensorStruct.compassDegrees){
+			step = 1;
+			//actie: print, motors draaien
+		}
+		
+		//bumper L
+		if(step==1 && sensorData.sensorStruct.bumperLeft){
+			step = 2;
+			//actie: print, motors draaien
+		}
+		
+		//bumper R
+		if(step==2 && sensorData.sensorStruct.bumperRight){
+			step = 3;
+			//actie: print, motors draaien
+		}
+		
+		//sonar
+		/*if(step==3 && sensorData.sensorStruct.ultrasonic >= NOT DEFINED){
+			step = 4;
+			//actie: print, motors draaien
+		}*/
+	}
 }
