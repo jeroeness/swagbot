@@ -18,7 +18,7 @@ void initSensors(){
 void parseInstruction(void){
 	uint8_t i = 0;
 	
-	for(i = 0; i < 7; i++)
+	for(i = 0; i < 6; i++)
 	{
 		setLed(i+1, (instructionData.instructionstruct.ledStatus & (1<<i)) != 0);
 	}
@@ -102,7 +102,7 @@ void readBumperL(){
 	DDRB &= ~(1<<PB0);
 	PORTB &= ~(1<<PB0);
 	
-	_delay_us(3);
+	_delay_us(10);
 
 	if(PINB & (1<<PB0)){
 		sensorData.sensorStruct.bumperLeft = 1;
@@ -110,10 +110,9 @@ void readBumperL(){
 		sensorData.sensorStruct.bumperLeft = 0;
 	}
 	
-	
 	DDRB = DDRCurrent;
 	PORTB = PORTCurrent;
-
+	_delay_us(10);
 }
 
 void readBumperR(){
@@ -123,7 +122,7 @@ void readBumperR(){
 	DDRC &= ~(1<<PC6);
 	PORTC &= ~(1<<PC6);
 	
-	_delay_us(3);
+	_delay_us(10);
 
 	if(PINB & (1<<PC6)){
 		sensorData.sensorStruct.bumperRight = 1;
@@ -133,7 +132,7 @@ void readBumperR(){
 	
 	DDRC = DDRCurrent;
 	PORTC = PORTCurrent;
-
+	_delay_us(10);
 }
 
 

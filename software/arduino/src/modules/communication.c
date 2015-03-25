@@ -191,7 +191,8 @@ void readInputs () {
 			case 'D':
 			    keyState[keyIndex(input + ('a'-'A'))] = 0;
                 inputKeyRelease(input + ('a'-'A'));
-				break;
+			    CheckInputPresses();
+			    break;
 			case 'm':
 				setSteeringMode(manual);
 				break;
