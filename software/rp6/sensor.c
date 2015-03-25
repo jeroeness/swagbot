@@ -152,6 +152,22 @@ void readCompass(){
 	sensorData.sensorStruct.compassDegrees = 360 / 255 * compassDegree;
 }
 
+void readBattery(){
+	uint16_t batteryValue;
+
+	ADMUX |= (1 << REFS0);
+	ADCSRA |= (1 << ADPS2);
+	ADCSRA |= (1 << ADEN);
+	
+	ADMUX |= (1 << MUX2 | 1 << MUX1 | 1 << MUX0);
+	ADCSRA |= (1 << ADSC| 1<<ADIF);
+
+	while(~ADCSRA & (1<<ADIF));
+	batteryValue = ADC;
+	
+	sensorData.sensorStruct.batteryPercentage = ((99.0 / 1023.0) * batteryValue) + 1.0;
+}
+
 
 void readSensors(){
 	readBumperR();
@@ -161,20 +177,5 @@ void readSensors(){
 	//readCompass();
 }
 
-void readBattery(){
-	uint16_t batteryValue;
-
-	ADMUX |= (1 << REFS0);
-	ADCSRA |= (1 << ADPS2);
-	ADCSRA |= (1 << ADEN);
-	
-	ADMUX |= (1 << MUX2 | 1 << MUX1 | 1 << MUX0);
-	ADCSRA |= (1 << ADSC| 1<<ADIF); 
-
-	while(~ADCSRA & (1<<ADIF));
-	batteryValue = ADC;   
-	
-	sensorData.sensorStruct.batteryPercentage = ((99.0 / 1023.0) * batteryValue) + 1.0; 
-}
 
 
