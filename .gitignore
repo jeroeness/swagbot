@@ -38,3 +38,6 @@
 software/host/SwagBot/Debug/*
 software/host/Debug/*
 *.sdf
+*.Cache
+*.pdb
+*.log
