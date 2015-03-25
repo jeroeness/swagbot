@@ -1,0 +1,3 @@
+//startupchecks
+
+#include "../globalincsanddefs.h"
