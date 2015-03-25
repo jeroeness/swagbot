@@ -41,3 +41,4 @@ software/host/Debug/*
 *.Cache
 *.pdb
 *.log
+*.tlog
