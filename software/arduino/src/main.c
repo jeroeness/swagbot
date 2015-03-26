@@ -64,7 +64,7 @@ int main(void)
 	initTimersMain();
 	
 	sei();
-	currentFace = 5;
+	
 
 	//diagnostics();
 	
@@ -85,11 +85,13 @@ int main(void)
 			i2c_write_cmd_wrap();
 		}
 		*/
-		
+		s
 		if(counter2++ >= 0x8FFF){ //im there
 			counter2 = 0;
 			updateSensors(); //could not create timer for this one.
 			//it blocks the smoothness for the display
+			
+			currentFace = (currentFace == 3 ? 4 : 3);
 		}
 		
 		/*
@@ -114,7 +116,7 @@ ISR(TIMER3_OVF_vect)
 
 	uint16_t i = 0;
 	i = updateLedGrid();
-	TCNT3 = 61000;
+	TCNT3 = 65000;
 	
 	/*if (i > 8) i = 8;
 	
