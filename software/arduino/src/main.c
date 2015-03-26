@@ -65,6 +65,8 @@ int main(void)
 	
 	sei();
 	currentFace = 3;
+
+	//diagnostics();
 	
 	setSteeringMode(manual);
 	resetAutomaticMode(); //TODO init automatic mode
