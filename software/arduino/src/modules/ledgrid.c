@@ -48,11 +48,13 @@ void initLedGrid(){
 }
 
 void setEmotion(uint8_t num){
+
 	if(num == previousFace) return;
 	previousFace = num;
 	
 	switch(num){ //here some other faces or sensor stats!
 		case 0: //green SMILEY!!! <:)
+			clearDisplayData();
 			gd[0][1] = 1; gd[0][2] = 1; gd[0][5] = 1; 
 			gd[0][6] = 1; gd[1][0] = 1; gd[1][7] = 1; 
 			gd[2][2] = 1; gd[2][5] = 1; gd[3][2] = 1; 
@@ -62,12 +64,86 @@ void setEmotion(uint8_t num){
 			break;
 			
 		case 1: //angry red face >:(
+			clearDisplayData();
 			rd[0][0] = 1; rd[0][1] = 1; rd[0][6] = 1; 
 			rd[0][7] = 1; rd[1][2] = 1; rd[1][5] = 1; 
 			rd[3][2] = 1; rd[3][5] = 1; rd[4][2] = 1; 
 			rd[4][5] = 1; rd[6][1] = 1; rd[6][2] = 1; 
 			rd[6][3] = 1; rd[6][4] = 1; rd[6][5] = 1; 
 			rd[6][6] = 1; rd[7][0] = 1; rd[7][7] = 1; 
+			break;
+			
+		case 2: //compass
+			clearDisplayData();
+			gd[0][2] = 1; bd[0][2] = 1; gd[0][3] = 1;
+			bd[0][3] = 1; gd[0][4] = 1; bd[0][4] = 1;
+			gd[0][5] = 1; bd[0][5] = 1; gd[1][1] = 1;
+			bd[1][1] = 1; rd[1][5] = 1; gd[1][6] = 1;
+			bd[1][6] = 1; gd[2][0] = 1; bd[2][0] = 1;
+			rd[2][4] = 1; gd[2][7] = 1; bd[2][7] = 1;
+			gd[3][0] = 1; bd[3][0] = 1; rd[3][4] = 1;
+			gd[3][7] = 1; bd[3][7] = 1; gd[4][0] = 1;
+			bd[4][0] = 1; rd[4][3] = 1; bd[4][3] = 1;
+			gd[4][7] = 1; bd[4][7] = 1; gd[5][0] = 1;
+			bd[5][0] = 1; rd[5][3] = 1; bd[5][3] = 1;
+			gd[5][7] = 1; bd[5][7] = 1; gd[6][1] = 1;
+			bd[6][1] = 1; rd[6][2] = 1; bd[6][2] = 1;
+			gd[6][6] = 1; bd[6][6] = 1; gd[7][2] = 1;
+			bd[7][2] = 1; gd[7][3] = 1; bd[7][3] = 1;
+			gd[7][4] = 1; bd[7][4] = 1; gd[7][5] = 1;
+			bd[7][5] = 1;
+			break;
+		
+		case 3: //bumper (not pressed) Right
+			clearDisplayData();
+			rd[0][6] = 1; rd[0][7] = 1; rd[1][4] = 1;
+			rd[1][5] = 1; rd[2][2] = 1; rd[2][3] = 1;
+			rd[3][1] = 1; rd[4][0] = 1; rd[4][1] = 1;
+			rd[4][2] = 1; rd[4][3] = 1; rd[4][4] = 1;
+			rd[4][5] = 1; rd[4][6] = 1; rd[4][7] = 1;
+			rd[5][0] = 1; rd[5][7] = 1; rd[6][0] = 1;
+			rd[6][7] = 1; rd[7][0] = 1; rd[7][1] = 1;
+			rd[7][2] = 1; rd[7][3] = 1; rd[7][4] = 1;
+			rd[7][5] = 1; rd[7][6] = 1; rd[7][7] = 1;
+			break;
+		
+		case 4: //bumper (pressed) Right
+			clearDisplayData();
+			gd[2][2] = 1; gd[2][3] = 1; gd[2][4] = 1;
+			gd[2][5] = 1; gd[2][6] = 1; gd[2][7] = 1;
+			gd[3][1] = 1; gd[4][0] = 1; gd[4][1] = 1;
+			gd[4][2] = 1; gd[4][3] = 1; gd[4][4] = 1;
+			gd[4][5] = 1; gd[4][6] = 1; gd[4][7] = 1;
+			gd[5][0] = 1; gd[5][7] = 1; gd[6][0] = 1;
+			gd[6][7] = 1; gd[7][0] = 1; gd[7][1] = 1;
+			gd[7][2] = 1; gd[7][3] = 1; gd[7][4] = 1;
+			gd[7][5] = 1; gd[7][6] = 1; gd[7][7] = 1;
+			break;
+		
+		case 5:
+			clearDisplayData();
+			bd[0][0] = 1; bd[0][1] = 1; bd[0][2] = 1;
+			bd[0][3] = 1; bd[0][4] = 1; bd[0][5] = 1;
+			bd[0][6] = 1; bd[0][7] = 1; bd[1][0] = 1;
+			bd[1][1] = 1; bd[1][2] = 1; bd[1][3] = 1;
+			bd[1][4] = 1; bd[1][5] = 1; bd[1][6] = 1;
+			bd[1][7] = 1; bd[2][0] = 1; bd[2][1] = 1;
+			bd[2][2] = 1; bd[2][3] = 1; bd[2][4] = 1;
+			bd[2][5] = 1; bd[2][6] = 1; bd[2][7] = 1;
+			bd[3][0] = 1; bd[3][1] = 1; bd[3][2] = 1;
+			bd[3][3] = 1; bd[3][4] = 1; bd[3][5] = 1;
+			bd[3][6] = 1; bd[3][7] = 1; bd[4][0] = 1;
+			bd[4][1] = 1; bd[4][2] = 1; bd[4][3] = 1;
+			bd[4][4] = 1; bd[4][5] = 1; bd[4][6] = 1;
+			bd[4][7] = 1; bd[5][0] = 1; bd[5][1] = 1;
+			bd[5][2] = 1; bd[5][3] = 1; bd[5][4] = 1;
+			bd[5][5] = 1; bd[5][6] = 1; bd[5][7] = 1;
+			bd[6][0] = 1; bd[6][1] = 1; bd[6][2] = 1;
+			bd[6][3] = 1; bd[6][4] = 1; bd[6][5] = 1;
+			bd[6][6] = 1; bd[6][7] = 1; bd[7][0] = 1;
+			bd[7][1] = 1; bd[7][2] = 1; bd[7][3] = 1;
+			bd[7][4] = 1; bd[7][5] = 1; bd[7][6] = 1;
+			bd[7][7] = 1; rd[7][7] = 1; 
 			break;
 			
 		default: //unknown face? Question Mark ??????
@@ -80,16 +156,20 @@ void setEmotion(uint8_t num){
 	}
 }
 
-void updateLedGrid(){
+uint8_t updateLedGrid(){
 	setEmotion(currentFace);
 	
-	pushArraysToGrid(CurrentPrintLine++);
+	CurrentPrintLine++;
 	if(CurrentPrintLine == 8) CurrentPrintLine = 0;
+	
+	return pushArraysToGrid(CurrentPrintLine);
 }
 
-void pushArraysToGrid(uint8_t i){
+uint8_t pushArraysToGrid(uint8_t i){
 	//int8_t i = 0;
 	int8_t j = 0;
+	PORT_STROBE &= ~STROBE;
+	uint8_t ledsOn = 0;
 	
 	//for(i = 0; i < 8; i++){
 		for(j = 4; j < 8; j++){ //turn row on first part
@@ -108,6 +188,7 @@ void pushArraysToGrid(uint8_t i){
 		for(j = 4; j < 8; j++){ //green first part
 			if(gd[i][7-j] == 1){
 				PORT_DATA &= ~DATA;
+				//ledsOn++;
 			}else{
 				PORT_DATA |= DATA;
 			}
@@ -135,6 +216,7 @@ void pushArraysToGrid(uint8_t i){
 		for(j = 0; j < 4; j++){ //green second part
 			if(gd[i][7-j] == 1){
 				PORT_DATA &= ~DATA;
+				//ledsOn++;
 			}else{
 				PORT_DATA |= DATA;
 			}
@@ -148,6 +230,7 @@ void pushArraysToGrid(uint8_t i){
 		for(j = 4; j < 8; j++){ //blue
 			if(bd[i][7-j] == 1){
 				PORT_DATA &= ~DATA;
+				//ledsOn++;
 			}else{
 				PORT_DATA |= DATA;
 			}
@@ -161,7 +244,8 @@ void pushArraysToGrid(uint8_t i){
 			
 		for(j = 0; j < 4; j++){ //blue
 			if(bd[i][7-j] == 1){
-				PORT_DATA &= ~DATA;
+				//PORT_DATA &= ~DATA;
+				ledsOn++;
 			}else{
 				PORT_DATA |= DATA;
 			}
@@ -176,6 +260,7 @@ void pushArraysToGrid(uint8_t i){
 		for(j = 4; j < 8; j++){ //red
 			if(rd[i][7-j] == 1){
 				PORT_DATA &= ~DATA;
+				ledsOn++;
 			}else{
 				PORT_DATA |= DATA;
 			}
@@ -189,6 +274,7 @@ void pushArraysToGrid(uint8_t i){
 		for(j = 0; j < 4; j++){ //red
 			if(rd[i][7-j] == 1){
 				PORT_DATA &= ~DATA;
+				ledsOn++;
 			}else{
 				PORT_DATA |= DATA;
 			}
@@ -200,8 +286,8 @@ void pushArraysToGrid(uint8_t i){
 		}
 
 		PORT_STROBE |= STROBE;
-		_delay_us(10);
-		PORT_STROBE &= ~STROBE;
+		//_delay_us(5);
+		return ledsOn;
 	//}
 }
 

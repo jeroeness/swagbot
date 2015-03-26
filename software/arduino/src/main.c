@@ -49,7 +49,7 @@ int main(void)
 {
 	uint16_t counter1 = 0;
 	uint16_t counter2 = 0;
-	uint16_t counter3 = 0;
+	//uint16_t counter3 = 0;
 	
 	cli();
 	
@@ -64,7 +64,7 @@ int main(void)
 	initTimersMain();
 	
 	sei();
-	currentFace = 3;
+	currentFace = 5;
 
 	//diagnostics();
 	
@@ -111,8 +111,26 @@ int main(void)
 
 ISR(TIMER3_OVF_vect)
 {
-	updateLedGrid();
-	TCNT3 = 63000;
+
+	uint16_t i = 0;
+	i = updateLedGrid();
+	TCNT3 = 61000;
+	
+	/*if (i > 8) i = 8;
+	
+	i = 62000 - (i * 500);
+	TCNT3 = i;
+	*/
+	/*
+	if( > 5){
+		TCNT3 = 55000;
+	if(updateLedGrid() > 5){
+		TCNT3 = 55000;
+	}else{
+		TCNT3 = 63000;
+		
+	}*/
+	
 }
 
 /*

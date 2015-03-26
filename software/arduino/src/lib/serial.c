@@ -154,6 +154,7 @@ void serialPrintLine(const char *c, int8_t len) {
 	memcpy(ln, c, len + 1);
 	strcat(ln, newLineCharacters);
 	serialPrint(ln, len);
+	free(ln);
 }
 
 void serialPrintLine(const char *c) {
