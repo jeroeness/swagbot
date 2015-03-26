@@ -55,7 +55,7 @@ struct ID{
 };
 
 struct SD sensorStruct;
-struct ID instructionstruct;
+struct ID instructionStruct;
 
 union USD {
 	struct SD sensorStruct;
@@ -63,8 +63,8 @@ union USD {
 };
 
 union UID {
-	struct ID instructionstruct;
-	uint8_t instructionArray[sizeof(instructionstruct)];
+	struct ID instructionStruct;
+	uint8_t instructionArray[sizeof(instructionStruct)];
 };
 
 union UID instructionData;

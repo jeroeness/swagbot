@@ -894,7 +894,7 @@ namespace SwagBot {
 
 		System::Void tmrGetData_Tick(System::Object^  sender, System::EventArgs^  e) {
 			int gchar;
-			array<int>^ sensordata = gcnew array<int>(11);
+			array<int>^ sensordata = gcnew array<int>(12);
 			int i = 0;
 
 			if (!this->serialPort1->IsOpen) return;
@@ -908,8 +908,8 @@ namespace SwagBot {
 					
 					setStatusMessage("Connected!", false);
 
-					for (i = 0; i < 10; i++) {
-						sensordata[i] = databuffer[bufferlen-10+i];
+					for (i = 0; i < 11; i++) {
+						sensordata[i] = databuffer[bufferlen-11+i];
 					}
 
 					bufferlen = 0;
@@ -980,6 +980,8 @@ namespace SwagBot {
 						this->lblConnection->ForeColor = Color::Black;
 					}
 
+				} else if(gchar == 255){
+					bufferlen = 0;
 				} else {
 					if (bufferlen < 100-1) {
 						databuffer[bufferlen++] = gchar;

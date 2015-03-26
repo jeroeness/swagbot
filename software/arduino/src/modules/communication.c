@@ -4,10 +4,14 @@
 
 #define KEYSTATESCOUNT 4
 
+#define dl 12 //datalength
+
 extern union UID instructionData;
 extern union USD sensorData;
 
 extern enum SteeringMode steeringMode;
+
+extern uint8_t currentFace;
 
 int incomingByte = 0;
 bool connectionIsOpen = false;
@@ -16,6 +20,7 @@ uint16_t vebosityTimer = 1;
 int8_t connectionTimeOut = 0;
 
 int8_t keyState[KEYSTATESCOUNT];
+
 
 
 void initCommunication() {
@@ -89,27 +94,22 @@ char* uitoa(unsigned int i, char b[]){
 
 void printVerbose() {
 
-
-
-
-
 	if (vebosityTimer-- == 0) {
 
 		vebosityTimer = 0x5FFF;
 
-
+/*
 		if(sensorData.sensorStruct.compassDegrees > 240){
 			sensorData.sensorStruct.compassDegrees = 0;
 		}else{
 			sensorData.sensorStruct.compassDegrees += 10;
-		}
+		}*/
 
 
 		while (!outputBufferWalked());
 		clearBuffer();
-		const uint8_t dl = 11; //datalength
-
-		char str[dl];
+		
+		uint8_t str[dl];
 
         uint8_t i = 0;
 		str[i++] = instructionData.instructionstruct.motorLeft+128;
@@ -122,17 +122,16 @@ void printVerbose() {
 		str[i++] = sensorData.sensorStruct.compassDegrees;
 		str[i++] = (steeringMode == manual ? 0 : 1);
 		str[i++] = connectionTimeOut; //this one is the connection strength (for timeout posibilities)
-
+		str[i++] = currentFace;
 
 		str[i++] = 255;
-
-		for (i = 0; i < dl-1; i++) {
-			if (str[i] == 255) {
-				str[i]--;
-			}
+		
+		for (i = 0; i < (dl-1); i++) {
+			if (str[i] == 255) str[i]--;
 		}
 
-		serialPrint(str, dl);
+		serialPrintUnsigned(str, dl); //sorry jeroen, needed this because the loop above was detecting negative numbers OH MY GOD!?!?!?!
+		//So needed to force the arduino to be unsigned int. This idea fucks my brain up but it works now (its just a copy of your function with only uint8_t c[] in the parameter
 
 
 		connectionTimeOut++;
@@ -176,7 +175,7 @@ char charIndex (int8_t key) {
 
 void readInputs () {
 	while(serialAvailable()){
-		char input = serialRead();
+		wchar_t input = serialRead();
 
 		switch (input) {
 			case 'w':
@@ -184,6 +183,7 @@ void readInputs () {
 			case 's':
 			case 'd':
 			    keyState[keyIndex(input)] = 1;
+				//sensorData.sensorStruct.compassDegrees = input;
                 inputKeyPress(input);
 				break;
             case 'W':
@@ -217,7 +217,7 @@ void readInputs () {
 	//if i2c is connected this loop will drastically slowdown the arduino process. WHY?
 	//because this function is triggered as fast as it can. This loop will be so much to handle in that way
 	//that it will slow down the custom timers like 0x8FFF values.
-
+	
     for (int8_t i = 0; i < KEYSTATESCOUNT; i++) {
         if (keyState[i] == 1) {
             inputKeyDown(charIndex(i));

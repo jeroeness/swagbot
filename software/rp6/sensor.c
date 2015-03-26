@@ -20,10 +20,10 @@ void parseInstruction(void){
 	
 	for(i = 0; i < 6; i++)
 	{
-		setLed(i+1, (instructionData.instructionstruct.ledStatus & (1<<i)) != 0);
+		setLed(i+1, (instructionData.instructionStruct.ledStatus & (1<<i)) != 0);
 	}
 
-	moveMotors(instructionData.instructionstruct.motorLeft, instructionData.instructionstruct.motorRight);
+	moveMotors(instructionData.instructionStruct.motorLeft, instructionData.instructionStruct.motorRight);
 }
 
 

@@ -75,7 +75,22 @@ void serialPrint(const char *c) {
 	serialPrint(c, strlen((char*)c));
 }
 
-void serialPrint(const char *c, int8_t len) {
+void serialPrint(const char *c, uint8_t len) {
+
+	if (len + outputBufferLength >= OUTPUTBUFFER_SIZE) {
+		//TODO stressled
+		return;
+	}
+
+	memcpy((char*)outputBuffer + outputBufferLength, c, len + 1);
+	outputBufferLength += len;
+
+	if (outputBufferLength == len) {
+		writeCharacterFromBuffer();
+	}
+}
+
+void serialPrintUnsigned(uint8_t c[], uint8_t len) {
 
 	if (len + outputBufferLength >= OUTPUTBUFFER_SIZE) {
 		//TODO stressled

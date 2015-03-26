@@ -10,11 +10,13 @@ int8_t direction;
 uint8_t collision;
 
 void inputRight() {
-	direction = 120;
+	direction = 120; //jeroen this is not right. in movemotors it says this value cant be over 100 and under -100.
+	//if you only press the d then it will be 120 (over the 100). Please fix this.
 }
 
 void inputLeft() {
-	direction = -120;
+	direction = -120; //jeroen this is not right. in movemotors it says this value cant be over 100 and under -100.
+	//if you only press the a then it will be -120 (under the -100). Please fix this.
 }
 
 void inputBackward() {

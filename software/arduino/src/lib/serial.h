@@ -12,7 +12,8 @@ char serialRead(void);
 char serialReadCharacter(char);
 
 void serialPrint(const char *);
-void serialPrint(const char *, int8_t);
+void serialPrint(const char * c, uint8_t len);
+void serialPrintUnsigned(uint8_t c[], uint8_t len);
 void serialPrintLine(const char *);
 void serialPrintLine(const char *, int8_t);
 void serialPrintSynchronous(const char *);
