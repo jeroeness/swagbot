@@ -48,7 +48,7 @@ void initTimersMain(){
 int main(void)
 {
 	uint16_t counter1 = 0;
-	uint16_t counter2 = 0;
+	//uint16_t counter2 = 0;
 	//uint16_t counter3 = 0;
 	
 	cli();
@@ -85,9 +85,9 @@ int main(void)
 			i2c_write_cmd_wrap();
 		}
 		*/
-		s
-		if(counter2++ >= 0x8FFF){ //im there
-			counter2 = 0;
+		
+		if(counter1++ >= 0x8FFF){ //im there
+			counter1 = 0;
 			updateSensors(); //could not create timer for this one.
 			//it blocks the smoothness for the display
 			

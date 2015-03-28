@@ -18,7 +18,7 @@ namespace SwagBot {
 	/// <summary>
 	/// Summary for MyForm
 	/// </summary>
-	public ref class MyForm : public System::Windows::Forms::Form {
+	public ref class MyForm: public System::Windows::Forms::Form {
 	public:
 		MyForm(void) {
 			InitializeComponent();
@@ -32,7 +32,7 @@ namespace SwagBot {
 		/// Clean up any resources being used.
 		/// </summary>
 		~MyForm() {
-			if (components) {
+			if(components) {
 				delete components;
 			}
 		}
@@ -80,7 +80,7 @@ namespace SwagBot {
 	private: System::Windows::Forms::PictureBox^  picLed2;
 
 	private: System::Windows::Forms::PictureBox^  picLed1;
-	private: System::Windows::Forms::Button^  cmdRefresh;
+
 
 
 	private: System::Windows::Forms::GroupBox^  frmControls;
@@ -100,6 +100,9 @@ namespace SwagBot {
 	private: System::Windows::Forms::ToolStripStatusLabel^  lblStatus;
 	private: System::Windows::Forms::Timer^  tmrAlive;
 	private: System::Windows::Forms::ToolStripStatusLabel^  lblConnection;
+	private: System::Windows::Forms::Label^  lblRes7;
+	private: System::Windows::Forms::Label^  label7;
+	private: System::Windows::Forms::Timer^  tmrRefresh;
 
 
 
@@ -139,6 +142,8 @@ namespace SwagBot {
 			this->cmdDisconnect = (gcnew System::Windows::Forms::Button());
 			this->tmrGetData = (gcnew System::Windows::Forms::Timer(this->components));
 			this->frmSensor = (gcnew System::Windows::Forms::GroupBox());
+			this->lblRes7 = (gcnew System::Windows::Forms::Label());
+			this->label7 = (gcnew System::Windows::Forms::Label());
 			this->lblRes6 = (gcnew System::Windows::Forms::Label());
 			this->picLed7 = (gcnew System::Windows::Forms::PictureBox());
 			this->picLed6 = (gcnew System::Windows::Forms::PictureBox());
@@ -165,7 +170,6 @@ namespace SwagBot {
 			this->lblRes0 = (gcnew System::Windows::Forms::Label());
 			this->lblSensor = (gcnew System::Windows::Forms::Label());
 			this->picCompass = (gcnew System::Windows::Forms::PictureBox());
-			this->cmdRefresh = (gcnew System::Windows::Forms::Button());
 			this->frmControls = (gcnew System::Windows::Forms::GroupBox());
 			this->lblKeyInfo = (gcnew System::Windows::Forms::Label());
 			this->lblN = (gcnew System::Windows::Forms::Label());
@@ -179,6 +183,7 @@ namespace SwagBot {
 			this->lblStatus = (gcnew System::Windows::Forms::ToolStripStatusLabel());
 			this->lblConnection = (gcnew System::Windows::Forms::ToolStripStatusLabel());
 			this->tmrAlive = (gcnew System::Windows::Forms::Timer(this->components));
+			this->tmrRefresh = (gcnew System::Windows::Forms::Timer(this->components));
 			this->frmSensor->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->picLed7))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->picLed6))->BeginInit();
@@ -241,6 +246,8 @@ namespace SwagBot {
 			// 
 			// frmSensor
 			// 
+			this->frmSensor->Controls->Add(this->lblRes7);
+			this->frmSensor->Controls->Add(this->label7);
 			this->frmSensor->Controls->Add(this->lblRes6);
 			this->frmSensor->Controls->Add(this->picLed7);
 			this->frmSensor->Controls->Add(this->picLed6);
@@ -273,9 +280,26 @@ namespace SwagBot {
 			this->frmSensor->TabStop = false;
 			this->frmSensor->Text = L"Live SensorData";
 			// 
+			// lblRes7
+			// 
+			this->lblRes7->Location = System::Drawing::Point(195, 29);
+			this->lblRes7->Name = L"lblRes7";
+			this->lblRes7->Size = System::Drawing::Size(102, 13);
+			this->lblRes7->TabIndex = 27;
+			this->lblRes7->Text = L"N/A";
+			// 
+			// label7
+			// 
+			this->label7->AutoSize = true;
+			this->label7->Location = System::Drawing::Point(160, 29);
+			this->label7->Name = L"label7";
+			this->label7->Size = System::Drawing::Size(34, 13);
+			this->label7->TabIndex = 26;
+			this->label7->Text = L"Face:";
+			// 
 			// lblRes6
 			// 
-			this->lblRes6->Location = System::Drawing::Point(235, 16);
+			this->lblRes6->Location = System::Drawing::Point(195, 16);
 			this->lblRes6->Name = L"lblRes6";
 			this->lblRes6->Size = System::Drawing::Size(78, 13);
 			this->lblRes6->TabIndex = 25;
@@ -285,7 +309,7 @@ namespace SwagBot {
 			// 
 			this->picLed7->BackColor = System::Drawing::Color::DarkRed;
 			this->picLed7->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
-			this->picLed7->Location = System::Drawing::Point(182, 44);
+			this->picLed7->Location = System::Drawing::Point(168, 44);
 			this->picLed7->Name = L"picLed7";
 			this->picLed7->Size = System::Drawing::Size(8, 11);
 			this->picLed7->TabIndex = 24;
@@ -296,11 +320,12 @@ namespace SwagBot {
 			// 
 			this->picLed6->BackColor = System::Drawing::Color::Olive;
 			this->picLed6->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
-			this->picLed6->Location = System::Drawing::Point(173, 44);
+			this->picLed6->Location = System::Drawing::Point(159, 44);
 			this->picLed6->Name = L"picLed6";
 			this->picLed6->Size = System::Drawing::Size(8, 11);
 			this->picLed6->TabIndex = 23;
 			this->picLed6->TabStop = false;
+			this->picLed6->Visible = false;
 			// 
 			// picFront
 			// 
@@ -314,9 +339,9 @@ namespace SwagBot {
 			// picBack
 			// 
 			this->picBack->BackColor = System::Drawing::Color::White;
-			this->picBack->Location = System::Drawing::Point(303, 38);
+			this->picBack->Location = System::Drawing::Point(303, 20);
 			this->picBack->Name = L"picBack";
-			this->picBack->Size = System::Drawing::Size(21, 60);
+			this->picBack->Size = System::Drawing::Size(21, 78);
 			this->picBack->TabIndex = 16;
 			this->picBack->TabStop = false;
 			// 
@@ -324,7 +349,7 @@ namespace SwagBot {
 			// 
 			this->picLed5->BackColor = System::Drawing::Color::DarkRed;
 			this->picLed5->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
-			this->picLed5->Location = System::Drawing::Point(164, 44);
+			this->picLed5->Location = System::Drawing::Point(150, 44);
 			this->picLed5->Name = L"picLed5";
 			this->picLed5->Size = System::Drawing::Size(8, 11);
 			this->picLed5->TabIndex = 22;
@@ -333,7 +358,7 @@ namespace SwagBot {
 			// pictureBox3
 			// 
 			this->pictureBox3->BackColor = System::Drawing::Color::Gray;
-			this->pictureBox3->Location = System::Drawing::Point(308, 32);
+			this->pictureBox3->Location = System::Drawing::Point(308, 13);
 			this->pictureBox3->Name = L"pictureBox3";
 			this->pictureBox3->Size = System::Drawing::Size(11, 10);
 			this->pictureBox3->TabIndex = 17;
@@ -343,7 +368,7 @@ namespace SwagBot {
 			// 
 			this->picLed4->BackColor = System::Drawing::Color::DarkRed;
 			this->picLed4->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
-			this->picLed4->Location = System::Drawing::Point(155, 44);
+			this->picLed4->Location = System::Drawing::Point(141, 44);
 			this->picLed4->Name = L"picLed4";
 			this->picLed4->Size = System::Drawing::Size(8, 11);
 			this->picLed4->TabIndex = 21;
@@ -352,9 +377,9 @@ namespace SwagBot {
 			// pictureBox1
 			// 
 			this->pictureBox1->BackColor = System::Drawing::Color::Gray;
-			this->pictureBox1->Location = System::Drawing::Point(301, 36);
+			this->pictureBox1->Location = System::Drawing::Point(301, 18);
 			this->pictureBox1->Name = L"pictureBox1";
-			this->pictureBox1->Size = System::Drawing::Size(25, 64);
+			this->pictureBox1->Size = System::Drawing::Size(25, 82);
 			this->pictureBox1->TabIndex = 5;
 			this->pictureBox1->TabStop = false;
 			// 
@@ -362,7 +387,7 @@ namespace SwagBot {
 			// 
 			this->picLed3->BackColor = System::Drawing::Color::DarkGreen;
 			this->picLed3->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
-			this->picLed3->Location = System::Drawing::Point(146, 44);
+			this->picLed3->Location = System::Drawing::Point(132, 44);
 			this->picLed3->Name = L"picLed3";
 			this->picLed3->Size = System::Drawing::Size(8, 11);
 			this->picLed3->TabIndex = 20;
@@ -372,7 +397,7 @@ namespace SwagBot {
 			// 
 			this->picLed2->BackColor = System::Drawing::Color::DarkRed;
 			this->picLed2->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
-			this->picLed2->Location = System::Drawing::Point(137, 44);
+			this->picLed2->Location = System::Drawing::Point(123, 44);
 			this->picLed2->Name = L"picLed2";
 			this->picLed2->Size = System::Drawing::Size(8, 11);
 			this->picLed2->TabIndex = 19;
@@ -382,7 +407,7 @@ namespace SwagBot {
 			// 
 			this->picLed1->BackColor = System::Drawing::Color::DarkRed;
 			this->picLed1->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
-			this->picLed1->Location = System::Drawing::Point(128, 44);
+			this->picLed1->Location = System::Drawing::Point(114, 44);
 			this->picLed1->Name = L"picLed1";
 			this->picLed1->Size = System::Drawing::Size(8, 11);
 			this->picLed1->TabIndex = 18;
@@ -392,7 +417,7 @@ namespace SwagBot {
 			// 
 			this->picLed0->BackColor = System::Drawing::Color::DarkGreen;
 			this->picLed0->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
-			this->picLed0->Location = System::Drawing::Point(119, 44);
+			this->picLed0->Location = System::Drawing::Point(105, 44);
 			this->picLed0->Name = L"picLed0";
 			this->picLed0->Size = System::Drawing::Size(8, 11);
 			this->picLed0->TabIndex = 17;
@@ -401,7 +426,7 @@ namespace SwagBot {
 			// label6
 			// 
 			this->label6->AutoSize = true;
-			this->label6->Location = System::Drawing::Point(200, 16);
+			this->label6->Location = System::Drawing::Point(160, 16);
 			this->label6->Name = L"label6";
 			this->label6->Size = System::Drawing::Size(37, 13);
 			this->label6->TabIndex = 16;
@@ -409,7 +434,7 @@ namespace SwagBot {
 			// 
 			// lblRes5
 			// 
-			this->lblRes5->Location = System::Drawing::Point(116, 81);
+			this->lblRes5->Location = System::Drawing::Point(102, 81);
 			this->lblRes5->Name = L"lblRes5";
 			this->lblRes5->Size = System::Drawing::Size(78, 13);
 			this->lblRes5->TabIndex = 15;
@@ -417,7 +442,7 @@ namespace SwagBot {
 			// 
 			// lblRes4
 			// 
-			this->lblRes4->Location = System::Drawing::Point(116, 68);
+			this->lblRes4->Location = System::Drawing::Point(102, 68);
 			this->lblRes4->Name = L"lblRes4";
 			this->lblRes4->Size = System::Drawing::Size(78, 13);
 			this->lblRes4->TabIndex = 14;
@@ -425,7 +450,7 @@ namespace SwagBot {
 			// 
 			// lblRes3
 			// 
-			this->lblRes3->Location = System::Drawing::Point(116, 55);
+			this->lblRes3->Location = System::Drawing::Point(102, 55);
 			this->lblRes3->Name = L"lblRes3";
 			this->lblRes3->Size = System::Drawing::Size(78, 13);
 			this->lblRes3->TabIndex = 13;
@@ -433,7 +458,7 @@ namespace SwagBot {
 			// 
 			// lblRes1
 			// 
-			this->lblRes1->Location = System::Drawing::Point(116, 29);
+			this->lblRes1->Location = System::Drawing::Point(102, 29);
 			this->lblRes1->Name = L"lblRes1";
 			this->lblRes1->Size = System::Drawing::Size(78, 13);
 			this->lblRes1->TabIndex = 11;
@@ -486,7 +511,7 @@ namespace SwagBot {
 			// 
 			// lblRes0
 			// 
-			this->lblRes0->Location = System::Drawing::Point(116, 16);
+			this->lblRes0->Location = System::Drawing::Point(102, 16);
 			this->lblRes0->Name = L"lblRes0";
 			this->lblRes0->Size = System::Drawing::Size(78, 13);
 			this->lblRes0->TabIndex = 5;
@@ -510,17 +535,6 @@ namespace SwagBot {
 			this->picCompass->TabStop = false;
 			this->picCompass->Click += gcnew System::EventHandler(this, &MyForm::picCompass_Click);
 			this->picCompass->Paint += gcnew System::Windows::Forms::PaintEventHandler(this, &MyForm::picCompass_Paint);
-			// 
-			// cmdRefresh
-			// 
-			this->cmdRefresh->Location = System::Drawing::Point(93, 11);
-			this->cmdRefresh->Name = L"cmdRefresh";
-			this->cmdRefresh->Size = System::Drawing::Size(80, 23);
-			this->cmdRefresh->TabIndex = 19;
-			this->cmdRefresh->TabStop = false;
-			this->cmdRefresh->Text = L"Refresh";
-			this->cmdRefresh->UseVisualStyleBackColor = true;
-			this->cmdRefresh->Click += gcnew System::EventHandler(this, &MyForm::cmdRefresh_Click);
 			// 
 			// frmControls
 			// 
@@ -696,6 +710,11 @@ namespace SwagBot {
 			this->tmrAlive->Interval = 300;
 			this->tmrAlive->Tick += gcnew System::EventHandler(this, &MyForm::tmrAlive_Tick);
 			// 
+			// tmrRefresh
+			// 
+			this->tmrRefresh->Enabled = true;
+			this->tmrRefresh->Tick += gcnew System::EventHandler(this, &MyForm::tmrRefresh_Tick);
+			// 
 			// MyForm
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
@@ -704,7 +723,6 @@ namespace SwagBot {
 			this->ClientSize = System::Drawing::Size(356, 356);
 			this->Controls->Add(this->sStrip);
 			this->Controls->Add(this->frmControls);
-			this->Controls->Add(this->cmdRefresh);
 			this->Controls->Add(this->picCompass);
 			this->Controls->Add(this->frmSensor);
 			this->Controls->Add(this->cmdDisconnect);
@@ -745,10 +763,12 @@ namespace SwagBot {
 	private:
 		static array<int>^ keyCode = gcnew array<int>(7) { 0x57, 0x41, 0x44, 0x53, 0x50, 0x4D, 0x4E };
 		static array<bool>^ keyDown = gcnew array<bool>(7) { false, false, false, false, false, false, false };
-		static array<unsigned char>^ keySendUp = gcnew array<unsigned char>(8) { 'W', 'A', 'D', 'S', 'P', 'M', 'N', 'F' }; 
+		static array<unsigned char>^ keySendUp = gcnew array<unsigned char>(8) { 'W', 'A', 'D', 'S', 'P', 'M', 'N', 'F' };
 		static array<unsigned char>^ keySendDown = gcnew array<unsigned char>(8) { 'w', 'a', 'd', 's', 'p', 'm', 'n', 'f' };
 		static array<Label^>^ keyLabels = gcnew array<Label^>(7) {};
 		static array<bool>^ MouseDown = gcnew array<bool>(7) {};
+		static array<String ^>^ Faces = gcnew array<String ^>(7) { "Green Smiley", "Angry Smiley", "Compass", "Bumper Unpressed", "Bumper Pressed", "TEST", "UNKNOWN_FACE" };
+
 
 		array<int>^ databuffer = gcnew array<int>(100);
 		int bufferlen = 0;
@@ -762,27 +782,40 @@ namespace SwagBot {
 
 
 	private:
-		
-		void TriggerKeyState(int whatKey, bool whatState) {
-			if (!this->serialPort1->IsOpen) return;
 
-			if (whatState) { //if key was pressed
-				if (keyDown[whatKey] == false) {
+		void TriggerKeyState(int whatKey, bool whatState) {
+			if(!this->serialPort1->IsOpen) return;
+
+			if(whatState) { //if key was pressed
+				if(keyDown[whatKey] == false) {
 					keyDown[whatKey] = true;
-					this->serialPort1->Write(keySendDown, whatKey, 1);
+					try {
+						this->serialPort1->Write(keySendDown, whatKey, 1);
+					} catch(System::IO::IOException^) {
+						setStatusMessage("COMMPORT DISCONNECTED!", true);
+						Disconnect();
+						return;
+					}
+
 					keyLabels[whatKey]->BackColor = Color::Gray;
 					//return;
 				}
 			} else {
-				if (keyDown[whatKey] == true && MouseDown[whatKey] == false) {
+				if(keyDown[whatKey] == true && MouseDown[whatKey] == false) {
 					keyDown[whatKey] = false;
-					this->serialPort1->Write(keySendUp, whatKey, 1);
-					this->serialPort1->Write(keySendUp, whatKey, 1);//send the key twice to be sure the arduino gets it.
+					try {
+						this->serialPort1->Write(keySendUp, whatKey, 1);
+						this->serialPort1->Write(keySendUp, whatKey, 1);//send the key twice to be sure the arduino gets it.
+					} catch(System::IO::IOException^) {
+						setStatusMessage("COMMPORT DISCONNECTED!", true);
+						Disconnect();
+						return;
+					}
 					keyLabels[whatKey]->BackColor = Color::White;
 				}
 			}
 
-			if (MouseDown[whatKey] == true || keyDown[whatKey] == true) {
+			if(MouseDown[whatKey] == true || keyDown[whatKey] == true) {
 				keyLabels[whatKey]->BackColor = Color::Gray;
 			} else {
 				keyLabels[whatKey]->BackColor = Color::White;
@@ -812,17 +845,18 @@ namespace SwagBot {
 
 
 		System::Void MyForm_Unload(System::Object^  sender, System::EventArgs^  e) {
-			if (this->serialPort1->IsOpen) {
+			if(this->serialPort1->IsOpen) {
 				this->serialPort1->Close();
 			}
 		}
 
 		void loadCommports() {
+			if(this->cmbComm->DroppedDown) return;
 			this->cmbComm->Items->Clear();
 			this->cmbComm->Items->AddRange(serialPort1->GetPortNames());
-			if (this->cmbComm->Items->Count > 0) {
-				this->cmbComm->SelectedIndex = this->cmbComm->Items->Count-1;
-				
+			if(this->cmbComm->Items->Count > 0) {
+				this->cmbComm->SelectedIndex = this->cmbComm->Items->Count - 1;
+
 			}
 		}
 
@@ -833,36 +867,35 @@ namespace SwagBot {
 		}
 
 		void Connect() {
-			if (this->serialPort1->IsOpen) { 
+			if(this->serialPort1->IsOpen) {
 				Disconnect();
 				return;
 			}
 
-			if (this->cmbComm->SelectedIndex != -1) {
+			if(this->cmbComm->SelectedIndex != -1) {
 
 				this->serialPort1->PortName = this->cmbComm->Text;
 				this->serialPort1->Parity = System::IO::Ports::Parity::None;
 				this->serialPort1->DataBits = 8;
 
 				this->serialPort1->Open();
-				if (this->serialPort1->IsOpen) {
-					setStatusMessage("Connected!",false);
+				if(this->serialPort1->IsOpen) {
+					setStatusMessage("Connected!", false);
 					setControlstate(false);
 				} else {
-					setStatusMessage("Could not open '" + this->cmbComm->Text + "'!",true);
+					setStatusMessage("Could not open '" + this->cmbComm->Text + "'!", true);
 					setControlstate(true);
 				}
 			}
 		}
 
 		void setControlstate(bool EnableControls) {
-			if (!EnableControls) {
+			if(!EnableControls) {
 				this->tmrGetData->Enabled = true;
 				this->tmrAlive->Enabled = true;
 
 				this->cmdDisconnect->Enabled = true;
 				this->cmdConnect->Enabled = false;
-				this->cmdRefresh->Enabled = false;
 
 				this->cmbComm->Enabled = false;
 
@@ -870,22 +903,27 @@ namespace SwagBot {
 			} else {
 				this->cmdDisconnect->Enabled = false;
 				this->cmdConnect->Enabled = true;
-				this->cmdRefresh->Enabled = true;
 
 				this->cmbComm->Enabled = true;
-				
+
 			}
 		}
 
 		System::Void tmrAlive_Tick(System::Object^  sender, System::EventArgs^  e) {
-			if (!this->serialPort1->IsOpen) return;
-			
-			this->serialPort1->Write(keySendUp,7,1); //send ack to arduino
+			if(!this->serialPort1->IsOpen) return;
+			try {
+				this->serialPort1->Write(keySendUp, 7, 1); //send ack to arduino
+			} catch(System::IO::IOException^) {
+				setStatusMessage("COMMPORT DISCONNECTED!", true);
+				Disconnect();
+				return;
+			}
+
 
 			TimeOutCount++;
-			if (TimeOutCount > 3 && TimeOutCount < 10) {
+			if(TimeOutCount > 3 && TimeOutCount < 10) {
 				setStatusMessage("Timing out...", false);
-			} else if (TimeOutCount == 10) {
+			} else if(TimeOutCount == 10) {
 				setStatusMessage("Connection Lost!", true);
 				ForceReconnect();
 				TimeOutCount = 0;
@@ -897,19 +935,24 @@ namespace SwagBot {
 			array<int>^ sensordata = gcnew array<int>(12);
 			int i = 0;
 
-			if (!this->serialPort1->IsOpen) return;
+			if(!this->serialPort1->IsOpen) return;
 
-			while (this->serialPort1->BytesToRead > 0) {
+			while(this->serialPort1->BytesToRead > 0) {
 				//gchar = this->serialPort1->ReadChar();
+				//try {
 				gchar = this->serialPort1->ReadByte();
+				//} //catch() {
+
+				//}
+
 				TimeOutCount = 0;
 
-				if (gchar == 255 && bufferlen >= 10) { //end of bufferdata
-					
+				if(gchar == 255 && bufferlen >= 11) { //end of bufferdata
+
 					setStatusMessage("Connected!", false);
 
-					for (i = 0; i < 11; i++) {
-						sensordata[i] = databuffer[bufferlen-11+i];
+					for(i = 0; i < 11; i++) {
+						sensordata[i] = databuffer[bufferlen - 11 + i];
 					}
 
 					bufferlen = 0;
@@ -918,42 +961,42 @@ namespace SwagBot {
 					this->lblRes1->Text = "" + (sensordata[1] - 128);
 					int leds = sensordata[2];
 
-					if (1 & leds) {
+					if(1 & leds) {
 						this->picLed0->BackColor = Color::Lime;
 					} else {
 						this->picLed0->BackColor = Color::DarkGreen;
 					}
-					if (2 & leds) {
+					if(2 & leds) {
 						this->picLed1->BackColor = Color::Red;
 					} else {
 						this->picLed1->BackColor = Color::DarkRed;
 					}
-					if (4 & leds) {
+					if(4 & leds) {
 						this->picLed2->BackColor = Color::Red;
 					} else {
 						this->picLed2->BackColor = Color::DarkRed;
 					}
-					if (8 & leds) {
+					if(8 & leds) {
 						this->picLed3->BackColor = Color::Lime;
 					} else {
 						this->picLed3->BackColor = Color::DarkGreen;
 					}
-					if (16 & leds) {
+					if(16 & leds) {
 						this->picLed4->BackColor = Color::Red;
 					} else {
 						this->picLed4->BackColor = Color::DarkRed;
 					}
-					if (32 & leds) {
+					if(32 & leds) {
 						this->picLed5->BackColor = Color::Red;
 					} else {
 						this->picLed5->BackColor = Color::DarkRed;
 					}
-					if (64 & leds) {
+					if(64 & leds) {
 						this->picLed6->BackColor = Color::Yellow;
 					} else {
 						this->picLed6->BackColor = Color::Olive;
 					}
-					if (128 & leds) {
+					if(128 & leds) {
 						this->picLed7->BackColor = Color::Red;
 					} else {
 						this->picLed7->BackColor = Color::DarkRed;
@@ -966,27 +1009,35 @@ namespace SwagBot {
 					compassDegrees = sensordata[7];
 					this->picCompass->Refresh();
 
-					if (sensordata[8] == 0) {
+					if(sensordata[8] == 0) {
 						this->lblRes6->Text = "Manual Mode";
 					} else {
 						this->lblRes6->Text = "Automatic Mode";
 					}
 					this->lblConnection->Text = "TimeOuts: " + sensordata[9];
-					if (sensordata[9] > 8) {
+					if(sensordata[9] > 8) {
 						this->lblConnection->ForeColor = Color::Red;
-					} else if (sensordata[9] > 8) {
+					} else if(sensordata[9] > 8) {
 						this->lblConnection->ForeColor = Color::Olive;
 					} else {
 						this->lblConnection->ForeColor = Color::Black;
 					}
 
-				} else if(gchar == 255){
+					if(sensordata[10] >= 0 && sensordata[10] <= 5) {
+						this->lblRes7->Text = Faces[sensordata[10]];
+					} else {
+						this->lblRes7->Text = Faces[6];
+					}
+
+
+
+				} else if(gchar == 255) {
 					bufferlen = 0;
 				} else {
-					if (bufferlen < 100-1) {
+					if(bufferlen < 100 - 1) {
 						databuffer[bufferlen++] = gchar;
-					}else{
-						setStatusMessage("Buffer Overflow!",true);
+					} else {
+						setStatusMessage("Buffer Overflow!", true);
 						ForceReconnect();
 						bufferlen = 0;
 						databuffer[bufferlen] = 0;
@@ -996,7 +1047,7 @@ namespace SwagBot {
 				}
 			}
 
-			for (i = 0; i < 7; i++) {
+			for(i = 0; i < 7; i++) {
 				this->TriggerKeyState(i, GetAsyncKeyState(keyCode[i]) != 0);
 			}
 
@@ -1018,8 +1069,8 @@ namespace SwagBot {
 			Connect();
 		}
 
-		void setStatusMessage(String ^ nMessage,bool isError){
-			if (isError) {
+		void setStatusMessage(String ^ nMessage, bool isError) {
+			if(isError) {
 				this->lblStatus->Text = nMessage;
 				this->lblStatus->ForeColor = Color::Red;
 			} else {
@@ -1029,10 +1080,15 @@ namespace SwagBot {
 		}
 
 		void Disconnect() {
-			if (this->serialPort1->IsOpen) {
+			if(this->serialPort1->IsOpen) {
 				this->tmrGetData->Enabled = false;
 				this->tmrAlive->Enabled = false;
-				this->serialPort1->Close();
+				try {
+					this->serialPort1->Close();
+				} catch(System::IO::IOException^) {
+
+				}
+				loadCommports();
 				setControlstate(true);
 			}
 		}
@@ -1042,10 +1098,10 @@ namespace SwagBot {
 		}
 
 		void setPercentage(int percentage) {
-			if (percentage < 0) percentage = 0;
-			if (percentage > 100) percentage = 100;
+			if(percentage < 0) percentage = 0;
+			if(percentage > 100) percentage = 100;
 
-			this->picFront->Height = (this->picBack->Height - 4) / 100.0 * percentage;
+			this->picFront->Height = (int)((this->picBack->Height - 4) / 100.0 * percentage);
 			this->picFront->Top = this->picBack->Top + (this->picBack->Height - this->picFront->Height - 2);
 
 			this->picFront->Refresh();
@@ -1066,45 +1122,38 @@ namespace SwagBot {
 
 			int size = 160 / 2;
 
-
-			// Create points that define line.
-			Point point1 = Point(size, size);
-
 			e->Graphics->SmoothingMode = System::Drawing::Drawing2D::SmoothingMode::AntiAlias;
 
-			float x = byteToDeg(compassDegrees);
-			Point point2 = Point(Math::Cos(x) * (size*0.7) + size, Math::Sin(x) * (size*0.7) + size);
-			Point point3 = Point(Math::Cos(x) * (-size*0.7) + size, Math::Sin(x) * (-size*0.7) + size);
-
+			double x = byteToDeg(compassDegrees);
+			int point2X = (int)(Math::Cos(x) * (size*0.7) + size);
+			int point2Y = (int)(Math::Sin(x) * (size*0.7) + size);
+			int point3X = (int)(Math::Cos(x) * (-size*0.7) + size);
+			int point3Y = (int)(Math::Sin(x) * (-size*0.7) + size);
 
 			e->Graphics->DrawEllipse(backgroundPen, 2, 2, size * 2 - 4, size * 2 - 4);
 			e->Graphics->FillEllipse(Brushes::White, 2, 2, size * 2 - 4, size * 2 - 4);
 
-			e->Graphics->DrawLine(redPen, point1, point2);
-			e->Graphics->DrawLine(blackPen, point1, point3);
+			e->Graphics->DrawLine(redPen, size, size, point2X, point2Y);
+			e->Graphics->DrawLine(blackPen, size, size, point3X, point3Y);
 
-			e->Graphics->FillEllipse(Brushes::White, (int)(size - 14 * 1.5), (int)(size - 14 * 1.5), (int)(14 * 3), (int)(14 * 3));
+			e->Graphics->FillEllipse(Brushes::White, (int)(size - 14 * 1.5), (int)(size - 14 * 1.5), 14 * 3, 14 * 3);
 
 
 			alignText->Alignment = StringAlignment::Center;
 			alignText->LineAlignment = StringAlignment::Center;
 
-			e->Graphics->DrawString(degrees, myFont, Brushes::Blue, point1.X, point1.Y, alignText);
+			e->Graphics->DrawString(degrees, myFont, Brushes::Blue, (float)size, (float)size, alignText);
 
-			e->Graphics->DrawString("N", myFont, Brushes::Blue, size, 15, alignText);
-			e->Graphics->DrawString("E", myFont, Brushes::Blue, size * 2 - 10, size, alignText);
-			e->Graphics->DrawString("S", myFont, Brushes::Blue, size, size * 2 - 10, alignText);
-			e->Graphics->DrawString("W", myFont, Brushes::Blue, 10, size, alignText);
+			e->Graphics->DrawString("N", myFont, Brushes::Blue, (float)size, 15.0, alignText);
+			e->Graphics->DrawString("E", myFont, Brushes::Blue, (float)(size * 2.0 - 10.0), (float)size, alignText);
+			e->Graphics->DrawString("S", myFont, Brushes::Blue, (float)size, (float)(size * 2.0 - 10.0), alignText);
+			e->Graphics->DrawString("W", myFont, Brushes::Blue, 10.0, (float)size, alignText);
 
 		}
 
 	private:
 		System::Void picCompass_Click(System::Object^  sender, System::EventArgs^  e) {
 			this->picCompass->Refresh();
-		}
-
-		System::Void cmdRefresh_Click(System::Object^  sender, System::EventArgs^  e) {
-			loadCommports();
 		}
 
 		System::Void lblW_MouseUp(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
@@ -1233,5 +1282,10 @@ namespace SwagBot {
 			this->lblKeyInfo->Text = "Automatic Mode";
 		}
 
+		System::Void tmrRefresh_Tick(System::Object^  sender, System::EventArgs^  e) {
+			if(this->cmdConnect->Enabled == true) {
+				loadCommports();
+			}
+	}
 };
 }
