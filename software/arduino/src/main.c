@@ -11,6 +11,8 @@ union UID instructionData;
 union USD sensorData;
 
 extern uint8_t currentFace;
+extern uint8_t currentSubFace;
+
 
 volatile uint8_t OverFlowToggle = 0; //for timer overflow
 
@@ -73,7 +75,9 @@ int main(void)
 
 	moveMotors(0, 0);
 	i2c_write_cmd_wrap();
-
+	
+	currentFace = 5;
+	
 	while(1)
 	{
 		/*
@@ -90,8 +94,11 @@ int main(void)
 			counter1 = 0;
 			updateSensors(); //could not create timer for this one.
 			//it blocks the smoothness for the display
-			
-			currentFace = (currentFace == 3 ? 4 : 3);
+			currentSubFace++;
+			if(currentSubFace > 99){
+				currentSubFace = 0;
+			}
+			//currentFace = (currentFace == 3 ? 4 : 3);
 		}
 		
 		/*
