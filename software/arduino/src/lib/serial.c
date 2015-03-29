@@ -144,12 +144,12 @@ void serialPrintSynchronous (const char *c, int8_t len) {
 	sleepUntilEmptyOutputBuffer();
 }
 
+/*
 void serialPrintSynchronous (const char *c) {
 	serialPrintSynchronous(c, strlen(c));
-}
+}*/
 
 void serialPrintLine(const char *c, int8_t len) {
-
 	char *ln = (char*)malloc((len + 3) * sizeof(char));
 	memcpy(ln, c, len + 1);
 	strcat(ln, newLineCharacters);
@@ -157,9 +157,10 @@ void serialPrintLine(const char *c, int8_t len) {
 	free(ln);
 }
 
+/*
 void serialPrintLine(const char *c) {
 	serialPrintLine(c, strlen(c));
-}
+}*/
 
 void writeCharacterFromBuffer() {
 	if (!outputBufferWalked()) {
