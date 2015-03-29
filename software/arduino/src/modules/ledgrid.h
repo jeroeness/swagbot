@@ -20,12 +20,16 @@
 #define DDR_DATA DDRB
 #define DDR_POSITIVE DDRL
 
-uint8_t updateLedGrid();
-uint8_t pushArraysToGrid(uint8_t, uint8_t);
-void setEmotion(uint8_t);
-void initLedGrid();
-void clearDisplayData();
+
+void initLedGrid(void);
+void clearDisplayData(void);
+
+void setEmotion(int16_t);
+void setSubEmotion(int16_t);
 void setScrollText(const char * text);
-void updateScrollText();
+
+void updateScrollText(void);
+void updateEmotion(void);
+void updateLedGrid(void);
 
 #endif

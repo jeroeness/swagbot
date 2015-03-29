@@ -10,10 +10,6 @@
 union UID instructionData;
 union USD sensorData;
 
-extern uint8_t currentFace;
-extern uint8_t currentSubFace;
-
-
 volatile uint8_t OverFlowToggle = 0; //for timer overflow
 
 void initTimersMain(){
@@ -68,9 +64,11 @@ int main(void)
 	moveMotors(0, 0);
 	i2c_write_cmd_wrap();
 	
-	currentFace = 5;
+	
 	
 	setScrollText("/rSwag/gBot/b420/gBlazit   /r[JST]/bJucko/g13");
+	
+	setEmotion(-1);
 	
 	while(1)
 	{
@@ -93,8 +91,7 @@ int main(void)
 
 ISR(TIMER3_OVF_vect)
 {
-	uint16_t i = 0;
-	i = updateLedGrid();
+	updateLedGrid();
 	TCNT3 = 65000;
 	//TCNT3 = 40000;
 }

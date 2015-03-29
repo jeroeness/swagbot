@@ -71,9 +71,9 @@ char serialRead(void) {
 
 
 
-void serialPrint(const char *c) {
-	serialPrint(c, strlen((char*)c));
-}
+//void serialPrintStr(const char *c) {
+//	serialPrint(c, strlen((char*)c));
+//}
 
 void serialPrint(const char *c, uint8_t len) {
 
