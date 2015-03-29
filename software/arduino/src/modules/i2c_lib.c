@@ -21,6 +21,8 @@ extern union USD sensorData;
 
 uint8_t volatile destaddress, startindex, rwamount;
 uint8_t volatile i2cbusy;
+uint8_t volatile OverFlowToggle = 0; //for timer overflow
+
 
 void i2c_init(uint8_t masteraddress) {
 	TWSR = 0;	// prescaler always 0 (AVR315)
@@ -28,7 +30,23 @@ void i2c_init(uint8_t masteraddress) {
 	TWAR = (masteraddress & 0xFE) | 1; // i2c master address (atmega 2560) + general call enable
 	TWCR = (1 << TWINT) | (1 << TWEA) | (1 << TWEN) | (1 << TWIE);
 	i2cbusy = 0;
+	
+	
+	TCCR1B |= (1 << CS12) | (0<<CS10); //timer1: prescaler of 256
+	TCNT1 = 30000; //timer1: init counter
+	TIMSK1 |= (1 << TOIE1); //timer0: enable overflow interrupt
 }
+
+ISR(TIMER1_OVF_vect){
+	OverFlowToggle ^= 1;
+	if(OverFlowToggle == 1){
+		i2c_write_cmd_wrap();
+	}else{
+		i2c_read_sensors_wrap();
+	}
+	TCNT1 = 30000;
+}
+
 
 void i2c_waitforidle(void) {
 	uint8_t register timeoutcounter = 100;

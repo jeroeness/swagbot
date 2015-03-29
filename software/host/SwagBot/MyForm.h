@@ -225,6 +225,7 @@ namespace SwagBot {
 			// 
 			// serialPort1
 			// 
+			this->serialPort1->BaudRate = 19200;
 			this->serialPort1->WriteTimeout = 500;
 			// 
 			// cmdDisconnect
@@ -836,7 +837,7 @@ namespace SwagBot {
 			keyLabels[5] = lblM;
 			keyLabels[6] = lblN;
 
-			Connect();
+			//Connect();
 		}
 
 		System::Void MyForm_KeyDown(Object^ sender, System::Windows::Forms::KeyEventArgs^ e) {
@@ -852,15 +853,18 @@ namespace SwagBot {
 
 		void loadCommports() {
 			if(this->cmbComm->DroppedDown) return;
+			int j = this->cmbComm->SelectedIndex;
+
 			this->cmbComm->Items->Clear();
 			this->cmbComm->Items->AddRange(serialPort1->GetPortNames());
-			if(this->cmbComm->Items->Count > 0) {
+			if(this->cmbComm->Items->Count > 0 && j == -1) {
 				this->cmbComm->SelectedIndex = this->cmbComm->Items->Count - 1;
-
+			} else if (j != -1) {
+				if (this->cmbComm->Items->Count > j) {
+					this->cmbComm->SelectedIndex = j;
+				}
 			}
 		}
-
-
 
 		System::Void cmdConnect_Click(System::Object^  sender, System::EventArgs^  e) {
 			Connect();

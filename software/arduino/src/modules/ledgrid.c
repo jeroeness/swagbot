@@ -32,7 +32,30 @@ void initLedGrid(void){
 	PORT_CLOCK &= ~CLOCK;
 	PORT_STROBE &= ~STROBE;
 	PORT_POSITIVE |= POSITIVE;
+	
+	//ledgrid drawing
+	TCCR3B |= (1 << CS31) | (0<<CS30); //timer3: set prescaler of 8
+	TCNT3 = 63000; //timer3: init counter
+	TIMSK3 |= (1 << TOIE3); //timer3: enable overflow interrupt
+	
+	//scrolling text
+	TCCR4B |= (1 << CS42) | (0<<CS40); //timer 4: prescaler of 256
+	TCNT4 = 58000; //timer4: init counter differently than others to prevent simultaneously execution
+	TIMSK4 |= (1 << TOIE4); //timer4: enable overflow interrupt
+	
+	setEmotion(-1);
 }
+
+ISR(TIMER3_OVF_vect){
+	updateLedGrid();
+	TCNT3 = 65000;
+}
+
+ISR(TIMER4_OVF_vect){	
+	updateScrollText();
+	TCNT4 = 58000;
+}
+
 
 void clearDisplayData(void){
 	uint8_t i = 0;
@@ -187,7 +210,6 @@ void updateLedGrid(void){
 
 
 uint8_t printCharacter(uint8_t color[8], wchar_t character, int8_t xOffset, int8_t yOffset){
-	
 	int8_t x = 0;
 	int8_t y = 0;
 	uint8_t * letterbak;
@@ -274,14 +296,12 @@ uint8_t printCharacter(uint8_t color[8], wchar_t character, int8_t xOffset, int8
 		case '(': letterbak = (uint8_t[]) {0x2, 0x1, 0x1, 0x1, 0x1, 0x2, 0x0}; cw = 3; break;
 		case ')': letterbak = (uint8_t[]) {0x1, 0x2, 0x2, 0x2, 0x2, 0x1, 0x0}; cw = 3; break;
 
-
 		default:
 			letterbak = (uint8_t[]) {0xF,0xF,0xF,0xF,0xF,0xF}; cw = 4; break;
 			break;
 	}
 	
 	if(xOffset < -3 && xOffset > 9) return cw;
-	
 	
 	for(y = 0; y < 6; y++){
 		for(x = 0; x < cw; x++){
