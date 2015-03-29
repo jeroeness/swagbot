@@ -32,7 +32,6 @@ volatile int8_t defaultSpeed;
 volatile uint8_t currentAction;
 volatile uint8_t totalActions;
 volatile ActionList * actionList;
-volatile ActionList actionListList;
 
 void initAutomaticMode() {
 	resetClock();
@@ -70,7 +69,8 @@ void updateAutomaticMode() {
 }
 
 void initActionList(uint8_t size) {
-	actionList = &actionListList;
+	ActionList newActionList;
+	actionList = &newActionList;
 
 	actionList->list = (Action*) malloc(size * sizeof(Action));
 	actionList->size = size;
@@ -85,8 +85,14 @@ void initActionList(uint8_t size) {
 	}
 }
 
+void destroyActionList() {
+	free(*actionList);
+}
+
 void addToActionList(int16_t action, int16_t argument, int16_t tempSpeed) {
-	if (actionList->usedSize >= actionList->size) return;
+	if (actionList->usedSize >= actionList->size) {
+
+	}
 
 	Action * newAction = &(actionList->list[actionList->usedSize++]);
 	newAction->action = action;
@@ -211,6 +217,16 @@ void turnFor(int16_t milliseconds) {
 	turn(speed);
 }
 
+void moveDistance(int16_t distance) {
+	targetDistance = sensorData.ultrasonic - distance;
+	currentAction = ACTION_MOVE;
+}
+
+void moveToDistance(int16_t distance) {
+	targetDistance = distance;
+	currentAction = ACTION_MOVE;
+}
+
 void moveFor(int16_t milliseconds) {
 	currentAction = ACTION_MOVE_FOR;
 	resetClock();
@@ -240,16 +256,6 @@ inline void setDefaultSpeed(int8_t s) {
 	defaultSpeed = s;
 }
 
-void moveDistance(int16_t distance) {
-	targetDistance = sensorData.ultrasonic - distance;
-	currentAction = ACTION_MOVE;
-}
-
-void moveToDistance(int16_t distance) {
-	targetDistance = distance;
-	currentAction = ACTION_MOVE;
-}
-
 void beginAutomaticMode(){
 	resetAutomaticMode();
 }
@@ -257,3 +263,4 @@ void beginAutomaticMode(){
 void stopAutomaticMode(){
 	stop();
 }
+

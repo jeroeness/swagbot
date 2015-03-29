@@ -1,0 +1,5 @@
+
+//DEFINES:
+
+#define MIN_DISTANCE 		50
+#define OUTSIDE_MARGIN_RP6	10
