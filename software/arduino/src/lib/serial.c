@@ -3,7 +3,7 @@
 #include "../globalincsanddefs.h"
 
 #ifndef BAUD
-#define BAUD 9600
+#define BAUD 19200
 #endif
 
 #ifndef BAUD_PRESCALER
