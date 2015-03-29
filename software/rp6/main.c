@@ -22,10 +22,14 @@ void initTimerMain(){
 
 
 int main(void) {
+	
+	
+	//return;
 	cli();
 	
-	initMotor();
 	initSensors();
+	initMotor();
+	
 	i2c_init(0xAA);
 	initTimerMain();
 	
@@ -33,10 +37,13 @@ int main(void) {
 	
 	sei();
 	
+	uint8_t toggleled = 0;
+	
 	while(1) {
 		if(timer0Overflow == 1){ //timed script sequence of 50ms
 			timer0Overflow = 0;
-			
+			toggleled^=1;
+			setLed(7,toggleled);
 			readSensors();
 		}
 	}

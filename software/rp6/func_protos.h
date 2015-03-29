@@ -41,10 +41,11 @@ int moveMotors(int8_t speedL, int8_t speedR);
 struct SD{
 	uint8_t bumperRight:1;
 	uint8_t bumperLeft:1;
-	uint16_t compassDegrees;
 	int8_t motorLeft;
 	int8_t motorRight;
-	int16_t ultrasonic;
+	uint8_t batteryPercentage;
+	uint8_t ultrasonic;
+	uint8_t compassDegrees;
 };
 
 struct ID{
@@ -54,7 +55,7 @@ struct ID{
 };
 
 struct SD sensorStruct;
-struct ID instructionstruct;
+struct ID instructionStruct;
 
 union USD {
 	struct SD sensorStruct;
@@ -62,8 +63,8 @@ union USD {
 };
 
 union UID {
-	struct ID instructionstruct;
-	uint8_t instructionArray[sizeof(instructionstruct)];
+	struct ID instructionStruct;
+	uint8_t instructionArray[sizeof(instructionStruct)];
 };
 
 union UID instructionData;
@@ -75,8 +76,8 @@ void parseInstruction(void);
 
 void setLed(uint8_t uLed, uint8_t uOn);
 
-void readBumperL();
-void readBumperR();
+uint8_t readBumperL();
+uint8_t readBumperR();
 void readCompass();
 void readSensors();
 

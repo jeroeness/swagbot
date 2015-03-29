@@ -1,8 +1,9 @@
+// motor.h
+
 #ifndef MOTOR_H
 #define MOTOR_H
 
-#include <avr/io.h>
-#include <stdio.h>
+#include "../globalincsanddefs.h"
 
 /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
 /*---------------- MOTOR functions ----------------*/

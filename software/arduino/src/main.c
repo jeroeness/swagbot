@@ -1,51 +1,53 @@
-#ifndef F_CPU
-#define F_CPU 16000000
-#endif
+/*
+ * arduino.c
+ *
+ * Created: 14-3-2015 12:13:05
+ *  Author: -
+ */
 
-#include <avr/pgmspace.h>
-#include <avr/io.h>
-#include <avr/interrupt.h>
-#include <util/delay.h>
-#include <stdlib.h>
+#include "globalincsanddefs.h"
+#include "avr/interrupt.h"
+union UID instructionData;
+union USD sensorData;
 
-#include "lib/serial.h"
-#include "modules/communication.h"
-#include "modules/mode_manager.h"
-#include "modules/motor.h"
-#include "modules/automatic_mode.h"
-#include "modules/i2c_lib.h"
-#include "lib/sensor.h"
-
-struct ID instructionData;
-struct SD sensorData;
-
-int main(void){
+int main(void)
+{
+	uint16_t counter = 0;
+	
 	cli();
-
+	
 	PORTD = 3;
 
 	i2c_init(0xA8);
 	initAutomaticMode();
+
 	initCommunication();
+	initSensors();
+	initLedGrid();
 
 	sei();
 
+	//diagnostics();
+	
 	setSteeringMode(manual);
 	resetAutomaticMode(); //TODO init automatic mode
-
-	moveMotors(20, 20);
-	i2c_write_cmd_wrap();
-
+	
+	moveMotors(0, 0);
+	
 	while(1){
-		//i2c_read_sensors(sizeof(sensorData));
- 		//updateAutomaticMode();
- 		sei();
-//		serialPrintSynchronous("out of auto update");
-		//moveMotors(50,50);
+		if(counter++ >= 0x8FFF){ //im there
+			counter = 0;
+			updateSensors(); //could not create timer for this one.
+		}
 		updateModeManager();
 		updateCommunication();
-//		serialPrintSynchronous("out of commu update");
 	}
 
 	return 1998;
 }
+
+
+
+
+
+

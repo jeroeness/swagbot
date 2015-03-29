@@ -1,17 +1,9 @@
+// motor.c
 
-#include <stdio.h>
-//#include <util/delay.h>
-#include <avr/io.h>
-#include <avr/interrupt.h>
+#include "../globalincsanddefs.h"
 
-#include "motor.h"
-#include "sensor.h"
-#include "i2c_lib.h"
-
-
-extern struct SD sensorData;
-extern struct ID instructionData;
-
+extern union UID instructionData;
+extern union USD sensorData;
 
 // negative deflection = left; positive deflection = right
 void drive(int8_t speed, int8_t deflection) {
@@ -49,9 +41,9 @@ int moveMotors(int8_t speedL, int8_t speedR){
 	    return 0;
 	if(speedL < -100 || speedL > 100)
 	    return 0;
-
-	instructionData.motorLeft = speedL;
-	instructionData.motorRight = speedR;
+	
+	instructionData.instructionstruct.motorLeft = speedL;
+	instructionData.instructionstruct.motorRight = speedR;
 	
 	i2c_write_cmd_wrap();
 

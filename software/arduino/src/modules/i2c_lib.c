@@ -1,19 +1,3 @@
-#ifndef F_CPU
-#define F_CPU 16000000
-#endif
-
-#include <stdio.h>
-#include <stdlib.h>
-#include <avr/io.h>
-#include <avr/interrupt.h>
-#include <util/delay.h>
-#include "automatic_mode.h"
-#include "motor.h"
-#include "sensor.h"
-#include "mode_manager.h"
-#include "i2c_lib.h"
-#include "serial.h"
-
 /*
  * i2c_lib.c
  *
@@ -25,19 +9,20 @@
 //todo
 // startindex+rwamount fixen
 
+#include "../globalincsanddefs.h"
+
 /* I2C clock in Hz */
 #ifndef I2C_CLOCK
 #define I2C_CLOCK 100000UL
 #endif
 
-extern struct ID instructionData;
-extern struct SD sensorData;
-
-union UID instructionDataLocal;
-union USD sensorDataLocal;
+extern union UID instructionData;
+extern union USD sensorData;
 
 uint8_t volatile destaddress, startindex, rwamount;
 uint8_t volatile i2cbusy;
+uint8_t volatile OverFlowToggle = 0; //for timer overflow
+
 
 void i2c_init(uint8_t masteraddress) {
 	TWSR = 0;	// prescaler always 0 (AVR315)
@@ -45,7 +30,23 @@ void i2c_init(uint8_t masteraddress) {
 	TWAR = (masteraddress & 0xFE) | 1; // i2c master address (atmega 2560) + general call enable
 	TWCR = (1 << TWINT) | (1 << TWEA) | (1 << TWEN) | (1 << TWIE);
 	i2cbusy = 0;
+	
+	
+	TCCR1B |= (1 << CS12) | (0<<CS10); //timer1: prescaler of 256
+	TCNT1 = 30000; //timer1: init counter
+	TIMSK1 |= (1 << TOIE1); //timer0: enable overflow interrupt
 }
+
+ISR(TIMER1_OVF_vect){
+	OverFlowToggle ^= 1;
+	if(OverFlowToggle == 1){
+		i2c_write_cmd_wrap();
+	}else{
+		i2c_read_sensors_wrap();
+	}
+	TCNT1 = 30000;
+}
+
 
 void i2c_waitforidle(void) {
 	uint8_t register timeoutcounter = 100;
@@ -61,17 +62,14 @@ void i2c_waitforidle(void) {
 
 
 void i2c_write_cmd_wrap(void) {
-
-	instructionDataLocal.i.motorLeft = instructionData.motorLeft;
-	instructionDataLocal.i.motorRight = instructionData.motorRight;
-	instructionDataLocal.i.ledStatus = instructionData.ledStatus;
-
-
-	i2c_write_cmd(sizeof(instructionData));
+	i2c_write_cmd(sizeof(instructionData.instructionstruct));
 	return;
 }
 
-
+void i2c_read_sensors_wrap(void) {
+	i2c_read_sensors(sizeof(sensorData)-3);
+	return;
+}
 
 void i2c_write_cmd(uint8_t amount) {
 	i2c_waitforidle();
@@ -114,13 +112,7 @@ void i2c_SR_done(void)
 
 void i2c_MR_done(void)
 {
-	sensorData.bumperRight = sensorDataLocal.s.bumperRight;
-	sensorData.bumperLeft = sensorDataLocal.s.bumperLeft;
-	sensorData.compassDegrees = sensorDataLocal.s.compassDegrees;
-	sensorData.motorLeft = sensorDataLocal.s.motorLeft;
-	sensorData.motorRight = sensorDataLocal.s.motorRight;
-	sensorData.ultrasonic = sensorDataLocal.s.ultrasonic;
-
+	
 	return;
 }
 
@@ -149,7 +141,7 @@ ISR(TWI_vect)
 				firstwrite = 0;
 			}
 			else
-				instructionDataLocal.instructionArray[rwaddress++] = TWDR;
+				instructionData.instructionArray[rwaddress++] = TWDR;
 			i2c_continue();
 			break;
 
@@ -162,7 +154,7 @@ ISR(TWI_vect)
 		case 0xB0:	// arbitration lost (SLA+W/R). own SLA+R received, Ack was send	MT->ST
 		case 0xB8:	// TWDR was send, Ack received					ST
 			i2cbusy = 1;
-			TWDR = sensorDataLocal.sensorArray[rwaddress++];
+			TWDR = sensorData.sensorArray[rwaddress++];
 			i2c_continue();
 			break;
 		case 0xC0:	// TWDR was send, nAck received					ST
@@ -199,7 +191,7 @@ ISR(TWI_vect)
 			}
 			else
 			{
-				TWDR = instructionDataLocal.instructionArray[rwaddress++];
+				TWDR = instructionData.instructionArray[rwaddress++];
 				i2c_continue();
 			}
 			break;
@@ -208,7 +200,7 @@ ISR(TWI_vect)
 			i2c_continue();
 			break;
 		case 0x50:	// TWDR received, Ack was send back				MR
-			sensorDataLocal.sensorArray[rwaddress++] = TWDR;
+			sensorData.sensorArray[rwaddress++] = TWDR;
 			if (rwaddress >= rwamount)
 			{
 				TWCR = (1 << TWINT) | (1 << TWEN) | (1 << TWIE);// next receive will not Ack'ed
@@ -217,7 +209,7 @@ ISR(TWI_vect)
 				i2c_continue();
 			break;
 		case 0x58:	// TWDR received, nAck was send back				MR
-			sensorDataLocal.sensorArray[rwaddress++] = TWDR;
+			sensorData.sensorArray[rwaddress++] = TWDR;
 			i2c_stop();
 			i2c_MR_done();
 			break;
@@ -230,8 +222,4 @@ ISR(TWI_vect)
 			i2c_stop();
 			break;
 	}
-
-	//sei();
-	//serialPrintByteSynchronous(TWSR & 0xF8);
-
 }

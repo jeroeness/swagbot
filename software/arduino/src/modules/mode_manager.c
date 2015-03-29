@@ -1,14 +1,14 @@
-#include "mode_manager.h"
-#include "manual_mode.h"
-#include "automatic_mode.h"
+// mode_manager.c
 
-SteeringMode steeringMode;
+#include "../globalincsanddefs.h"
+
+enum SteeringMode steeringMode;
 
 void initModeManager() {
 	steeringMode = manual;
 }
 
-void setSteeringMode(SteeringMode s) {
+void setSteeringMode(enum SteeringMode s) {
 	if (steeringMode != s) {
 		if (steeringMode == manual) {
 			stopManualMode();
@@ -18,6 +18,14 @@ void setSteeringMode(SteeringMode s) {
 			beginManualMode();
 		}
 	}
+
+	/*
+	if(steeringMode == manual){
+		sensorData.sensorStruct.steeringMode = 1;
+	}else if(steeringMode == automatic){
+		sensorData.sensorStruct.steeringMode = 2;
+	}*/
+
 	steeringMode = s;
 }
 
@@ -26,7 +34,7 @@ void inputKeyDown (uint8_t key) {
 	if (steeringMode == automatic) {
         //handleKeyDownAutomaticMode(key);
 	} else {
-		//handleKeyDownManualMode(key);
+		handleKeyDownManualMode(key);
 	}
 }
 
@@ -74,15 +82,33 @@ void handleKeyPressManualMode (uint8_t key) {
 			inputRight();
 			break;
 	}
+    alterCourse();
 }
 
 void handleKeyReleaseManualMode (uint8_t key) {
 	switch (key) {
 		case 'w':
+			stopForward();
+			break;
 		case 'a':
+			stopLeft();
+			break;
 		case 's':
+			stopBackward();
+			break;
 		case 'd':
-			stopManualMode();
+			stopright();
 			break;
 	}
+    alterCourse();
+}
+
+void handleKeyDownManualMode (uint8_t key) {
+
+	switch (key) {
+		case 'w':
+			manualModecheckCollision();
+			break;
+	}
+
 }

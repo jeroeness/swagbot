@@ -18,12 +18,12 @@ void initSensors(){
 void parseInstruction(void){
 	uint8_t i = 0;
 	
-	for(i = 0; i < 7; i++)
+	for(i = 0; i < 6; i++)
 	{
-		setLed(i+1, (instructionData.instructionstruct.ledStatus & (1<<i)) != 0);
+		setLed(i+1, (instructionData.instructionStruct.ledStatus & (1<<i)) != 0);
 	}
 
-	moveMotors(instructionData.instructionstruct.motorLeft, instructionData.instructionstruct.motorRight);
+	moveMotors(instructionData.instructionStruct.motorLeft, instructionData.instructionStruct.motorRight);
 }
 
 
@@ -95,45 +95,50 @@ void setLed(uint8_t uLed, uint8_t uOn){
 }
 
 
-void readBumperL(){
+uint8_t readBumperL(){
 	int DDRCurrent = DDRB;
 	int PORTCurrent = PORTB;
-
+	uint8_t returnw = 0;
+	
 	DDRB &= ~(1<<PB0);
 	PORTB &= ~(1<<PB0);
 	
-	_delay_us(3);
+	_delay_us(10);
 
 	if(PINB & (1<<PB0)){
+		if(sensorData.sensorStruct.bumperLeft == 0) returnw = 1;
 		sensorData.sensorStruct.bumperLeft = 1;
 	}else{
+		if(sensorData.sensorStruct.bumperLeft == 0) returnw = 1;
 		sensorData.sensorStruct.bumperLeft = 0;
 	}
 	
-	
 	DDRB = DDRCurrent;
 	PORTB = PORTCurrent;
-
+	return returnw;
 }
 
-void readBumperR(){
+uint8_t readBumperR(){
 	int DDRCurrent = DDRC;
 	int PORTCurrent = PORTC;
-
+	uint8_t returnw = 0;
+	
 	DDRC &= ~(1<<PC6);
 	PORTC &= ~(1<<PC6);
 	
-	_delay_us(3);
+	_delay_us(10);
 
-	if(PINB & (1<<PC6)){
+	if(PINC & (1<<PC6)){
+		if(sensorData.sensorStruct.bumperRight == 0) returnw = 1;
 		sensorData.sensorStruct.bumperRight = 1;
 	}else{
+		if(sensorData.sensorStruct.bumperRight == 0) returnw = 1;
 		sensorData.sensorStruct.bumperRight = 0;
 	}
 	
 	DDRC = DDRCurrent;
 	PORTC = PORTCurrent;
-
+	return returnw;
 }
 
 
@@ -152,10 +157,30 @@ void readCompass(){
 	sensorData.sensorStruct.compassDegrees = 360 / 255 * compassDegree;
 }
 
+void readBattery(){
+	uint16_t batteryValue;
+
+	ADMUX |= (1 << REFS0);
+	ADCSRA |= (1 << ADPS2);
+	ADCSRA |= (1 << ADEN);
+	
+	ADMUX |= (1 << MUX2 | 1 << MUX1 | 1 << MUX0);
+	ADCSRA |= (1 << ADSC| 1<<ADIF);
+
+	while(~ADCSRA & (1<<ADIF));
+	batteryValue = ADC;
+	
+	sensorData.sensorStruct.batteryPercentage = ((99.0 / 150.0) * (batteryValue-600)) + 1.0;
+}
+
 
 void readSensors(){
 	readBumperR();
 	readBumperL();
+	readBattery();
 	
 	//readCompass();
 }
+
+
+

@@ -1,22 +1,13 @@
-#ifndef F_CPU
-#define F_CPU 16000000
-#endif
+// automatic_mode.c
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <avr/io.h>
-#include <avr/interrupt.h>
-#include "automatic_mode.h"
-#include "motor.h"
-#include "sensor.h"
-#include "mode_manager.h"
-#include "../lib/serial.h"
+#include "../globalincsanddefs.h"
 
 #define TURN_MARGIN 5
 #define MOVE_MARGIN 5
 #define TIME_MARGIN 5
 
-extern struct SD sensorData;
+//extern union UID instructionData;
+extern union USD sensorData;
 
 volatile uint16_t targetDegrees;
 volatile uint16_t targetDistance;
@@ -35,7 +26,7 @@ volatile ActionList * actionList;
 
 void initAutomaticMode() {
 	resetClock();
-	initTimer();
+	initTimer0();
 
 	setDefaultSpeed(100);
 
@@ -102,9 +93,9 @@ void addToActionList(int16_t action, int16_t argument, int16_t tempSpeed) {
 	serialPrintByte(newAction->action);
 }
 
-void initTimer() {
-	TIMSK0=(1<<TOIE0);
-	TCCR0B = (1<<CS02) | (1<<CS00); // prescaler 1024; fcpu 16000000 = 61 overflows per second
+void initTimer0() {
+	TIMSK0 = (1 << TOIE0);
+	TCCR0B = (1 << CS02) | (1 << CS00); // prescaler 1024; fcpu 16000000 = 61 overflows per second
 }
 
 ISR(TIMER0_OVF_vect)
@@ -120,10 +111,9 @@ ISR(TIMER0_OVF_vect)
 }
 
 void checkCrash() {
-	if (/*sensorData.ultrasonic < 10 ||*/ sensorData.bumperLeft || sensorData.bumperRight) {
+	if (/*sensorData.ultrasonic < 10 ||*/ sensorData.sensorStruct.bumperLeft || sensorData.sensorStruct.bumperRight) {
 		stop();
-		SteeringMode s = manual;
-		setSteeringMode(s);
+		setSteeringMode(manual);
 		resetAutomaticMode();
 	}
 }
@@ -169,13 +159,13 @@ void executeNextAction() {
 			break;
 		case ACTION_SET_SPEED:
 			setDefaultSpeed(next.argument);
- 			currentAction = ACTION_IDLE;
+			currentAction = ACTION_IDLE;
 			break;
 	}
 }
 
 void checkTurn() {
-	if (checkFuzzy(targetDegrees, sensorData.compassDegrees, TURN_MARGIN)) {
+	if (checkFuzzy(targetDegrees, sensorData.sensorStruct.compassDegrees, TURN_MARGIN)) {
 		stop();
 		currentAction = ACTION_IDLE;
 	} else {
@@ -184,11 +174,11 @@ void checkTurn() {
 }
 
 void checkMove() {
-	if (checkFuzzy(targetDistance, sensorData.ultrasonic, MOVE_MARGIN)) {
+	if (checkFuzzy(targetDistance, sensorData.sensorStruct.ultrasonic, MOVE_MARGIN)) {
 		stop();
 		currentAction = ACTION_IDLE;
 	} else {
-		if (targetDistance < sensorData.ultrasonic) {
+		if (targetDistance < sensorData.sensorStruct.ultrasonic) {
 			drive(speed, 0);
 		} else {
 			drive(-1 * speed, 0);
@@ -201,7 +191,7 @@ int checkFuzzy(int16_t value1, int16_t value2, int16_t fuzzyness) {
 }
 
 void turnByDegrees(int16_t degrees) {
-	targetDegrees = sensorData.compassDegrees + degrees;
+	targetDegrees = sensorData.sensorStruct.compassDegrees + degrees;
 	currentAction = ACTION_TURN;
 }
 
@@ -254,6 +244,16 @@ inline void resetSpeed() {
 
 inline void setDefaultSpeed(int8_t s) {
 	defaultSpeed = s;
+}
+
+void moveDistance(int16_t distance) {
+	targetDistance = sensorData.sensorStruct.ultrasonic - distance;
+	currentAction = ACTION_MOVE;
+}
+
+void moveToDistance(int16_t distance) {
+	targetDistance = distance;
+	currentAction = ACTION_MOVE;
 }
 
 void beginAutomaticMode(){

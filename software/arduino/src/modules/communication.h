@@ -1,7 +1,9 @@
+// communication.h
+
 #ifndef COMMUNICATION_H
 #define COMMUNICATION_H
 
-#include <avr/pgmspace.h>
+#include "../globalincsanddefs.h"
 
 struct TP {
 	// Preamble
@@ -17,18 +19,17 @@ struct TP {
 						// sum = 30
 } ;
 
-extern struct TP TransmissionPacket;
+//extern struct TP TransmissionPacket;
 
 typedef struct {
 	int i;
 } InstructionPacket;
 
 
-union test {
-	TP s;
-	uint8_t sendData[sizeof(TransmissionPacket)];
-
-};
+//union test {
+//	TP s;
+//	uint8_t sendData[sizeof(TransmissionPacket)];
+//};
 
 //union test blabla;
 //blabla.s = TransmissionPacket;
@@ -38,9 +39,9 @@ union test {
 void initCommunication();
 void updateCommunication ();
 
-inline void insertInString(int8_t *, int8_t, int8_t, int8_t, int8_t);
-struct TransmissionPacket generateTransmissionPacket ();
-bool transmitData(struct TransmissionPacket packet);
+void insertInString(int8_t *, int8_t, int8_t, int8_t, int8_t);
+//struct TransmissionPacket generateTransmissionPacket ();
+//bool transmitData(struct TransmissionPacket packet);
 InstructionPacket receiveData ();
 
 bool openConnection();
@@ -49,6 +50,8 @@ void closeConnection();
 void printVerbose();
 
 void readInputs ();
+int8_t keyIndex (char key);
+char charIndex (int8_t key);
 
 
 #endif
