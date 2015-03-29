@@ -24,12 +24,14 @@
 void initLedGrid(void);
 void clearDisplayData(void);
 
-void setEmotion(int16_t);
-void setSubEmotion(int16_t);
+void setEmotion(uint16_t);
+void setSubEmotion(uint16_t);
 void setScrollText(const char * text);
+void setNextSubEmotion(void);
 
 void updateScrollText(void);
 void updateEmotion(void);
 void updateLedGrid(void);
+
 
 #endif
