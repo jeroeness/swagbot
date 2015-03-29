@@ -17,41 +17,34 @@ extern uint8_t currentSubFace;
 volatile uint8_t OverFlowToggle = 0; //for timer overflow
 
 void initTimersMain(){
-	//timer0: set prescaler of 1024
+	//timer3: set prescaler of 1024
 	TCCR3B |= (1 << CS31) | (0<<CS30);
-	
-	//timer0: init counter
+	//timer3: init counter
 	TCNT3 = 63000;
-	
-	//timer0: enable overflow interrupt
+	//timer3: enable overflow interrupt
 	TIMSK3 |= (1 << TOIE3);
 	
 	
 	/*
 	TCCR1B |= (1 << CS12) | (0<<CS10);
-	
 	//timer0: init counter
 	TCNT1 = 30000;
-	
 	//timer0: enable overflow interrupt
 	TIMSK1 |= (1 << TOIE1);*/
 	
-	/* timer4 not using because of updatesensors()
+	
+	//timer 4: prescaler
 	TCCR4B |= (1 << CS42) | (0<<CS40);
-	
-	//timer4: init counter differently than others to prevent simontaineously execution
-	TCNT4 = 0;
-	
-	//timer0: enable overflow interrupt
-	TIMSK4 |= (1 << TOIE4);*/
+	//timer4: init counter differently than others to prevent simultaneously execution
+	TCNT4 = 58000;
+	//timer4: enable overflow interrupt
+	TIMSK4 |= (1 << TOIE4);
 }
 
 
 int main(void)
 {
-	uint16_t counter1 = 0;
-	//uint16_t counter2 = 0;
-	//uint16_t counter3 = 0;
+	uint16_t counter = 0;
 	
 	cli();
 	
@@ -66,7 +59,6 @@ int main(void)
 	initTimersMain();
 	
 	sei();
-	
 
 	//diagnostics();
 	
@@ -78,35 +70,16 @@ int main(void)
 	
 	currentFace = 5;
 	
+	setScrollText("/rSwag/gBot/b420/gBlazit   /r[JST]/bJucko/g13");
+	
 	while(1)
 	{
-		/*
-		if(counter1++ >= 0x2FFF){ //im there
-			counter1 = 0;
-			i2c_read_sensors_wrap();
-			
-		}else if(counter1 == 0x17FF){ //halfway there
-			i2c_write_cmd_wrap();
-		}
-		*/
-		
-		if(counter1++ >= 0x8FFF){ //im there
-			counter1 = 0;
+
+		if(counter++ >= 0x8FFF){ //im there
+			counter = 0;
 			updateSensors(); //could not create timer for this one.
-			//it blocks the smoothness for the display
-			currentSubFace++;
-			if(currentSubFace > 99){
-				currentSubFace = 0;
-			}
-			//currentFace = (currentFace == 3 ? 4 : 3);
 		}
-		
-		/*
-		if(counter3++ >= 0x2FFF){ //im there
-			counter3 = 0;
-			updateSensors(); //could not create timer for this one.
-			//it blocks the smoothness for the display
-		}*/
+
 		
 		updateModeManager();
 		updateCommunication();
@@ -120,34 +93,18 @@ int main(void)
 
 ISR(TIMER3_OVF_vect)
 {
-
 	uint16_t i = 0;
 	i = updateLedGrid();
 	TCNT3 = 65000;
-	
-	/*if (i > 8) i = 8;
-	
-	i = 62000 - (i * 500);
-	TCNT3 = i;
-	*/
-	/*
-	if( > 5){
-		TCNT3 = 55000;
-	if(updateLedGrid() > 5){
-		TCNT3 = 55000;
-	}else{
-		TCNT3 = 63000;
-		
-	}*/
-	
+	//TCNT3 = 40000;
 }
 
-/*
+
 ISR(TIMER4_OVF_vect)
-{
-	updateSensors();
-	TCNT4 = 21000;
-}*/
+{	
+	updateScrollText();
+	TCNT4 = 58000;
+}
 
 
 

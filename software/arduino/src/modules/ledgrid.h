@@ -25,5 +25,7 @@ uint8_t pushArraysToGrid(uint8_t, uint8_t);
 void setEmotion(uint8_t);
 void initLedGrid();
 void clearDisplayData();
+void setScrollText(const char * text);
+void updateScrollText();
 
 #endif
