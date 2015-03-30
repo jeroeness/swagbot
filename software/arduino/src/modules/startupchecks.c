@@ -1,13 +1,13 @@
 //startupchecks
 
 #include "../globalincsanddefs.h"
-
+//#include "i2c_lib.h"
 extern union USD sensorData;
 
 void diagnostics(){
 	int step = 0;
 	while(step < 4){
-		i2c_read_sensors(sizeof(sensorData.sensorStruct));
+		i2c_read_sensors_wrap();
 		
 		//compass
 		if(step==0 && sensorData.sensorStruct.compassDegrees){
