@@ -1,4 +1,4 @@
-#include "automatic_mode.h"
+#include "../globalincsanddefs.h"
 
 extern volatile uint8_t currentAction;
 
@@ -9,60 +9,56 @@ extern volatile uint16_t targetMillis;
 
 extern volatile int8_t speed;
 
-extern struct SD sensorData; 
+extern union USD sensorData; 
 
 void turnByDegrees(Action * action) {
 	action->origin = -1 * action->target;
 
-	setTargetDegrees(((int16_t) sensorData.compassDegrees + action->target));
+	setTargetDegrees(((int16_t) sensorData.sensorStruct.compassDegrees + action->target));
 
 	currentAction = ACTION_TURN;
-	printf("%d\n", action->target);
 }
 
+
 void turnToDegrees(Action * action) {
-	action->origin = sensorData.compassDegrees;
+	action->origin = sensorData.sensorStruct.compassDegrees;
 
 	setTargetDegrees(action->target);
 
 	// TODO check which way to turn
 
 	currentAction = ACTION_TURN;
-	printf("%d\n", action->target);
 }
 
 void turnFor(Action * action) {
 	currentAction = ACTION_WAIT;
-	// resetClock();
-	// targetMillis = milliseconds;
-	// turn(speed);
-	printf("%d\n", action->target);
+	resetClock();
+	targetMillis = action->target;
+	turn(speed);
 }
 
 void moveDistance(Action * action) {
-	targetDistance = sensorData.ultrasonic - action->target;
+	targetDistance = sensorData.sensorStruct.ultrasonic - action->target;
+	action->origin = sensorData.sensorStruct.ultrasonic;
 	currentAction = ACTION_MOVE;
-	printf("%d\n", action->target);
 }
 
 void moveToDistance(Action * action) {
 	targetDistance = action->target;
+	action->origin = sensorData.sensorStruct.ultrasonic;
 	currentAction = ACTION_MOVE;
-	printf("%d\n", action->target);
 }
 
 void moveFor(Action * action) {
 	currentAction = ACTION_WAIT;
-	// resetClock();
+	resetClock();
 	targetMillis = action->target;
-	// drive(speed, 0);
-	printf("%d\n", action->target);
+	drive(speed, 0);
 }
 
 void waitFor(Action * action) {
-	// resetClock();
-	// stop();
+	resetClock();
+	stop();
 	currentAction = ACTION_WAIT;
 	targetMillis = action->target;
-	printf("%d\n", action->target);
 }

@@ -28,7 +28,7 @@
 #include "lib/serial.h"
 #include "lib/swagbotlib.h"
 
-#include "modules/automatic_mode.h"
+#include "modules/new_automatic_mode/automatic_mode.h"
 #include "modules/communication.h"
 #include "modules/i2c_lib.h"
 #include "modules/manual_mode.h"

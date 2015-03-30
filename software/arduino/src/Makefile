@@ -14,10 +14,10 @@ AVRDUDE = avrdude
 CFLAGS= -mmcu=$(MCU) -Os  -Wall -x c++ -DF_CPU16000000L -I ./modules -I ./lib
 
 ## All the source files
-SRC = $(MAIN_SOURCE) $(wildcard modules/*.c) $(wildcard lib/*.c)
+SRC = $(MAIN_SOURCE) $(wildcard modules/*.c) $(wildcard modules/new_automatic_mode/*.c) $(wildcard lib/*.c)
 
 ## All header files
-HEADERS = $(wildcard modules/*.h) $(wildcard lib/*.h)
+HEADERS = $(wildcard modules/*.h) $(wildcard modules/new_automatic_mode/*.h) $(wildcard lib/*.h)
 
 OBJS = $(SRC:.c=.o)
 

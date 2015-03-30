@@ -30,13 +30,13 @@ void diagnostics(){
 		//sonar
 		if(step==3 && sensorData.sensorStruct.ultrasonic >= 15){
 			step = 4;
-			turnByDegrees(360);
+		//	turnByDegrees(360);
 			//motor rondje draaien
 		}
 	}
 }
 
 void checkPassed(){
-	turnByDegrees(45);
-	turnByDegrees(-45);
+	//turnByDegrees(45);
+	//turnByDegrees(-45);
 }

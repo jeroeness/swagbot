@@ -8,10 +8,11 @@
 /*----------- Automatic Mode functions ------------*/
 /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
 
-#define ACTION_IDLE 		0
-#define ACTION_TURN 		1
-#define ACTION_MOVE 		2
-#define ACTION_WAIT 		3
+#define ACTION_IDLE 			0
+#define ACTION_TURN 			1
+#define ACTION_MOVE 			2
+#define ACTION_WAIT 			3
+#define ACTION_FINDING_ANGLE	4
 
 #define F_TURN_BY_DEGREES	0
 #define F_TURN_TO_DEGREES	1
@@ -21,6 +22,9 @@
 #define F_MOVE_FOR			5
 #define F_WAIT				6
 
+#define TURN_MARGIN 5
+#define MOVE_MARGIN 5
+#define TIME_MARGIN 5
 
 typedef struct {
 	uint8_t functionIndex;
@@ -39,31 +43,36 @@ typedef struct {
 
 
 void initAutomaticMode();
-void initFunctionList();
 void updateAutomaticMode();
-void checkCrash();
-void executeNextAction();
-void checkTurn();
-void checkMove();
-int checkFuzzy(int16_t value1, int16_t value2, int16_t fuzzyness);
-void initTimer();
-void setSpeed(int8_t s);
-
-void beginAutomaticMode();
-void stopAutomaticMode();
-void resetAutomaticMode();
-void resetClock();
 
 void initActionList(uint8_t size);
+void initFunctionList();
+void initTimer(); // TODO add this
 void fillEmptyActionList();
 void addToActionList(uint8_t action, int16_t argument, int16_t tempSpeed);
-void doubleActionList();
-void destroyActionList();
-void testAction(uint8_t action, uint16_t arg1, uint16_t arg2);
-void reverseActionTest();
-Action getReverse(Action action);
-void printAction(Action action);
+void addReverseAction(Action action);
 
+void doubleActionList();
+void destroyActionList(ActionList * oldActionList);
+
+void checkTurn();
+void checkMove(); 
+uint8_t checkCrash(); // TODO add this
+uint8_t checkFuzzy(int16_t value1, int16_t value2, int16_t fuzzyness); // TODO add this
+void executeNextAction();
+void setSpeed(int8_t s);
+
+Action getReverse(Action action);
+
+void setTargetDegrees(int16_t newTarget);
+
+
+void beginAutomaticMode(); // TODO add this
+void stopAutomaticMode(); // TODO add this
+void resetAutomaticMode(); // TODO add this
+void resetClock(); // TODO add this
+
+volatile ActionList * actionList;
 
 volatile uint8_t currentAction;
 
@@ -78,20 +87,6 @@ volatile uint16_t overflowCount;
 volatile int8_t speed;
 volatile int8_t defaultSpeed;
 
-volatile uint8_t findingAngleToPoint;
-
-//////////////////////////////////////////////////////
-struct SD{
-	uint8_t bumperRight:1;
-	uint8_t bumperLeft:1;
-	uint16_t compassDegrees;
-	int8_t motorLeft;
-	int8_t motorRight;
-	uint16_t ultrasonic;
-};
-
-struct SD sensorData;
-//////////////////////////////////////////////////////
 
 #include "move_functions.h"
 #include "route_finding_functions.h"
