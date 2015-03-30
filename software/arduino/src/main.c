@@ -6,7 +6,6 @@
  */
 
 #include "globalincsanddefs.h"
-#include "avr/interrupt.h"
 union UID instructionData;
 union USD sensorData;
 

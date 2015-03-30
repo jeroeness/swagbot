@@ -8,6 +8,7 @@ void diagnostics(){
 	int step = 0;
 	while(step < 4){
 		i2c_read_sensors_wrap();
+<<<<<<< HEAD
 
 		//compass checks
 		if(step==0 && sensorData.sensorStruct.compassDegrees){	
@@ -16,6 +17,13 @@ void diagnostics(){
 			specialDelay();		//wait a few seconds
 			clearDisplayData();	//clear the ledgrid
 			setScrollText("/bLeft Bumper Check");
+=======
+		
+		//compass
+		if(step==0 && sensorData.sensorStruct.compassDegrees){
+			step = 1;
+			checkPassed();
+>>>>>>> 0d16d95bd7362312b1c35fb3b370aa5b7636eb91
 		}
 		
 		//bumper L
@@ -42,9 +50,9 @@ void diagnostics(){
 		if(step==3 && sensorData.sensorStruct.ultrasonic >= 15){
 			step = 4;		//next step		
 			checkPassed();		//write "check passed"
-//			turnByDegrees(120);	//check motors by turning
-	//		turnByDegrees(120);
-		//	turnByDegrees(120);
+			turnByDegrees(120);	//check motors by turning
+			turnByDegrees(120);
+			turnByDegrees(120);
 			specialDelay();		//wait a few seconds
 			clearDisplayData();	//clear ledgrid
 		}

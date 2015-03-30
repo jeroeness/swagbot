@@ -7,6 +7,5 @@
 
 void diagnostics();
 void checkPassed();
-void specialDelay();
 
 #endif // STARTUPCHECKS.H

@@ -43,7 +43,7 @@ void initLedGrid(void){
 	TCNT4 = 58000; //timer4: init counter differently than others to prevent simultaneously execution
 	TIMSK4 |= (1 << TOIE4); //timer4: enable overflow interrupt
 	
-	setEmotion(-1);
+	setEmotion(0);
 }
 
 ISR(TIMER3_OVF_vect){
@@ -67,12 +67,12 @@ void clearDisplayData(void){
 }
 
 
-void setEmotion(int16_t em){
+void setEmotion(uint16_t em){
 	currentFace = em;
 	updateEmotion();
 }
 
-void setSubEmotion(int16_t subem){
+void setSubEmotion(uint16_t subem){
 	currentSubFace = subem;
 	updateEmotion();
 }

@@ -77,7 +77,7 @@ void initActionList(uint8_t size) {
 }
 
 void destroyActionList() {
-	free(*actionList);
+	free((void*)actionList);
 }
 
 void addToActionList(int16_t action, int16_t argument, int16_t tempSpeed) {
@@ -111,7 +111,7 @@ ISR(TIMER0_OVF_vect)
 }
 
 void checkCrash() {
-	if (/*sensorData.ultrasonic < 10 ||*/ sensorData.sensorStruct.bumperLeft || sensorData.sensorStruct.bumperRight) {
+	if (/*sensorData.sensorStruct.ultrasonic < 10 ||*/ sensorData.sensorStruct.bumperLeft || sensorData.sensorStruct.bumperRight) {
 		stop();
 		setSteeringMode(manual);
 		resetAutomaticMode();
@@ -207,15 +207,7 @@ void turnFor(int16_t milliseconds) {
 	turn(speed);
 }
 
-void moveDistance(int16_t distance) {
-	targetDistance = sensorData.ultrasonic - distance;
-	currentAction = ACTION_MOVE;
-}
 
-void moveToDistance(int16_t distance) {
-	targetDistance = distance;
-	currentAction = ACTION_MOVE;
-}
 
 void moveFor(int16_t milliseconds) {
 	currentAction = ACTION_MOVE_FOR;
