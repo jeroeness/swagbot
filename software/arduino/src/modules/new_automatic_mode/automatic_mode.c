@@ -1,19 +1,22 @@
 #include "../globalincsanddefs.h"
 
-extern volatile ActionList * actionList;
+volatile ActionList * actionList;
+
+volatile uint8_t currentAction;
+
+volatile uint16_t targetDegrees;
+volatile uint16_t targetDistance;
+
+volatile uint16_t targetMillis;
+volatile uint16_t currentMillis;
+volatile uint16_t overflowCount;
+
+
+volatile int8_t speed;
+volatile int8_t defaultSpeed;
+
 void (*functionList[7])(Action *);
 
-extern volatile uint8_t currentAction;
-
-extern volatile uint16_t targetDegrees;
-extern volatile uint16_t targetDistance;
-
-extern volatile uint16_t targetMillis;
-extern volatile uint16_t currentMillis;
-extern volatile uint16_t overflowCount;
-
-extern volatile int8_t speed;
-extern volatile int8_t defaultSpeed;
 
 void initAutomaticMode() {
 	initFunctionList();
@@ -198,7 +201,7 @@ void setTargetDegrees(int16_t newTarget) {
 }
 
 
-inline void resetClock() {
+void resetClock() {
 	currentMillis = 0;
 	overflowCount = 0;
 }

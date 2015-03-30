@@ -19,16 +19,16 @@ extern union USD sensorData;
 volatile uint8_t previousDirection; // TODO implement the use of this. //think fixed
 
 
-extern volatile uint8_t routeFindingDepth;				
-extern volatile uint8_t findingAngleToPoint;
-extern volatile int16_t totalDeviation;
-extern volatile int16_t desiredProgression;
+volatile int16_t totalDeviation;
+volatile int16_t desiredProgression;
+volatile uint8_t routeFindingDepth;				
+volatile uint8_t findingAngleToPoint;
 
 volatile ActionList * backupActionList;
 
 void checkObstacle() {
 	if (sensorData.sensorStruct.ultrasonic > MIN_DISTANCE)
-		return 0;
+		return;
 
 	desiredProgression = targetMillis - currentMillis;
 
@@ -43,7 +43,7 @@ void checkObstacle() {
 }
 
 void findRoute(int16_t angleToPoint, int16_t turnedAngle, uint16_t distance) {
-	int16_t a, a1, a2, a3, s, s1, dv, dv1, p;
+	int16_t a, a1, a2, s, s1, dv, dv1, p; //, a3
 	uint8_t direction = (angleToPoint < 0) ? -1 : 1;
 
 	if (previousDirection == 0) {
@@ -126,7 +126,7 @@ void findAngleToPoint() {
 
 	uint16_t testingAngle = 90 ; // TODO fix this nu check hij zowel in lagere als hogere diepte de volledige 90 graden hoek.
 
-	uint8_t angleLimit = (angleToPoint >= testingAngle);
+	uint8_t angleLimit = (abs(angleToPoint) >= testingAngle);
 	
 	if ((previousDistance != 0 && sensorData.sensorStruct.ultrasonic - previousDistance > 10) || angleLimit) { // indicates end of finding the angle (either found or none-existent) //TODO gauge 10
 		if (checkingRight || routeFindingDepth > 0) { // done with both sides or it's only necessary to check one side

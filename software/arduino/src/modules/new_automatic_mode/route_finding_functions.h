@@ -12,10 +12,10 @@ void findAngleToPoint();
 void endRouteFinding();
 int16_t convertToTime(int16_t ultrasonic);
 
+extern volatile uint8_t routeFindingDepth;				
+extern volatile uint8_t findingAngleToPoint;
+extern volatile int16_t totalDeviation;
+extern volatile int16_t desiredProgression;
 
-volatile int16_t totalDeviation;
-volatile int16_t desiredProgression;
-volatile uint8_t routeFindingDepth;				
-volatile uint8_t findingAngleToPoint;
 
 #endif
