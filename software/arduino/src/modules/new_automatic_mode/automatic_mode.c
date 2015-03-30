@@ -15,6 +15,8 @@ volatile uint16_t overflowCount;
 volatile int8_t speed;
 volatile int8_t defaultSpeed;
 
+volatile ActionList newActionList;
+
 void (*functionList[7])(Action *);
 
 
@@ -54,7 +56,6 @@ void updateAutomaticMode() {
 }
 
 void initActionList(uint8_t size) {
-	ActionList newActionList;
 	actionList = &newActionList;
 
 	actionList->list = (Action*) malloc(size * sizeof(Action));

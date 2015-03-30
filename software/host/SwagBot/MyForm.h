@@ -832,10 +832,10 @@ namespace SwagBot {
 		}
 
 		System::Void MyForm_Load(System::Object^  sender, System::EventArgs^  e) {
-			MARGINS margins = { 0, 0, 0, 25 };
+			//MARGINS margins = { 0, 0, 0, 25 };
 
 
-			DwmExtendFrameIntoClientArea((HWND)this->Handle.ToInt32(), &margins);
+			//DwmExtendFrameIntoClientArea((HWND)this->Handle.ToInt32(), &margins);
 
 			loadCommports();
 			setPercentage(100);

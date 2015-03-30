@@ -31,6 +31,8 @@ int main(void)
 	setSteeringMode(manual);
 	resetAutomaticMode(); //TODO init automatic mode
 	
+	setEmotion(1);
+	
 	moveMotors(0, 0);
 	
 	while(1){
