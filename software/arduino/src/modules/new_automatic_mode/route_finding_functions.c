@@ -157,15 +157,13 @@ void findAngleToPoint() {
 }
 
 void endRouteFinding() {
-	free(actionList->list);
-	ActionList newActionList;
-	actionList = &newActionList;
+	clearActionList();
 
 	addToActionList(F_MOVE_FOR, desiredProgression, 0);
 
 	for(int i=0; i<actionList->usedSize; i++) {
-		Action action = actionList->list[i];
-		addToActionList(action.functionIndex, action.target, action.speed);
+		Action * action = &actionList->list[i];
+		addToActionList(action->functionIndex, action->target, action->speed);
 	}
 	
 	routeFindingDepth = 0; // TODO combine this shit man

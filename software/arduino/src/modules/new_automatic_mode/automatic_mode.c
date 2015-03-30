@@ -90,6 +90,16 @@ void fillEmptyActionList() {
 	}
 }
 
+void clearActionList() {
+	free(actionList->list);
+
+	actionList->list = (Action*) malloc(actionList->size * sizeof(Action));
+	actionList->nextAction = 0;
+	actionList->usedSize = 0;
+
+	fillEmptyActionList();
+}
+
 void addToActionList(uint8_t functionIndex, int16_t target, int16_t speed) {
 	if (actionList->usedSize >= actionList->size) {
 		doubleActionList();
