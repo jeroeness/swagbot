@@ -1008,7 +1008,7 @@ namespace SwagBot {
 
 					this->lblRes3->Text = "" + sensordata[3];
 					this->lblRes4->Text = "" + sensordata[4];
-					this->lblRes5->Text = "" + sensordata[5];
+					this->lblRes5->Text = "" + sensordata[6];
 					setPercentage(sensordata[6]);
 					compassDegrees = sensordata[7];
 					this->picCompass->Refresh();

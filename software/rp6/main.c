@@ -59,7 +59,7 @@ ISR(TIMER0_OVF_vect)
 	timer0OverflowCount++;
 	if(timer0OverflowCount == 1){
 		TCNT0 = 122; //count from 122 to 256(overflow) to create pulse of 50ms
-		}else{
+	}else{
 		timer0Overflow = 1;
 		timer0OverflowCount = 0;
 	}

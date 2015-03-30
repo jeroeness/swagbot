@@ -57,7 +57,7 @@ ISR(TIMER1_OVF_vect){
 			break;
 	}
 	
-	TCNT1 = 50000;
+	TCNT1 = 60000;
 }
 
 
@@ -72,12 +72,12 @@ void i2c_read_sensors_wrap(void) {
 
 
 void i2c_writeToRP6(void) {
-	i2c_write(0xAA, 0, 0, sizeof(instructionData.instructionstruct) - 1);
+	i2c_write(0xAA, 0, 0, sizeof(instructionData.instructionstruct));
 	return;
 }
 
 void i2c_readFromRP6(void) {
-	i2c_read(0xAA, 0, 0, sizeof(sensorData.sensorStruct) - 2);
+	i2c_read(0xAA, 0, 0, sizeof(sensorData.sensorStruct) - 3);
 	return;
 }
 
