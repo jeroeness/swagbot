@@ -6,6 +6,7 @@ extern union USD sensorData;
 
 void diagnostics(){
 	int step = 0;
+	uint16_t counter = 0;
 	while(step < 4){
 		i2c_read_sensors_wrap();
 
