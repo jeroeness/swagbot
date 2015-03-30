@@ -57,7 +57,7 @@ ISR(TIMER1_OVF_vect){
 			break;
 	}
 	
-	TCNT1 = 60000;
+	TCNT1 = 50000;
 }
 
 

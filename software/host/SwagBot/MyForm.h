@@ -2,6 +2,8 @@
 #include <windows.h>
 #using "System.Drawing.dll"
 #include <math.h>
+//#include <Dwmapi.h>
+
 
 namespace SwagBot {
 
@@ -14,6 +16,7 @@ namespace SwagBot {
 	using namespace System::IO::Ports;
 
 	using namespace System::Text;
+
 
 	/// <summary>
 	/// Summary for MyForm
@@ -755,6 +758,9 @@ namespace SwagBot {
 			this->PerformLayout();
 
 		}
+
+		
+
 #pragma endregion
 
 
@@ -780,6 +786,7 @@ namespace SwagBot {
 		int compassDegrees = 0;
 		double PI = 3.14159265359;
 
+		
 
 
 	private:
@@ -824,9 +831,12 @@ namespace SwagBot {
 
 		}
 
-
-
 		System::Void MyForm_Load(System::Object^  sender, System::EventArgs^  e) {
+			MARGINS margins = { 0, 0, 0, 25 };
+
+
+			DwmExtendFrameIntoClientArea((HWND)this->Handle.ToInt32(), &margins);
+
 			loadCommports();
 			setPercentage(100);
 			keyLabels[0] = lblW;
