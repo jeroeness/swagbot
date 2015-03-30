@@ -11,6 +11,7 @@
 
 #include "../globalincsanddefs.h"
 
+
 /* I2C clock in Hz */
 #ifndef I2C_CLOCK
 #define I2C_CLOCK 400000UL
@@ -28,25 +29,40 @@ void i2c_init(uint8_t masteraddress) {
 	TWBR = ((F_CPU / I2C_CLOCK) - 16) / 2;
 	TWAR = (masteraddress & 0xFE) | 1; // i2c master address + general call enable
 	TWCR = (1 << TWINT) | (1 << TWEA) | (1 << TWEN) | (1 << TWIE);
-
+	
+	
 	TCCR1B |= (1 << CS12) | (0<<CS10); //timer1: prescaler of 256
 	TCNT1 = 30000; //timer1: init counter
 	TIMSK1 |= (1 << TOIE1); //timer0: enable overflow interrupt
+	
 }
 
 ISR(TIMER1_OVF_vect){
-	OverFlowToggle ^= 1;
-	if(OverFlowToggle == 1){
-		i2c_write_cmd_wrap();
-	}else{
-		i2c_read_sensors_wrap();
+	
+	
+	switch(OverFlowToggle){
+		case 0:
+			i2c_write_cmd_wrap();
+			OverFlowToggle = 1;
+			break;
+			
+		case 1:
+			i2c_readFromCompass();
+			OverFlowToggle = 2;
+			break;
+			
+		case 2:
+			i2c_readFromRP6();
+			OverFlowToggle = 0;
+			break;
 	}
-	TCNT1 = 30000;
+	
+	TCNT1 = 50000;
 }
 
 
 void i2c_write_cmd_wrap(void) {
-	i2c_writeToRP6()
+	i2c_writeToRP6();
 }
 
 void i2c_read_sensors_wrap(void) {

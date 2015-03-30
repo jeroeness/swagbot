@@ -1,7 +1,7 @@
 //startupchecks
 
 #include "../globalincsanddefs.h"
-
+//#include "i2c_lib.h"
 extern union USD sensorData;
 
 void diagnostics(){

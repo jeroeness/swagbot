@@ -1,14 +1,14 @@
 //startupchecks
 
 #include "../globalincsanddefs.h"
-
+//#include "i2c_lib.h"
 extern union USD sensorData;
 
 void diagnostics(){
 	int step = 0;
-	uint16_t counter = 0;
 	while(step < 4){
 		i2c_read_sensors_wrap();
+<<<<<<< HEAD
 
 		//compass checks
 		if(step==0 && sensorData.sensorStruct.compassDegrees){	
@@ -17,6 +17,13 @@ void diagnostics(){
 			specialDelay();		//wait a few seconds
 			clearDisplayData();	//clear the ledgrid
 			setScrollText("/bLeft Bumper Check");
+=======
+		
+		//compass
+		if(step==0 && sensorData.sensorStruct.compassDegrees){
+			step = 1;
+			checkPassed();
+>>>>>>> 0d16d95bd7362312b1c35fb3b370aa5b7636eb91
 		}
 		
 		//bumper L
