@@ -1,0 +1,16 @@
+// F_TURN_BY_DEGREES	0
+// F_TURN_TO_DEGREES	1
+// F_TURN_FOR			2
+// F_MOVE_DISTANCE		3
+// F_MOVE_TO_DISTANCE	4
+// F_MOVE_FOR			5
+// F_WAIT				6
+
+0;30;0;
+5;100;0;
+5;50;50;
+
+
+//addToActionList(0, 30, 0);
+//addToActionList(5, 100, 0);
+//addToActionList(5, 50, 50);
