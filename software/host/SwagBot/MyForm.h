@@ -17,6 +17,9 @@ namespace SwagBot {
 
 	using namespace System::Text;
 
+	
+
+	
 
 	/// <summary>
 	/// Summary for MyForm
@@ -39,7 +42,7 @@ namespace SwagBot {
 				delete components;
 			}
 		}
-	private: System::Windows::Forms::Button^  cmdConnect;
+
 	private: System::Windows::Forms::ComboBox^  cmbComm;
 	private: System::IO::Ports::SerialPort^  serialPort1;
 	private: System::Windows::Forms::Button^  cmdDisconnect;
@@ -107,6 +110,16 @@ namespace SwagBot {
 	private: System::Windows::Forms::Label^  label7;
 	private: System::Windows::Forms::Timer^  tmrRefresh;
 
+	private: System::Windows::Forms::Button^  cmdConnect;
+	private: System::Windows::Forms::CheckBox^  chkReconnect;
+	private: System::Windows::Forms::Button^  cmdReset;
+	private: System::Windows::Forms::GroupBox^  frmArduino;
+	private: System::Windows::Forms::Button^  cmdUpload;
+	private: System::Windows::Forms::GroupBox^  frmComm;
+
+
+
+
 
 
 
@@ -139,7 +152,6 @@ namespace SwagBot {
 		/// </summary>
 		void InitializeComponent(void) {
 			this->components = (gcnew System::ComponentModel::Container());
-			this->cmdConnect = (gcnew System::Windows::Forms::Button());
 			this->cmbComm = (gcnew System::Windows::Forms::ComboBox());
 			this->serialPort1 = (gcnew System::IO::Ports::SerialPort(this->components));
 			this->cmdDisconnect = (gcnew System::Windows::Forms::Button());
@@ -187,6 +199,12 @@ namespace SwagBot {
 			this->lblConnection = (gcnew System::Windows::Forms::ToolStripStatusLabel());
 			this->tmrAlive = (gcnew System::Windows::Forms::Timer(this->components));
 			this->tmrRefresh = (gcnew System::Windows::Forms::Timer(this->components));
+			this->cmdConnect = (gcnew System::Windows::Forms::Button());
+			this->chkReconnect = (gcnew System::Windows::Forms::CheckBox());
+			this->cmdReset = (gcnew System::Windows::Forms::Button());
+			this->frmArduino = (gcnew System::Windows::Forms::GroupBox());
+			this->cmdUpload = (gcnew System::Windows::Forms::Button());
+			this->frmComm = (gcnew System::Windows::Forms::GroupBox());
 			this->frmSensor->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->picLed7))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->picLed6))->BeginInit();
@@ -203,24 +221,15 @@ namespace SwagBot {
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->picCompass))->BeginInit();
 			this->frmControls->SuspendLayout();
 			this->sStrip->SuspendLayout();
+			this->frmArduino->SuspendLayout();
+			this->frmComm->SuspendLayout();
 			this->SuspendLayout();
-			// 
-			// cmdConnect
-			// 
-			this->cmdConnect->Location = System::Drawing::Point(179, 11);
-			this->cmdConnect->Name = L"cmdConnect";
-			this->cmdConnect->Size = System::Drawing::Size(81, 23);
-			this->cmdConnect->TabIndex = 0;
-			this->cmdConnect->TabStop = false;
-			this->cmdConnect->Text = L"Connect";
-			this->cmdConnect->UseVisualStyleBackColor = true;
-			this->cmdConnect->Click += gcnew System::EventHandler(this, &MyForm::cmdConnect_Click);
 			// 
 			// cmbComm
 			// 
 			this->cmbComm->DropDownStyle = System::Windows::Forms::ComboBoxStyle::DropDownList;
 			this->cmbComm->FormattingEnabled = true;
-			this->cmbComm->Location = System::Drawing::Point(12, 12);
+			this->cmbComm->Location = System::Drawing::Point(6, 16);
 			this->cmbComm->Name = L"cmbComm";
 			this->cmbComm->Size = System::Drawing::Size(75, 21);
 			this->cmbComm->TabIndex = 1;
@@ -234,9 +243,9 @@ namespace SwagBot {
 			// cmdDisconnect
 			// 
 			this->cmdDisconnect->Enabled = false;
-			this->cmdDisconnect->Location = System::Drawing::Point(266, 11);
+			this->cmdDisconnect->Location = System::Drawing::Point(86, 42);
 			this->cmdDisconnect->Name = L"cmdDisconnect";
-			this->cmdDisconnect->Size = System::Drawing::Size(81, 23);
+			this->cmdDisconnect->Size = System::Drawing::Size(102, 23);
 			this->cmdDisconnect->TabIndex = 2;
 			this->cmdDisconnect->TabStop = false;
 			this->cmdDisconnect->Text = L"Disconnect";
@@ -277,7 +286,7 @@ namespace SwagBot {
 			this->frmSensor->Controls->Add(this->label1);
 			this->frmSensor->Controls->Add(this->lblRes0);
 			this->frmSensor->Controls->Add(this->lblSensor);
-			this->frmSensor->Location = System::Drawing::Point(12, 40);
+			this->frmSensor->Location = System::Drawing::Point(6, 77);
 			this->frmSensor->Name = L"frmSensor";
 			this->frmSensor->Size = System::Drawing::Size(333, 109);
 			this->frmSensor->TabIndex = 4;
@@ -532,7 +541,7 @@ namespace SwagBot {
 			// 
 			// picCompass
 			// 
-			this->picCompass->Location = System::Drawing::Point(185, 162);
+			this->picCompass->Location = System::Drawing::Point(179, 195);
 			this->picCompass->Name = L"picCompass";
 			this->picCompass->Size = System::Drawing::Size(160, 160);
 			this->picCompass->TabIndex = 5;
@@ -550,7 +559,7 @@ namespace SwagBot {
 			this->frmControls->Controls->Add(this->lblA);
 			this->frmControls->Controls->Add(this->lblP);
 			this->frmControls->Controls->Add(this->lblW);
-			this->frmControls->Location = System::Drawing::Point(12, 155);
+			this->frmControls->Location = System::Drawing::Point(6, 190);
 			this->frmControls->Name = L"frmControls";
 			this->frmControls->Size = System::Drawing::Size(165, 167);
 			this->frmControls->TabIndex = 22;
@@ -688,9 +697,9 @@ namespace SwagBot {
 			// sStrip
 			// 
 			this->sStrip->Items->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(2) { this->lblStatus, this->lblConnection });
-			this->sStrip->Location = System::Drawing::Point(0, 334);
+			this->sStrip->Location = System::Drawing::Point(0, 363);
 			this->sStrip->Name = L"sStrip";
-			this->sStrip->Size = System::Drawing::Size(356, 22);
+			this->sStrip->Size = System::Drawing::Size(345, 22);
 			this->sStrip->TabIndex = 23;
 			this->sStrip->Text = L"statusStrip1";
 			// 
@@ -704,7 +713,7 @@ namespace SwagBot {
 			// 
 			this->lblConnection->ForeColor = System::Drawing::Color::Red;
 			this->lblConnection->Name = L"lblConnection";
-			this->lblConnection->Size = System::Drawing::Size(145, 17);
+			this->lblConnection->Size = System::Drawing::Size(254, 17);
 			this->lblConnection->Spring = true;
 			this->lblConnection->Text = L"TimeOuts: 0";
 			this->lblConnection->TextAlign = System::Drawing::ContentAlignment::MiddleRight;
@@ -719,19 +728,89 @@ namespace SwagBot {
 			this->tmrRefresh->Enabled = true;
 			this->tmrRefresh->Tick += gcnew System::EventHandler(this, &MyForm::tmrRefresh_Tick);
 			// 
+			// cmdConnect
+			// 
+			this->cmdConnect->BackColor = System::Drawing::Color::Red;
+			this->cmdConnect->FlatStyle = System::Windows::Forms::FlatStyle::System;
+			this->cmdConnect->ForeColor = System::Drawing::Color::Lime;
+			this->cmdConnect->Location = System::Drawing::Point(5, 42);
+			this->cmdConnect->Name = L"cmdConnect";
+			this->cmdConnect->Size = System::Drawing::Size(77, 23);
+			this->cmdConnect->TabIndex = 25;
+			this->cmdConnect->TabStop = false;
+			this->cmdConnect->Text = L"Connect";
+			this->cmdConnect->UseVisualStyleBackColor = false;
+			this->cmdConnect->Click += gcnew System::EventHandler(this, &MyForm::cmdConnect_Click);
+			// 
+			// chkReconnect
+			// 
+			this->chkReconnect->AutoSize = true;
+			this->chkReconnect->Location = System::Drawing::Point(88, 19);
+			this->chkReconnect->Name = L"chkReconnect";
+			this->chkReconnect->Size = System::Drawing::Size(104, 17);
+			this->chkReconnect->TabIndex = 26;
+			this->chkReconnect->Text = L"Auto Reconnect";
+			this->chkReconnect->UseVisualStyleBackColor = true;
+			// 
+			// cmdReset
+			// 
+			this->cmdReset->Location = System::Drawing::Point(6, 15);
+			this->cmdReset->Name = L"cmdReset";
+			this->cmdReset->Size = System::Drawing::Size(117, 23);
+			this->cmdReset->TabIndex = 27;
+			this->cmdReset->TabStop = false;
+			this->cmdReset->Text = L"Reset Arduino";
+			this->cmdReset->UseVisualStyleBackColor = true;
+			this->cmdReset->Click += gcnew System::EventHandler(this, &MyForm::cmdReset_Click);
+			// 
+			// frmArduino
+			// 
+			this->frmArduino->Controls->Add(this->cmdUpload);
+			this->frmArduino->Controls->Add(this->cmdReset);
+			this->frmArduino->Location = System::Drawing::Point(210, 2);
+			this->frmArduino->Name = L"frmArduino";
+			this->frmArduino->Size = System::Drawing::Size(129, 72);
+			this->frmArduino->TabIndex = 28;
+			this->frmArduino->TabStop = false;
+			this->frmArduino->Text = L"Arduino Options";
+			// 
+			// cmdUpload
+			// 
+			this->cmdUpload->Location = System::Drawing::Point(6, 41);
+			this->cmdUpload->Name = L"cmdUpload";
+			this->cmdUpload->Size = System::Drawing::Size(117, 23);
+			this->cmdUpload->TabIndex = 28;
+			this->cmdUpload->TabStop = false;
+			this->cmdUpload->Text = L"Upload Program";
+			this->cmdUpload->UseVisualStyleBackColor = true;
+			this->cmdUpload->Click += gcnew System::EventHandler(this, &MyForm::cmdUpload_Click);
+			// 
+			// frmComm
+			// 
+			this->frmComm->Controls->Add(this->cmbComm);
+			this->frmComm->Controls->Add(this->cmdConnect);
+			this->frmComm->Controls->Add(this->chkReconnect);
+			this->frmComm->Controls->Add(this->cmdDisconnect);
+			this->frmComm->Location = System::Drawing::Point(6, 2);
+			this->frmComm->Name = L"frmComm";
+			this->frmComm->Size = System::Drawing::Size(194, 72);
+			this->frmComm->TabIndex = 29;
+			this->frmComm->TabStop = false;
+			this->frmComm->Text = L"Commport Selection";
+			// 
 			// MyForm
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->BackColor = System::Drawing::Color::WhiteSmoke;
-			this->ClientSize = System::Drawing::Size(356, 356);
+			this->ClientSize = System::Drawing::Size(345, 385);
+			this->Controls->Add(this->frmComm);
+			this->Controls->Add(this->frmArduino);
 			this->Controls->Add(this->sStrip);
 			this->Controls->Add(this->frmControls);
 			this->Controls->Add(this->picCompass);
 			this->Controls->Add(this->frmSensor);
-			this->Controls->Add(this->cmdDisconnect);
-			this->Controls->Add(this->cmbComm);
-			this->Controls->Add(this->cmdConnect);
+			this->DoubleBuffered = true;
 			this->KeyPreview = true;
 			this->Name = L"MyForm";
 			this->Text = L"SwagBot Controller v1.302.999 rev: 30202";
@@ -754,6 +833,9 @@ namespace SwagBot {
 			this->frmControls->ResumeLayout(false);
 			this->sStrip->ResumeLayout(false);
 			this->sStrip->PerformLayout();
+			this->frmArduino->ResumeLayout(false);
+			this->frmComm->ResumeLayout(false);
+			this->frmComm->PerformLayout();
 			this->ResumeLayout(false);
 			this->PerformLayout();
 
@@ -832,10 +914,17 @@ namespace SwagBot {
 		}
 
 		System::Void MyForm_Load(System::Object^  sender, System::EventArgs^  e) {
-			//MARGINS margins = { 0, 0, 0, 25 };
+			/*MARGINS margins;
 
+			margins.cyTopHeight = 100;
+			margins.cxLeftWidth = 1;
+			margins.cyBottomHeight = 1;
+			margins.cxRightWidth = 1;
 
-			//DwmExtendFrameIntoClientArea((HWND)this->Handle.ToInt32(), &margins);
+			this->BackColor = Color::Black;
+
+			DwmExtendFrameIntoClientArea((HWND)(this->Handle.ToInt32()), &margins);
+			*/
 
 			loadCommports();
 			setPercentage(100);
@@ -910,13 +999,17 @@ namespace SwagBot {
 
 				this->cmdDisconnect->Enabled = true;
 				this->cmdConnect->Enabled = false;
+				this->cmdReset->Enabled = false;
+				this->cmdUpload->Enabled = false;
 
 				this->cmbComm->Enabled = false;
-
+				
 				this->Focus();
 			} else {
 				this->cmdDisconnect->Enabled = false;
 				this->cmdConnect->Enabled = true;
+				this->cmdReset->Enabled = true;
+				this->cmdUpload->Enabled = true;
 
 				this->cmbComm->Enabled = true;
 
@@ -1068,19 +1161,31 @@ namespace SwagBot {
 		}
 
 		void ForceReconnect() {
+			if (this->chkReconnect->Checked == false) {
+				Disconnect();
+				return;
+			}
 			Application::DoEvents();
 			Sleep(1000);
 			Application::DoEvents();
-			setStatusMessage("Resetting Arduino...", false);
-			this->serialPort1->DtrEnable = true;
-			Sleep(20);
-			this->serialPort1->DtrEnable = false;
-			Sleep(10);
-			Disconnect();
+			ResetArduino();
 			Application::DoEvents();
 			Sleep(1000);
 			Application::DoEvents();
 			Connect();
+		}
+
+		void ResetArduino() {
+			setStatusMessage("Resetting Arduino...", false);
+			Application::DoEvents();
+			Sleep(100);
+			this->serialPort1->DtrEnable = true;
+			Sleep(20);
+			this->serialPort1->DtrEnable = false;
+			Sleep(10);
+			Application::DoEvents();
+			setStatusMessage("Done!", false);
+			Disconnect();
 		}
 
 		void setStatusMessage(String ^ nMessage, bool isError) {
@@ -1300,6 +1405,26 @@ namespace SwagBot {
 			if(this->cmdConnect->Enabled == true) {
 				loadCommports();
 			}
+
+	}
+
+	System::Void cmdReset_Click(System::Object^  sender, System::EventArgs^  e) {
+		Connect();
+		Application::DoEvents();
+		Sleep(200);
+		ResetArduino();
+		Application::DoEvents();
+		Sleep(200);
+
+	}
+	System::Void cmdUpload_Click(System::Object^  sender, System::EventArgs^  e) {
+		Connect();
+		Application::DoEvents();
+		Sleep(200);
+		ResetArduino();
+		Application::DoEvents();
+		Sleep(200);
+		ShellExecute((HWND) this->Handle.ToInt32(), TEXT("open"), TEXT("flashRicardo.bat"), TEXT(""), TEXT("D:\\Github\\swagbot\\software\\arduino\\src\\"), SW_SHOWNORMAL);
 	}
 };
 }
