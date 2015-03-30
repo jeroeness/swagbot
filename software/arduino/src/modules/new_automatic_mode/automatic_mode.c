@@ -23,6 +23,7 @@ void (*functionList[7])(Action *);
 void initAutomaticMode() {
 	initFunctionList();
 	initActionList(2);
+	initTimer0();
 
 	addToActionList(F_TURN_BY_DEGREES, 50, 50);
 }
@@ -113,6 +114,7 @@ void addToActionList(uint8_t functionIndex, int16_t target, int16_t speed) {
 
 void addReverseAction(Action action) {
 	//addToActionList(action.action, action.)
+	// TODO implement this
 }
 
 void doubleActionList() {

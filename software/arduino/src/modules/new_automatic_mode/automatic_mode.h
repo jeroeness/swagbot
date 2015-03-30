@@ -47,7 +47,7 @@ void updateAutomaticMode();
 
 void initActionList(uint8_t size);
 void initFunctionList();
-void initTimer(); // TODO add this
+void initTimer0(); // TODO add this
 void fillEmptyActionList();
 void clearActionList();
 void addToActionList(uint8_t action, int16_t argument, int16_t tempSpeed);
