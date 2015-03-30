@@ -4,10 +4,8 @@
  * Created: 3-3-2015 11:07:02
  *  Author: gerald
  *
- * v1.01
+ * v1.10
  */
-//todo
-// startindex+rwamount fixen
 
 #include "../globalincsanddefs.h"
 
@@ -22,6 +20,9 @@ extern union USD sensorData;
 
 uint8_t volatile destaddress, destoffset, startindex, stopindex;
 
+enum i2c_rxtx_stats {IDLE, BUSY, ERROR};
+enum i2c_rxtx_stats volatile i2c_state;
+
 uint8_t volatile OverFlowToggle = 0; //for timer overflow
 
 void i2c_init(uint8_t masteraddress) {
@@ -29,6 +30,7 @@ void i2c_init(uint8_t masteraddress) {
 	TWBR = ((F_CPU / I2C_CLOCK) - 16) / 2;
 	TWAR = (masteraddress & 0xFE) | 1; // i2c master address + general call enable
 	TWCR = (1 << TWINT) | (1 << TWEA) | (1 << TWEN) | (1 << TWIE);
+	i2c_state = IDLE;
 	
 	
 	TCCR1B |= (1 << CS12) | (0<<CS10); //timer1: prescaler of 256
@@ -77,7 +79,7 @@ void i2c_writeToRP6(void) {
 }
 
 void i2c_readFromRP6(void) {
-	i2c_read(0xAA, 0, 0, sizeof(sensorData.sensorStruct) - 3);
+	i2c_read(0xAA, 0, 0, sizeof(sensorData.sensorStruct) - 2);
 	return;
 }
 
@@ -89,13 +91,14 @@ void i2c_readFromCompass(void) {
 
 void i2c_waitforidle(void) {
 	uint8_t register timeoutcounter = 200;
-	uint8_t register prevTWSR = 0;
-	while (((TWSR & 0xF8) != 0xF8) || ((prevTWSR & 0xF8) != 0xF8))	// wait if async process is still busy
+	while (i2c_state != IDLE)	// wait while async process is still busy
 	{
-		prevTWSR = TWSR;
 		if (!--timeoutcounter)
-		break;
-		_delay_us(400);
+		{
+			//i2c_state = ERROR;
+			break;
+		}
+		_delay_us(500);
 	}
 	return;
 }
@@ -147,7 +150,9 @@ void i2c_continue(void)
 void i2c_stop(void)
 {
 	TWCR = (1 << TWINT) | (1 << TWEA) | (1 << TWSTO) | (1 << TWEN) | (1 << TWIE);
-	//i2cbusy = 0;
+	while(TWCR & (1 << TWSTO));
+	
+	i2c_state = IDLE;
 	return;
 }
 
@@ -159,7 +164,6 @@ void i2c_SR_done(void)
 
 void i2c_MR_done(void)
 {
-	
 	return;
 }
 
@@ -175,108 +179,112 @@ ISR(TWI_vect)
 		case 0x70:	// gencall received, Ack was send back				SR
 		case 0x68:	// arbitration lost (SLA+W/R). own SLA+W received, Ack was send	MT->SR
 		case 0x78:	// arbitration lost (SLA+W/R). gencall received, Ack was send	MT->SR
-		//i2cbusy = 1;
-		i2c_continue();
-		firstwrite = 1;
-		break;
+			i2c_state = BUSY;
+			i2c_continue();
+			firstwrite = 1;
+			break;
 		case 0x80:	// Data was received, Ack was send back				SR
 		case 0x90:	// gencall Data was received, Ack was send back			SR
-		if (firstwrite)
-		{
-			// write to address
-			rwaddress = TWDR;
-			firstwrite = 0;
-		}
-		else
-		instructionData.instructionArray[rwaddress++] = TWDR;
-		i2c_continue();
-		break;
+			if (firstwrite)
+			{
+				// write to address
+				rwaddress = TWDR;
+				firstwrite = 0;
+			}
+			else
+			instructionData.instructionArray[rwaddress++] = TWDR;
+			i2c_continue();
+			break;
 
 		case 0xA0:	// STOP or repeated START received				SR
-		//i2cbusy = 0;
-		i2c_continue();
-		i2c_SR_done();
-		break;
+			i2c_state = IDLE;
+			i2c_continue();
+			i2c_SR_done();
+			break;
 		case 0xA8:	// SLA+R received, Ack was send back				SR
 		case 0xB0:	// arbitration lost (SLA+W/R). own SLA+R received, Ack was send	MT->ST
 		case 0xB8:	// TWDR was send, Ack received					ST
-		//i2cbusy = 1;
-		TWDR = sensorData.sensorArray[rwaddress++];
-		i2c_continue();
-		break;
+			i2c_state = BUSY;
+			TWDR = sensorData.sensorArray[rwaddress++];
+			i2c_continue();
+			break;
 		case 0xC0:	// TWDR was send, nAck received					ST
 		case 0xC8:	// last TWDR was send, Ack received				ST
-		i2c_continue();
-		break;
+			i2c_continue();
+			break;
 
 		//-----------------------------------------------------------------------------------------/\ slave /\  |  \/ master \/
 
 		case 0x08:	// START condition was send					MR
-		//i2cbusy = 1;
-		rwaddress = startindex;
-		TWDR = destaddress & 0xFE;//write first
-		i2c_continue();
-		break;
-		case 0x10:	// repeated START condition was send				MR
-		TWDR = destaddress;// SLA+R
-		i2c_continue();
-		rwaddress = startindex;
-		stopindex--;// read must end sooner than write
-		break;
-		case 0x18:	// SLA+W sent, Ack was received					MT
-		TWDR = destoffset;
-		i2c_continue();
-		break;
-		case 0x28:	// TWDR was send, Ack received					MT
-		if (destaddress & 0x01)
-		{
-			TWCR = (1 << TWINT) | (1 << TWEA) | (1 << TWSTA) | (1 << TWEN) | (1 << TWIE);// send repeated START
+			i2c_state = BUSY;
+			rwaddress = startindex;
+			TWDR = destaddress & 0xFE;//write first
+			i2c_continue();
 			break;
-		}
-		if (rwaddress >= stopindex)
-		{
-			i2c_stop();
-		}
-		else
-		{
-			TWDR = instructionData.instructionArray[startindex + (rwaddress++)];
+		case 0x10:	// repeated START condition was send				MR
+			TWDR = destaddress;// SLA+R
 			i2c_continue();
-		}
-		break;
-		case 0x38:	// arbitration lost (SLA+W/R or data)				MT/MR
+			rwaddress = startindex;
+			stopindex--;// MR must end sooner than MT because MT can end whenever and MR must nACK first
+			break;
+		case 0x18:	// SLA+W sent, Ack was received					MT
+			TWDR = destoffset;
+			i2c_continue();
+			break;
+		case 0x28:	// TWDR was send, Ack received					MT
+			if (destaddress & 0x01)
+			{
+				TWCR = (1 << TWINT) | (1 << TWEA) | (1 << TWSTA) | (1 << TWEN) | (1 << TWIE);// send repeated START
+				break;
+			}
+			if (rwaddress >= stopindex)
+			{
+				i2c_stop();
+			}
+			else
+			{
+				TWDR = instructionData.instructionArray[rwaddress++];
+				i2c_continue();
+			}
+			break;
 		case 0x40:	// SLA+R sent, Ack was received					MR
-		if (rwaddress >= stopindex)
-		{
-			TWCR = (1 << TWINT) | (1 << TWEN) | (1 << TWIE);// next receive will not Ack'ed
-		}
-		else
-		{
-			i2c_continue();
-		}
-		break;
+			if (rwaddress >= stopindex)
+			{
+				TWCR = (1 << TWINT) | (1 << TWEN) | (1 << TWIE);// next receive will not Ack'ed
+			}
+			else
+			{
+				i2c_continue();
+			}
+			break;
 		case 0x50:	// TWDR received, Ack was send back				MR
-		sensorData.sensorArray[rwaddress++] = TWDR;
-		if (rwaddress >= stopindex)
-		{
-			TWCR = (1 << TWINT) | (1 << TWEN) | (1 << TWIE);// next receive will not Ack'ed
-		}
-		else
-		{
-			i2c_continue();
-		}
-		break;
+			sensorData.sensorArray[rwaddress++] = TWDR;
+			if (rwaddress >= stopindex)
+			{
+				TWCR = (1 << TWINT) | (1 << TWEN) | (1 << TWIE);// next receive will not Ack'ed
+			}
+			else
+			{
+				i2c_continue();
+			}
+			break;
 		case 0x58:	// TWDR received, nAck was send back				MR
-		sensorData.sensorArray[rwaddress++] = TWDR;
-		i2c_stop();
-		i2c_MR_done();
-		break;
+			sensorData.sensorArray[rwaddress++] = TWDR;
+			i2c_stop();
+			i2c_MR_done();
+			break;
 
+
+		case 0x38:	// arbitration lost (SLA+W/R or data)				MT/MR
+			i2c_continue();
+			i2c_state = IDLE;
+			break;
 
 		case 0x20:	// SLA+W sent, nAck was received				MT
 		case 0x30:	// TWDR was send, nAck received					MT
 		case 0x48:	// SLA+R sent, nAck was received				MR
 		default:	// error (buserror)
-		i2c_stop();
-		break;
+			i2c_stop();
+			break;
 	}
 }
