@@ -38,25 +38,21 @@ ISR(TIMER1_OVF_vect){
 	OverFlowToggle ^= 1;
 	if(OverFlowToggle == 1){
 		i2c_write_cmd_wrap();
-		}else{
+	}else{
 		i2c_read_sensors_wrap();
 	}
 	TCNT1 = 30000;
 }
 
-void i2c_waitforidle(void) {
-	uint8_t register timeoutcounter = 200;
-	uint8_t register prevTWSR = 0;
-	while (((TWSR & 0xF8) != 0xF8) || ((prevTWSR & 0xF8) != 0xF8))	// wait if async process is still busy
-	{
-		prevTWSR = TWSR;
-		if (!--timeoutcounter)
-		break;
-		_delay_us(400);
-	}
-	return;
+
+void i2c_write_cmd_wrap(void) {
+	i2c_writeToRP6()
 }
 
+void i2c_read_sensors_wrap(void) {
+	i2c_readFromCompass();
+	i2c_readFromRP6();	
+}
 
 
 void i2c_writeToRP6(void) {
@@ -75,8 +71,18 @@ void i2c_readFromCompass(void) {
 }
 
 
-
-
+void i2c_waitforidle(void) {
+	uint8_t register timeoutcounter = 200;
+	uint8_t register prevTWSR = 0;
+	while (((TWSR & 0xF8) != 0xF8) || ((prevTWSR & 0xF8) != 0xF8))	// wait if async process is still busy
+	{
+		prevTWSR = TWSR;
+		if (!--timeoutcounter)
+		break;
+		_delay_us(400);
+	}
+	return;
+}
 
 void i2c_write(uint8_t destaddr, uint8_t destoffs, uint8_t offset, uint8_t amount) {
 	i2c_waitforidle();
