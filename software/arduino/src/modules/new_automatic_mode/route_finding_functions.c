@@ -55,19 +55,19 @@ void findRoute(int16_t angleToPoint, int16_t turnedAngle, uint16_t distance) {
 	s1 = convertToTime(distance);
 
 	if (direction == previousDirection) {
-		p = s1 * cos(a1);				// progression
-		dv1 = p * tan(a1);				// deviation part 1
+		p = s1 * coss(a1);				// progression
+		dv1 = p * tann(a1);				// deviation part 1
 	} else {
-		p = s1 * sin(a1);
-		dv1 = p / tan(a1);				// deviation part 1
+		p = s1 * sinn(a1);
+		dv1 = p / tann(a1);				// deviation part 1
 	}
 
 	dv = dv1 + OUTSIDE_MARGIN_RP6; 	// deviation to match size RP6
 
 	if (direction == previousDirection) {
-		a = atan(dv / p);				// the total angle. // TODO implement different direction
+		a = atann(dv / p);				// the total angle. // TODO implement different direction
 	} else {
-		a = atan(p / dv);				// the total angle. // TODO implement different direction
+		a = atann(p / dv);				// the total angle. // TODO implement different direction
 	}
 	a2 = a - turnedAngle;					// the angle to turn for margin
 	//a3 = a - turnedAngle;			// the angle that has to be turned to reach total angle // TODO controleer deze shit man fuck me.
@@ -77,16 +77,16 @@ void findRoute(int16_t angleToPoint, int16_t turnedAngle, uint16_t distance) {
 	}
 
 	if (direction == previousDirection) {
-		s = dv / sin(a);				// the distance that has to be traveled to arrive at the point
+		s = dv / sinn(a);				// the distance that has to be traveled to arrive at the point
 	} else {
-		s = dv / cos(a);				// the distance that has to be traveled to arrive at the point
+		s = dv / coss(a);				// the distance that has to be traveled to arrive at the point
 	}
 
 	if (abs(totalDeviation) == abs(dv)) { 
 		if (direction == previousDirection) {
-			p = s * cos(a);				// progression
+			p = s * coss(a);				// progression
 		} else {
-			p = s * sin(a);
+			p = s * sinn(a);
 		}
 	}
 
@@ -177,3 +177,21 @@ int16_t convertToTime(int16_t ultrasonic) {
 
 	return ultrasonic;
 }
+
+
+int16_t sinn(int16_t a) {
+	return sin(radians(a));
+}
+
+int16_t coss(int16_t a) {
+	return sin(radians(a));
+}
+
+int16_t tann(int16_t a) {
+	return sin(radians(a));
+}
+
+int16_t atann(int16_t a) {
+	return sin(radians(a));
+}
+
