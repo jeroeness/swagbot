@@ -84,6 +84,7 @@ void i2c_readFromRP6(void) {
 }
 
 void i2c_readFromCompass(void) {
+	//i2c_read(0xC0, 1, sizeof(sensorData.sensorStruct) - 1, sizeof(sensorData.sensorStruct.compassDegrees));
 	i2c_read(0xC0, 1, sizeof(sensorData.sensorStruct) - 1, sizeof(sensorData.sensorStruct.compassDegrees));
 	return;
 }

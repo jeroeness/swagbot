@@ -132,6 +132,8 @@ namespace SwagBot {
 
 
 
+
+
 	private: System::ComponentModel::IContainer^  components;
 
 
@@ -343,18 +345,19 @@ namespace SwagBot {
 			// picFront
 			// 
 			this->picFront->BackColor = System::Drawing::Color::Lime;
-			this->picFront->Location = System::Drawing::Point(305, 72);
+			this->picFront->Location = System::Drawing::Point(305, 44);
 			this->picFront->Name = L"picFront";
-			this->picFront->Size = System::Drawing::Size(17, 24);
+			this->picFront->Size = System::Drawing::Size(18, 52);
 			this->picFront->TabIndex = 18;
 			this->picFront->TabStop = false;
+			this->picFront->Paint += gcnew System::Windows::Forms::PaintEventHandler(this, &MyForm::picFront_Paint);
 			// 
 			// picBack
 			// 
 			this->picBack->BackColor = System::Drawing::Color::White;
 			this->picBack->Location = System::Drawing::Point(303, 20);
 			this->picBack->Name = L"picBack";
-			this->picBack->Size = System::Drawing::Size(21, 78);
+			this->picBack->Size = System::Drawing::Size(22, 78);
 			this->picBack->TabIndex = 16;
 			this->picBack->TabStop = false;
 			// 
@@ -373,7 +376,7 @@ namespace SwagBot {
 			this->pictureBox3->BackColor = System::Drawing::Color::Gray;
 			this->pictureBox3->Location = System::Drawing::Point(308, 13);
 			this->pictureBox3->Name = L"pictureBox3";
-			this->pictureBox3->Size = System::Drawing::Size(11, 10);
+			this->pictureBox3->Size = System::Drawing::Size(12, 10);
 			this->pictureBox3->TabIndex = 17;
 			this->pictureBox3->TabStop = false;
 			// 
@@ -392,7 +395,7 @@ namespace SwagBot {
 			this->pictureBox1->BackColor = System::Drawing::Color::Gray;
 			this->pictureBox1->Location = System::Drawing::Point(301, 18);
 			this->pictureBox1->Name = L"pictureBox1";
-			this->pictureBox1->Size = System::Drawing::Size(25, 82);
+			this->pictureBox1->Size = System::Drawing::Size(26, 82);
 			this->pictureBox1->TabIndex = 5;
 			this->pictureBox1->TabStop = false;
 			// 
@@ -713,7 +716,7 @@ namespace SwagBot {
 			// 
 			this->lblConnection->ForeColor = System::Drawing::Color::Red;
 			this->lblConnection->Name = L"lblConnection";
-			this->lblConnection->Size = System::Drawing::Size(254, 17);
+			this->lblConnection->Size = System::Drawing::Size(134, 17);
 			this->lblConnection->Spring = true;
 			this->lblConnection->Text = L"TimeOuts: 0";
 			this->lblConnection->TextAlign = System::Drawing::ContentAlignment::MiddleRight;
@@ -867,7 +870,7 @@ namespace SwagBot {
 		String ^buffertest;
 		int compassDegrees = 0;
 		double PI = 3.14159265359;
-
+		int batteryVoltage = 0;
 		
 
 
@@ -1111,11 +1114,16 @@ namespace SwagBot {
 
 					this->lblRes3->Text = "" + sensordata[3];
 					this->lblRes4->Text = "" + sensordata[4];
-					this->lblRes5->Text = "" + sensordata[6];
-					setPercentage(sensordata[6]);
+					this->lblRes5->Text = "" + sensordata[7];
+					
+					
+					batteryVoltage = sensordata[6];
 					compassDegrees = sensordata[7];
 					this->picCompass->Refresh();
+					setPercentage(sensordata[6]);
+					this->picCompass->Refresh();
 
+					//picFront
 					if(sensordata[8] == 0) {
 						this->lblRes6->Text = "Manual Mode";
 					} else {
@@ -1223,6 +1231,8 @@ namespace SwagBot {
 			this->picFront->Height = (int)((this->picBack->Height - 4) / 100.0 * percentage);
 			this->picFront->Top = this->picBack->Top + (this->picBack->Height - this->picFront->Height - 2);
 
+			//this->lblVoltage->Text = (percentage / 10.0) + "V";
+
 			this->picFront->Refresh();
 		}
 
@@ -1268,6 +1278,18 @@ namespace SwagBot {
 			e->Graphics->DrawString("S", myFont, Brushes::Blue, (float)size, (float)(size * 2.0 - 10.0), alignText);
 			e->Graphics->DrawString("W", myFont, Brushes::Blue, 10.0, (float)size, alignText);
 
+		}
+
+		void picFront_Paint(Object^ sender, System::Windows::Forms::PaintEventArgs^ e) {
+			StringFormat^ alignText = gcnew StringFormat;
+			alignText->Alignment = StringAlignment::Center;
+			alignText->LineAlignment = StringAlignment::Center;
+
+			e->Graphics->SmoothingMode = System::Drawing::Drawing2D::SmoothingMode::AntiAlias;
+
+			System::Drawing::Font^ myFont = gcnew System::Drawing::Font("Verdana", 7); //Microsoft Sans Serif
+
+			e->Graphics->DrawString((batteryVoltage / 10.0) + "", myFont, Brushes::Gray, this->picFront->Width / 2, this->picFront->Height - 6, alignText);
 		}
 
 	private:
@@ -1424,7 +1446,9 @@ namespace SwagBot {
 		ResetArduino();
 		Application::DoEvents();
 		Sleep(200);
-		ShellExecute((HWND) this->Handle.ToInt32(), TEXT("open"), TEXT("flashRicardo.bat"), TEXT(""), TEXT("D:\\Github\\swagbot\\software\\arduino\\src\\"), SW_SHOWNORMAL);
+		ShellExecute((HWND) this->Handle.ToInt32(), TEXT("open"), TEXT("flashRicardoLaptop.bat"), TEXT(""), TEXT("C:\\Users\\Jucko13\\Documents\\GitHub\\swagbot\\software\\arduino\\src\\"), SW_SHOWNORMAL);
 	}
+
+	
 };
 }

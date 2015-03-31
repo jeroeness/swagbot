@@ -32,7 +32,8 @@ void initCommunication() {
 	instructionData.instructionstruct.motorRight = 0;
 	instructionData.instructionstruct.ledStatus = 1<<7;
 	sensorData.sensorStruct.ultrasonic = 0;
-
+	sensorData.sensorStruct.compassDegrees = 0;
+	
 	for (int8_t i = 0; i < KEYSTATESCOUNT; i++) {
         keyState[i] = 0;
     }
