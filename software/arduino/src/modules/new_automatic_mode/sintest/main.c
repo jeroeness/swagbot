@@ -1,4 +1,7 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <stdint.h>
+
 #include <math.h>
 
 #define DEG_TO_RAD 0.017453292519943295769236907684886
@@ -8,10 +11,10 @@
 
 
 void findRoute(int16_t angleToPoint, int16_t turnedAngle, uint16_t distance);
-double sinn(float a);
-double coss(float a);
-double tann(float a);
-double atann(float a);
+double sind(float a);
+double cosd(float a);
+double tand(float a);
+double atand(float a);
 
 volatile uint8_t previousDirection;
 volatile float totalDeviation;
@@ -37,20 +40,20 @@ void findRoute(int16_t angleToPoint, int16_t turnedAngle, uint16_t distance) {
 	s1 = distance;
 
 	if (direction == previousDirection) {
-		p = s1 * coss(a1);				// progression
-		dv1 = p * tann(a1);				// deviation part 1
+		p = s1 * cosd(a1);				// progression
+		dv1 = p * tand(a1);				// deviation part 1
 	} else {
-		p = s1 * sinn(a1);
-		dv1 = p / tann(a1);				// deviation part 1
+		p = s1 * sind(a1);
+		dv1 = p / tand(a1);				// deviation part 1
 	}
 	printf("p=%f\n", p);
-	printf("cos=%f\n", coss(180));
+	printf("cos=%f\n", cosd(180));
 	dv = dv1 + OUTSIDE_MARGIN_RP6; 	// deviation to match size RP6
 
 	if (direction == previousDirection) {
-		a = atann(dv / p);				// the total angle. // TODO convert atann to degrees
+		a = atand(dv / p);				// the total angle. // TODO convert atann to degrees
 	} else {
-		a = atann(p / dv);				// the total angle.
+		a = atand(p / dv);				// the total angle.
 	}
 	a2 = a - turnedAngle;					// the angle to turn for margin
 	//a3 = a - turnedAngle;			// the angle that has to be turned to reach total angle // TODO controleer deze shit man fuck me.
@@ -60,16 +63,16 @@ void findRoute(int16_t angleToPoint, int16_t turnedAngle, uint16_t distance) {
 	}
 		
 	if (direction == previousDirection) {
-		s = dv / sinn(a);				// the distance that has to be traveled to arrive at the point // TODO check deze sheis
+		s = dv / sind(a);				// the distance that has to be traveled to arrive at the point // TODO check deze sheis
 	} else {
-		s = dv / coss(a);				// the distance that has to be traveled to arrive at the point
+		s = dv / cosd(a);				// the distance that has to be traveled to arrive at the point
 	}
 
 	if (totalDeviation == -1 * dv) { 
 		if (direction == previousDirection) {
-			p = s * coss(a);				// progression
+			p = s * cosd(a);				// progression
 		} else {
-			p = s * sinn(a);
+			p = s * sind(a);
 		}
 	}
 
@@ -92,19 +95,19 @@ void findRoute(int16_t angleToPoint, int16_t turnedAngle, uint16_t distance) {
 }
 
 
-double sinn(float a) {
+double sind(float a) {
 	return sin(radians((double) a));
 }
 
-double coss(float a) {
+double cosd(float a) {
 	return cos(radians((double) a));
 }
 
-double tann(float a) {
+double tand(float a) {
 	return tan(radians((double) a));
 }
 
-double atann(float a) {
+double atand(float a) {
 	return atan(radians((double) a));
 }
 
