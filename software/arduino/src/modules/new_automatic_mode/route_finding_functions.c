@@ -33,8 +33,7 @@ void checkObstacle() {
 	desiredProgression = targetMillis - currentMillis;
 
 	backupActionList = actionList;
-	ActionList newActionList;
-	actionList = &newActionList;
+	clearActionList(); // TODO actually backup actionList;
 
 	previousDirection = 0;
 	routeFindingDepth = 1;

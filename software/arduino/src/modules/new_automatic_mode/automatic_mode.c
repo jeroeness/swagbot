@@ -26,6 +26,7 @@ void initAutomaticMode() {
 	initTimer0();
 
 	addToActionList(F_TURN_BY_DEGREES, 50, 50);
+	addToActionList(F_MOVE_FOR, 100, 200);
 }
 
 void updateAutomaticMode() {
@@ -45,13 +46,13 @@ void updateAutomaticMode() {
 	switch (currentAction) {
 		case ACTION_TURN:
 		case ACTION_FINDING_ANGLE:
-			//checkTurn();
+			checkTurn();
 			break;
 		case ACTION_MOVE:
-			//checkMove();
+			checkMove();
 			break;
 		case ACTION_IDLE:
-			//executeNextAction();
+			executeNextAction();
 			break;
 	}
 }
