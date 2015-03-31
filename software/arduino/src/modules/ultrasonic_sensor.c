@@ -56,9 +56,9 @@ ISR(TIMER5_CAPT_vect)
 {
 	//the pulselength has been stored in ICR5
 	
-	sensorData.sensorStruct.ultrasonic = (ICR5 >> 6);//to 8bit value
+	sensorData.sensorStruct.ultrasonic = (uint8_t) (ICR5>>7) & 0xFF;//to 8bit value
 	
-	//timer off
+	//timer offs
 	TIMSK5 &= ~((1 << ICIE5) | (1 << OCIE5A));//inputcapture interrupt and OCR5A(overflow) interrupt  off
 	TCCR5B &= ~((1 << CS51) | (1 << CS50));//start timer (cs = off)
 }
