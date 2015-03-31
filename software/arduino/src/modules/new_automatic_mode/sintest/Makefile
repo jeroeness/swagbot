@@ -4,7 +4,7 @@ TARGET = sintest.exe
 
 CC = gcc
 
-CFLAGS = -std=c99
+CFLAGS = -std=c99 -lm
 
 SRC = $(MAIN_SOURCE) $(OTHER_SOURCES)
 

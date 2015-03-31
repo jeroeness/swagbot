@@ -4,8 +4,14 @@
 
 #include <math.h>
 
+#define PI 3.1415926535897932384626433832795
+
 #define DEG_TO_RAD 0.017453292519943295769236907684886
 #define radians(deg) ((deg)*DEG_TO_RAD)
+
+#define RAD_TO_DEG 57.295779513082320876798154814105
+#define degrees(rad) ((rad)*RAD_TO_DEG)
+
 
 #define OUTSIDE_MARGIN_RP6 10
 
@@ -21,12 +27,18 @@ volatile float totalDeviation;
 volatile float desiredProgression;
 
 int main() {
-	findRoute(45, 45, 40);
+	system("clear");
+	printf("============= Program Start =============\n");
+	findRoute(45, -45, 40);
+	
+	
 
+	printf("============== Program end ==============\n");
 	return 0;
 }
 
 void findRoute(int16_t angleToPoint, int16_t turnedAngle, uint16_t distance) {
+	printf("\n------------- Finding route -------------\n");
 	float a, a1, a2, s, s1, dv, dv1, p; //, a3
 	uint8_t direction = (angleToPoint < 0) ? -1 : 1;
 
@@ -82,16 +94,16 @@ void findRoute(int16_t angleToPoint, int16_t turnedAngle, uint16_t distance) {
 
 	previousDirection = direction;
 
-	printf("a=%f\n", a);
-	printf("a1=%f\n", a1);
-	printf("a2=%f\n", a2);
-	printf("s=%f\n", s);
-	printf("s1=%f\n", s1);
-	printf("dv=%f\n", dv);
-	printf("dv1=%f\n", dv1);
-	printf("p=%f\n", p);
-	printf("direction=%d\n", direction);
-	printf("totalDeviation=%f\n", totalDeviation);
+	printf("a = %f\n", a);
+	printf("a1 = %f\n", a1);
+	printf("a2 = %f\n", a2);
+	printf("s = %f\n", s);
+	printf("s1 = %f\n", s1);
+	printf("dv = %f\n", dv);
+	printf("dv1 = %f\n", dv1);
+	printf("p = %f\n", p);
+	printf("direction = %d\n", direction);
+	printf("totalDeviation = %f\n", totalDeviation);
 }
 
 
@@ -108,7 +120,7 @@ double tand(float a) {
 }
 
 double atand(float a) {
-	return atan(radians((double) a));
+	return atan(((double) a)) * 180 / PI;
 }
 
 

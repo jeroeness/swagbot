@@ -12,15 +12,15 @@ void findAngleToPoint();
 void endRouteFinding();
 int16_t convertToTime(int16_t ultrasonic);
 
-int16_t sinn(int16_t a);
-int16_t coss(int16_t a);
-int16_t tann(int16_t a);
-int16_t atann(int16_t a);
+double sind(float a);
+double cosd(float a);
+double tand(float a);
+double atand(float a);
 
 extern volatile uint8_t routeFindingDepth;				
 extern volatile uint8_t findingAngleToPoint;
-extern volatile int16_t totalDeviation;
-extern volatile int16_t desiredProgression;
+extern volatile float totalDeviation;
+extern volatile float desiredProgression;
 
 
 #endif

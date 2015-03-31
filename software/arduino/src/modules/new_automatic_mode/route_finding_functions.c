@@ -19,8 +19,8 @@ extern union USD sensorData;
 volatile uint8_t previousDirection; // TODO implement the use of this. //think fixed
 
 
-volatile int16_t totalDeviation;
-volatile int16_t desiredProgression;
+volatile float totalDeviation;
+volatile float desiredProgression;
 volatile uint8_t routeFindingDepth;				
 volatile uint8_t findingAngleToPoint;
 
@@ -50,43 +50,44 @@ void findRoute(int16_t angleToPoint, int16_t turnedAngle, uint16_t distance) {
 		previousDirection = direction;
 	}
 
-	a1 = abs(angleToPoint);
+	a1 = (int16_t) abs(angleToPoint);
+	
 	angleToPoint = 0;
-	s1 = convertToTime(distance);
+	s1 = distance;
 
 	if (direction == previousDirection) {
-		p = s1 * coss(a1);				// progression
-		dv1 = p * tann(a1);				// deviation part 1
+		p = s1 * cosd(a1);				// progression
+		dv1 = p * tand(a1);				// deviation part 1
 	} else {
-		p = s1 * sinn(a1);
-		dv1 = p / tann(a1);				// deviation part 1
+		p = s1 * sind(a1);
+		dv1 = p / tand(a1);				// deviation part 1
 	}
 
 	dv = dv1 + OUTSIDE_MARGIN_RP6; 	// deviation to match size RP6
 
 	if (direction == previousDirection) {
-		a = atann(dv / p);				// the total angle. // TODO implement different direction
+		a = atand(dv / p);				// the total angle. // TODO convert atann to degrees
 	} else {
-		a = atann(p / dv);				// the total angle. // TODO implement different direction
+		a = atand(p / dv);				// the total angle.
 	}
 	a2 = a - turnedAngle;					// the angle to turn for margin
 	//a3 = a - turnedAngle;			// the angle that has to be turned to reach total angle // TODO controleer deze shit man fuck me.
-		
-	if ((totalDeviation + dv) * direction > 0) { // TODO be weary of >
+
+	if ((totalDeviation < 0)*direction && (totalDeviation + dv > 0)*direction) { // TODO be weary of >
 		dv = abs(totalDeviation);
 	}
-
+		
 	if (direction == previousDirection) {
-		s = dv / sinn(a);				// the distance that has to be traveled to arrive at the point
+		s = dv / sind(a);				// the distance that has to be traveled to arrive at the point // TODO check deze sheis
 	} else {
-		s = dv / coss(a);				// the distance that has to be traveled to arrive at the point
+		s = dv / cosd(a);				// the distance that has to be traveled to arrive at the point
 	}
 
-	if (abs(totalDeviation) == abs(dv)) { 
+	if (totalDeviation == -1 * dv) { 
 		if (direction == previousDirection) {
-			p = s * coss(a);				// progression
+			p = s * cosd(a);				// progression
 		} else {
-			p = s * sinn(a);
+			p = s * sind(a);
 		}
 	}
 
@@ -175,23 +176,24 @@ void endRouteFinding() {
 int16_t convertToTime(int16_t ultrasonic) {
 	// TODO implement and gauge
 
-	return ultrasonic;
+	return ultrasonic/2;
 }
 
 
-int16_t sinn(int16_t a) {
-	return sin(radians(a));
+double sind(float a) {
+	return sin(radians((double) a));
 }
 
-int16_t coss(int16_t a) {
-	return sin(radians(a));
+double cosd(float a) {
+	return cos(radians((double) a));
 }
 
-int16_t tann(int16_t a) {
-	return sin(radians(a));
+double tand(float a) {
+	return tan(radians((double) a));
 }
 
-int16_t atann(int16_t a) {
-	return sin(radians(a));
+double atand(float a) {
+	return atan(((double) a)) * 180 / PI;
 }
+
 
