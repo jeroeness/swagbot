@@ -35,7 +35,7 @@ $(TARGET).hex: $(TARGET).elf
 	rm -f *.elf *.o
 
 %.elf: $(SRC)
-	$(CC) $(CFLAGS) $(SRC) --output $@ 
+	$(CC) $(CFLAGS) $(SRC) -lc -lm --output $@ 
 
 $(OBJS): $(HEADERS)
 
