@@ -56,6 +56,8 @@ void addReverseAction(Action action);
 void doubleActionList();
 void destroyActionList(ActionList * oldActionList);
 
+uint8_t actionListCompleted();
+
 void checkTurn();
 void checkMove(); 
 uint8_t checkCrash(); // TODO add this
@@ -87,6 +89,8 @@ extern volatile uint16_t overflowCount;
 extern volatile int8_t speed;
 extern volatile int8_t defaultSpeed;
 
+extern volatile ActionList normalActionList;
+extern volatile ActionList routeFindingActionList;
 
 #include "move_functions.h"
 #include "route_finding_functions.h"

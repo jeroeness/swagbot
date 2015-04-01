@@ -9,7 +9,10 @@
 void checkObstacle();
 void findRoute(int16_t angleToPoint, int16_t turnedAngle, uint16_t distance);
 void findAngleToPoint();
+
+void finishRouteFinding();
 void endRouteFinding();
+
 int16_t convertToTime(int16_t ultrasonic);
 
 double sind(float a);

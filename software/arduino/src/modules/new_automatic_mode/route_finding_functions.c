@@ -14,6 +14,9 @@ extern volatile uint16_t currentMillis;
 
 extern volatile int8_t speed;
 
+extern volatile ActionList normalActionList;
+extern volatile ActionList routeFindingActionList;
+
 extern union USD sensorData; 
 
 volatile uint8_t previousDirection; // TODO implement the use of this. //think fixed
@@ -24,15 +27,13 @@ volatile float desiredProgression;
 volatile uint8_t routeFindingDepth;				
 volatile uint8_t findingAngleToPoint;
 
-volatile ActionList * backupActionList;
-
 void checkObstacle() {
 	if (sensorData.sensorStruct.ultrasonic > MIN_DISTANCE)
 		return;
 
 	desiredProgression = targetMillis - currentMillis;
 
-	backupActionList = actionList;
+	actionList = &routeFindingActionList;
 	clearActionList(); // TODO actually backup actionList;
 
 	previousDirection = 0;
@@ -156,15 +157,14 @@ void findAngleToPoint() {
 	setTargetDegrees(sensorData.sensorStruct.compassDegrees + newAngle);
 }
 
+void finishRouteFinding() {
+	addToActionList(F_MOVE_FOR, desiredProgression, 0);
+}
+
 void endRouteFinding() {
 	clearActionList();
 
-	addToActionList(F_MOVE_FOR, desiredProgression, 0);
-
-	for(int i=0; i<actionList->usedSize; i++) {
-		Action * action = &actionList->list[i];
-		addToActionList(action->functionIndex, action->target, action->speed);
-	}
+	actionList = &normalActionList;
 	
 	routeFindingDepth = 0; // TODO combine this shit man
 	desiredProgression = 0;

@@ -15,7 +15,8 @@ volatile uint16_t overflowCount;
 volatile int8_t speed;
 volatile int8_t defaultSpeed;
 
-volatile ActionList newActionList;
+volatile ActionList normalActionList;
+volatile ActionList routeFindingActionList;
 
 void (*functionList[7])(Action *);
 
@@ -34,7 +35,10 @@ void updateAutomaticMode() {
 	if (routeFindingDepth > 0) {
 		if (currentAction == ACTION_IDLE && checkFuzzy(totalDeviation, 0, 5)) { // TODO gauge 5 to correct value
 			// TODO return original actionList
-			endRouteFinding();
+			if(actionListCompleted())
+				finishRouteFinding();
+			else 
+				endRouteFinding();
 		} else {
 			// TODO find the new angle and continue route finding.
 			findAngleToPoint();
@@ -58,7 +62,7 @@ void updateAutomaticMode() {
 }
 
 void initActionList(uint8_t size) {
-	actionList = &newActionList;
+	actionList = &normalActionList;
 
 	actionList->list = (Action*) malloc(size * sizeof(Action));
 	actionList->size = size;
@@ -136,18 +140,25 @@ void destroyActionList(ActionList * oldActionList) {
 	free(oldActionList->list);
 }
 
+uint8_t actionListCompleted() {
+	return (actionList->nextAction >= actionList->usedSize);
+}
 
 
 void checkTurn() {
+	static uint8_t turning = 0;
+
 	if (checkFuzzy(targetDegrees, sensorData.sensorStruct.compassDegrees, TURN_MARGIN)) {
+		turning = 0;
 		stop();
 		if (currentAction == ACTION_FINDING_ANGLE) {
 			findAngleToPoint();
 		} else {
 			currentAction = ACTION_IDLE;
 		}
-	} else {
-		turn(speed);
+	} else if (!turning) {
+		turning = 1;
+		turn(speed); // TODO do deze shit niet elke keer man, wtf.
 	}
 }
 
