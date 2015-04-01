@@ -17,15 +17,15 @@ namespace SwagBot {
 
 	using namespace System::Text;
 
-	
 
-	
+
+
 
 	/// <summary>
 	/// Summary for MyForm
 	/// </summary>
-	public ref class MyForm: public System::Windows::Forms::Form {
-	public:
+	public ref class MyForm : public System::Windows::Forms::Form {
+		public:
 		MyForm(void) {
 			InitializeComponent();
 			//
@@ -33,91 +33,89 @@ namespace SwagBot {
 			//
 		}
 
-	protected:
+		protected:
 		/// <summary>
 		/// Clean up any resources being used.
 		/// </summary>
 		~MyForm() {
-			if(components) {
+			if (components) {
 				delete components;
 			}
 		}
 
-	private: System::Windows::Forms::ComboBox^  cmbComm;
-	private: System::IO::Ports::SerialPort^  serialPort1;
-	private: System::Windows::Forms::Button^  cmdDisconnect;
-	private: System::Windows::Forms::Timer^  tmrGetData;
-	private: System::Windows::Forms::GroupBox^  frmSensor;
-	private: System::Windows::Forms::Label^  lblSensor;
-	private: System::Windows::Forms::Label^  lblRes0;
+		private: System::Windows::Forms::ComboBox^  cmbComm;
+		private: System::IO::Ports::SerialPort^  serialPort1;
+		private: System::Windows::Forms::Button^  cmdDisconnect;
+		private: System::Windows::Forms::Timer^  tmrGetData;
+		private: System::Windows::Forms::GroupBox^  frmSensor;
+		private: System::Windows::Forms::Label^  lblSensor;
+		private: System::Windows::Forms::Label^  lblRes0;
 
-	private: System::Windows::Forms::Label^  label5;
-	private: System::Windows::Forms::Label^  label4;
-	private: System::Windows::Forms::Label^  label3;
-	private: System::Windows::Forms::Label^  label2;
-	private: System::Windows::Forms::Label^  label1;
-	private: System::Windows::Forms::Label^  lblRes5;
+		private: System::Windows::Forms::Label^  label5;
+		private: System::Windows::Forms::Label^  label4;
+		private: System::Windows::Forms::Label^  label3;
+		private: System::Windows::Forms::Label^  label2;
+		private: System::Windows::Forms::Label^  label1;
+		private: System::Windows::Forms::Label^  lblRes5;
 
-	private: System::Windows::Forms::Label^  lblRes4;
+		private: System::Windows::Forms::Label^  lblRes4;
 
-	private: System::Windows::Forms::Label^  lblRes3;
-
-
-
-	private: System::Windows::Forms::Label^  lblRes1;
-	private: System::Windows::Forms::PictureBox^  picBack;
-
-	private: System::Windows::Forms::PictureBox^  pictureBox1;
-	private: System::Windows::Forms::PictureBox^  pictureBox3;
-	private: System::Windows::Forms::PictureBox^  picFront;
-	private: System::Windows::Forms::PictureBox^  picCompass;
-	private: System::Windows::Forms::Label^  label6;
-	private: System::Windows::Forms::PictureBox^  picLed0;
-	private: System::Windows::Forms::PictureBox^  picLed7;
-
-	private: System::Windows::Forms::PictureBox^  picLed6;
-
-	private: System::Windows::Forms::PictureBox^  picLed5;
-
-	private: System::Windows::Forms::PictureBox^  picLed4;
-
-	private: System::Windows::Forms::PictureBox^  picLed3;
-
-	private: System::Windows::Forms::PictureBox^  picLed2;
-
-	private: System::Windows::Forms::PictureBox^  picLed1;
+		private: System::Windows::Forms::Label^  lblRes3;
 
 
 
-	private: System::Windows::Forms::GroupBox^  frmControls;
-	private: System::Windows::Forms::Label^  lblD;
+		private: System::Windows::Forms::Label^  lblRes1;
+		private: System::Windows::Forms::PictureBox^  picBack;
 
-	private: System::Windows::Forms::Label^  lblS;
+		private: System::Windows::Forms::PictureBox^  pictureBox1;
+		private: System::Windows::Forms::PictureBox^  pictureBox3;
+		private: System::Windows::Forms::PictureBox^  picFront;
+		private: System::Windows::Forms::PictureBox^  picCompass;
+		private: System::Windows::Forms::Label^  label6;
+		private: System::Windows::Forms::PictureBox^  picLed0;
+		private: System::Windows::Forms::PictureBox^  picLed7;
 
-	private: System::Windows::Forms::Label^  lblA;
+		private: System::Windows::Forms::PictureBox^  picLed6;
 
-	private: System::Windows::Forms::Label^  lblW;
-	private: System::Windows::Forms::Label^  lblP;
-	private: System::Windows::Forms::Label^  lblM;
-	private: System::Windows::Forms::Label^  lblN;
-	private: System::Windows::Forms::Label^  lblKeyInfo;
-	private: System::Windows::Forms::Label^  lblRes6;
-	private: System::Windows::Forms::StatusStrip^  sStrip;
-	private: System::Windows::Forms::ToolStripStatusLabel^  lblStatus;
-	private: System::Windows::Forms::Timer^  tmrAlive;
-	private: System::Windows::Forms::ToolStripStatusLabel^  lblConnection;
-	private: System::Windows::Forms::Label^  lblRes7;
-	private: System::Windows::Forms::Label^  label7;
-	private: System::Windows::Forms::Timer^  tmrRefresh;
+		private: System::Windows::Forms::PictureBox^  picLed5;
 
-	private: System::Windows::Forms::Button^  cmdConnect;
-	private: System::Windows::Forms::CheckBox^  chkReconnect;
-	private: System::Windows::Forms::Button^  cmdReset;
-	private: System::Windows::Forms::GroupBox^  frmArduino;
-	private: System::Windows::Forms::Button^  cmdUpload;
-	private: System::Windows::Forms::GroupBox^  frmComm;
+		private: System::Windows::Forms::PictureBox^  picLed4;
+
+		private: System::Windows::Forms::PictureBox^  picLed3;
+
+		private: System::Windows::Forms::PictureBox^  picLed2;
+
+		private: System::Windows::Forms::PictureBox^  picLed1;
 
 
+
+		private: System::Windows::Forms::GroupBox^  frmControls;
+		private: System::Windows::Forms::Label^  lblD;
+
+		private: System::Windows::Forms::Label^  lblS;
+
+		private: System::Windows::Forms::Label^  lblA;
+
+		private: System::Windows::Forms::Label^  lblW;
+		private: System::Windows::Forms::Label^  lblP;
+		private: System::Windows::Forms::Label^  lblM;
+		private: System::Windows::Forms::Label^  lblN;
+		private: System::Windows::Forms::Label^  lblKeyInfo;
+		private: System::Windows::Forms::Label^  lblRes6;
+		private: System::Windows::Forms::StatusStrip^  sStrip;
+		private: System::Windows::Forms::ToolStripStatusLabel^  lblStatus;
+		private: System::Windows::Forms::Timer^  tmrAlive;
+		private: System::Windows::Forms::ToolStripStatusLabel^  lblConnection;
+		private: System::Windows::Forms::Label^  lblRes7;
+		private: System::Windows::Forms::Label^  label7;
+		private: System::Windows::Forms::Timer^  tmrRefresh;
+
+		private: System::Windows::Forms::Button^  cmdConnect;
+		private: System::Windows::Forms::CheckBox^  chkReconnect;
+		private: System::Windows::Forms::Button^  cmdReset;
+		private: System::Windows::Forms::GroupBox^  frmArduino;
+		private: System::Windows::Forms::Button^  cmdUpload;
+		private: System::Windows::Forms::GroupBox^  frmComm;
 
 
 
@@ -134,14 +132,16 @@ namespace SwagBot {
 
 
 
-	private: System::ComponentModel::IContainer^  components;
 
 
-	protected:
+		private: System::ComponentModel::IContainer^  components;
 
-	protected:
 
-	private:
+		protected:
+
+		protected:
+
+		private:
 		/// <summary>
 		/// Required designer variable.
 		/// </summary>
@@ -844,7 +844,7 @@ namespace SwagBot {
 
 		}
 
-		
+
 
 #pragma endregion
 
@@ -852,7 +852,7 @@ namespace SwagBot {
 #define KEY_UP false
 #define KEY_DOWN true
 
-	private:
+		private:
 		static array<int>^ keyCode = gcnew array<int>(7) { 0x57, 0x41, 0x44, 0x53, 0x50, 0x4D, 0x4E };
 		static array<bool>^ keyDown = gcnew array<bool>(7) { false, false, false, false, false, false, false };
 		static array<unsigned char>^ keySendUp = gcnew array<unsigned char>(8) { 'W', 'A', 'D', 'S', 'P', 'M', 'N', 'F' };
@@ -871,20 +871,20 @@ namespace SwagBot {
 		int compassDegrees = 0;
 		double PI = 3.14159265359;
 		int batteryVoltage = 0;
-		
 
 
-	private:
+
+		private:
 
 		void TriggerKeyState(int whatKey, bool whatState) {
-			if(!this->serialPort1->IsOpen) return;
+			if (!this->serialPort1->IsOpen) return;
 
-			if(whatState) { //if key was pressed
-				if(keyDown[whatKey] == false) {
+			if (whatState) { //if key was pressed
+				if (keyDown[whatKey] == false) {
 					keyDown[whatKey] = true;
 					try {
 						this->serialPort1->Write(keySendDown, whatKey, 1);
-					} catch(System::IO::IOException^) {
+					} catch (System::IO::IOException^) {
 						setStatusMessage("COMMPORT DISCONNECTED!", true);
 						Disconnect();
 						return;
@@ -894,12 +894,12 @@ namespace SwagBot {
 					//return;
 				}
 			} else {
-				if(keyDown[whatKey] == true && MouseDown[whatKey] == false) {
+				if (keyDown[whatKey] == true && MouseDown[whatKey] == false) {
 					keyDown[whatKey] = false;
 					try {
 						this->serialPort1->Write(keySendUp, whatKey, 1);
 						this->serialPort1->Write(keySendUp, whatKey, 1);//send the key twice to be sure the arduino gets it.
-					} catch(System::IO::IOException^) {
+					} catch (System::IO::IOException^) {
 						setStatusMessage("COMMPORT DISCONNECTED!", true);
 						Disconnect();
 						return;
@@ -908,7 +908,7 @@ namespace SwagBot {
 				}
 			}
 
-			if(MouseDown[whatKey] == true || keyDown[whatKey] == true) {
+			if (MouseDown[whatKey] == true || keyDown[whatKey] == true) {
 				keyLabels[whatKey]->BackColor = Color::Gray;
 			} else {
 				keyLabels[whatKey]->BackColor = Color::White;
@@ -948,18 +948,18 @@ namespace SwagBot {
 
 
 		System::Void MyForm_Unload(System::Object^  sender, System::EventArgs^  e) {
-			if(this->serialPort1->IsOpen) {
+			if (this->serialPort1->IsOpen) {
 				this->serialPort1->Close();
 			}
 		}
 
 		void loadCommports() {
-			if(this->cmbComm->DroppedDown) return;
+			if (this->cmbComm->DroppedDown) return;
 			int j = this->cmbComm->SelectedIndex;
 
 			this->cmbComm->Items->Clear();
 			this->cmbComm->Items->AddRange(serialPort1->GetPortNames());
-			if(this->cmbComm->Items->Count > 0 && j == -1) {
+			if (this->cmbComm->Items->Count > 0 && j == -1) {
 				this->cmbComm->SelectedIndex = this->cmbComm->Items->Count - 1;
 			} else if (j != -1) {
 				if (this->cmbComm->Items->Count > j) {
@@ -973,19 +973,28 @@ namespace SwagBot {
 		}
 
 		void Connect() {
-			if(this->serialPort1->IsOpen) {
+			if (this->serialPort1->IsOpen) {
 				Disconnect();
 				return;
 			}
 
-			if(this->cmbComm->SelectedIndex != -1) {
+			if (this->cmbComm->SelectedIndex != -1) {
 
 				this->serialPort1->PortName = this->cmbComm->Text;
 				this->serialPort1->Parity = System::IO::Ports::Parity::None;
 				this->serialPort1->DataBits = 8;
 
-				this->serialPort1->Open();
-				if(this->serialPort1->IsOpen) {
+				try {
+					this->serialPort1->Open();
+
+				} catch (UnauthorizedAccessException ^) {
+					setStatusMessage("Could not open '" + this->cmbComm->Text + "'!", true);
+					setControlstate(true);
+					return;
+				}
+
+
+				if (this->serialPort1->IsOpen) {
 					setStatusMessage("Connected!", false);
 					setControlstate(false);
 				} else {
@@ -996,7 +1005,7 @@ namespace SwagBot {
 		}
 
 		void setControlstate(bool EnableControls) {
-			if(!EnableControls) {
+			if (!EnableControls) {
 				this->tmrGetData->Enabled = true;
 				this->tmrAlive->Enabled = true;
 
@@ -1006,7 +1015,7 @@ namespace SwagBot {
 				this->cmdUpload->Enabled = false;
 
 				this->cmbComm->Enabled = false;
-				
+
 				this->Focus();
 			} else {
 				this->cmdDisconnect->Enabled = false;
@@ -1020,10 +1029,10 @@ namespace SwagBot {
 		}
 
 		System::Void tmrAlive_Tick(System::Object^  sender, System::EventArgs^  e) {
-			if(!this->serialPort1->IsOpen) return;
+			if (!this->serialPort1->IsOpen) return;
 			try {
 				this->serialPort1->Write(keySendUp, 7, 1); //send ack to arduino
-			} catch(System::IO::IOException^) {
+			} catch (System::IO::IOException^) {
 				setStatusMessage("COMMPORT DISCONNECTED!", true);
 				Disconnect();
 				return;
@@ -1031,9 +1040,9 @@ namespace SwagBot {
 
 
 			TimeOutCount++;
-			if(TimeOutCount > 3 && TimeOutCount < 10) {
+			if (TimeOutCount > 3 && TimeOutCount < 10) {
 				setStatusMessage("Timing out...", false);
-			} else if(TimeOutCount == 10) {
+			} else if (TimeOutCount == 10) {
 				setStatusMessage("Connection Lost!", true);
 				ForceReconnect();
 				TimeOutCount = 0;
@@ -1045,9 +1054,9 @@ namespace SwagBot {
 			array<int>^ sensordata = gcnew array<int>(12);
 			int i = 0;
 
-			if(!this->serialPort1->IsOpen) return;
+			if (!this->serialPort1->IsOpen) return;
 
-			while(this->serialPort1->BytesToRead > 0) {
+			while (this->serialPort1->BytesToRead > 0) {
 				//gchar = this->serialPort1->ReadChar();
 				//try {
 				gchar = this->serialPort1->ReadByte();
@@ -1057,11 +1066,11 @@ namespace SwagBot {
 
 				TimeOutCount = 0;
 
-				if(gchar == 255 && bufferlen >= 11) { //end of bufferdata
+				if (gchar == 255 && bufferlen >= 11) { //end of bufferdata
 
 					setStatusMessage("Connected!", false);
 
-					for(i = 0; i < 11; i++) {
+					for (i = 0; i < 11; i++) {
 						sensordata[i] = databuffer[bufferlen - 11 + i];
 					}
 
@@ -1071,42 +1080,42 @@ namespace SwagBot {
 					this->lblRes1->Text = "" + (sensordata[1] - 128);
 					int leds = sensordata[2];
 
-					if(1 & leds) {
+					if (1 & leds) {
 						this->picLed0->BackColor = Color::Lime;
 					} else {
 						this->picLed0->BackColor = Color::DarkGreen;
 					}
-					if(2 & leds) {
+					if (2 & leds) {
 						this->picLed1->BackColor = Color::Red;
 					} else {
 						this->picLed1->BackColor = Color::DarkRed;
 					}
-					if(4 & leds) {
+					if (4 & leds) {
 						this->picLed2->BackColor = Color::Red;
 					} else {
 						this->picLed2->BackColor = Color::DarkRed;
 					}
-					if(8 & leds) {
+					if (8 & leds) {
 						this->picLed3->BackColor = Color::Lime;
 					} else {
 						this->picLed3->BackColor = Color::DarkGreen;
 					}
-					if(16 & leds) {
+					if (16 & leds) {
 						this->picLed4->BackColor = Color::Red;
 					} else {
 						this->picLed4->BackColor = Color::DarkRed;
 					}
-					if(32 & leds) {
+					if (32 & leds) {
 						this->picLed5->BackColor = Color::Red;
 					} else {
 						this->picLed5->BackColor = Color::DarkRed;
 					}
-					if(64 & leds) {
+					if (64 & leds) {
 						this->picLed6->BackColor = Color::Yellow;
 					} else {
 						this->picLed6->BackColor = Color::Olive;
 					}
-					if(128 & leds) {
+					if (128 & leds) {
 						this->picLed7->BackColor = Color::Red;
 					} else {
 						this->picLed7->BackColor = Color::DarkRed;
@@ -1114,9 +1123,9 @@ namespace SwagBot {
 
 					this->lblRes3->Text = "" + sensordata[3];
 					this->lblRes4->Text = "" + sensordata[4];
-					this->lblRes5->Text = "" + sensordata[7];
-					
-					
+					this->lblRes5->Text = "" + sensordata[5];
+
+
 					batteryVoltage = sensordata[6];
 					compassDegrees = sensordata[7];
 					this->picCompass->Refresh();
@@ -1124,21 +1133,21 @@ namespace SwagBot {
 					this->picCompass->Refresh();
 
 					//picFront
-					if(sensordata[8] == 0) {
+					if (sensordata[8] == 0) {
 						this->lblRes6->Text = "Manual Mode";
 					} else {
 						this->lblRes6->Text = "Automatic Mode";
 					}
 					this->lblConnection->Text = "TimeOuts: " + sensordata[9];
-					if(sensordata[9] > 8) {
+					if (sensordata[9] > 8) {
 						this->lblConnection->ForeColor = Color::Red;
-					} else if(sensordata[9] > 8) {
+					} else if (sensordata[9] > 8) {
 						this->lblConnection->ForeColor = Color::Olive;
 					} else {
 						this->lblConnection->ForeColor = Color::Black;
 					}
 
-					if(sensordata[10] >= 0 && sensordata[10] <= 5) {
+					if (sensordata[10] >= 0 && sensordata[10] <= 5) {
 						this->lblRes7->Text = Faces[sensordata[10]];
 					} else {
 						this->lblRes7->Text = Faces[6];
@@ -1146,10 +1155,10 @@ namespace SwagBot {
 
 
 
-				} else if(gchar == 255) {
+				} else if (gchar == 255) {
 					bufferlen = 0;
 				} else {
-					if(bufferlen < 100 - 1) {
+					if (bufferlen < 100 - 1) {
 						databuffer[bufferlen++] = gchar;
 					} else {
 						setStatusMessage("Buffer Overflow!", true);
@@ -1162,7 +1171,7 @@ namespace SwagBot {
 				}
 			}
 
-			for(i = 0; i < 7; i++) {
+			for (i = 0; i < 7; i++) {
 				this->TriggerKeyState(i, GetAsyncKeyState(keyCode[i]) != 0);
 			}
 
@@ -1197,7 +1206,7 @@ namespace SwagBot {
 		}
 
 		void setStatusMessage(String ^ nMessage, bool isError) {
-			if(isError) {
+			if (isError) {
 				this->lblStatus->Text = nMessage;
 				this->lblStatus->ForeColor = Color::Red;
 			} else {
@@ -1207,12 +1216,12 @@ namespace SwagBot {
 		}
 
 		void Disconnect() {
-			if(this->serialPort1->IsOpen) {
+			if (this->serialPort1->IsOpen) {
 				this->tmrGetData->Enabled = false;
 				this->tmrAlive->Enabled = false;
 				try {
 					this->serialPort1->Close();
-				} catch(System::IO::IOException^) {
+				} catch (System::IO::IOException^) {
 
 				}
 				loadCommports();
@@ -1225,8 +1234,8 @@ namespace SwagBot {
 		}
 
 		void setPercentage(int percentage) {
-			if(percentage < 0) percentage = 0;
-			if(percentage > 100) percentage = 100;
+			if (percentage < 0) percentage = 0;
+			if (percentage > 100) percentage = 100;
 
 			this->picFront->Height = (int)((this->picBack->Height - 4) / 100.0 * percentage);
 			this->picFront->Top = this->picBack->Top + (this->picBack->Height - this->picFront->Height - 2);
@@ -1248,6 +1257,9 @@ namespace SwagBot {
 			String ^ degrees = "" + Math::Round(compassDegrees / 255.0 * 360.0);
 
 			System::Drawing::Font^ myFont = gcnew System::Drawing::Font("consolas", 14);
+
+			System::Drawing::Font^ debugFont = gcnew System::Drawing::Font("consolas", 10);
+
 
 			int size = 160 / 2;
 
@@ -1278,6 +1290,9 @@ namespace SwagBot {
 			e->Graphics->DrawString("S", myFont, Brushes::Blue, (float)size, (float)(size * 2.0 - 10.0), alignText);
 			e->Graphics->DrawString("W", myFont, Brushes::Blue, 10.0, (float)size, alignText);
 
+			e->Graphics->DrawString("" + compassDegrees, debugFont, Brushes::Blue, this->picCompass->Width - 13, this->picCompass->Height - 7, alignText);
+			
+
 		}
 
 		void picFront_Paint(Object^ sender, System::Windows::Forms::PaintEventArgs^ e) {
@@ -1292,7 +1307,7 @@ namespace SwagBot {
 			e->Graphics->DrawString((batteryVoltage / 10.0) + "", myFont, Brushes::Gray, this->picFront->Width / 2, this->picFront->Height - 6, alignText);
 		}
 
-	private:
+		private:
 		System::Void picCompass_Click(System::Object^  sender, System::EventArgs^  e) {
 			this->picCompass->Refresh();
 		}
@@ -1424,31 +1439,31 @@ namespace SwagBot {
 		}
 
 		System::Void tmrRefresh_Tick(System::Object^  sender, System::EventArgs^  e) {
-			if(this->cmdConnect->Enabled == true) {
+			if (this->cmdConnect->Enabled == true) {
 				loadCommports();
 			}
 
-	}
+		}
 
-	System::Void cmdReset_Click(System::Object^  sender, System::EventArgs^  e) {
-		Connect();
-		Application::DoEvents();
-		Sleep(200);
-		ResetArduino();
-		Application::DoEvents();
-		Sleep(200);
+		System::Void cmdReset_Click(System::Object^  sender, System::EventArgs^  e) {
+			Connect();
+			Application::DoEvents();
+			Sleep(200);
+			ResetArduino();
+			Application::DoEvents();
+			Sleep(200);
 
-	}
-	System::Void cmdUpload_Click(System::Object^  sender, System::EventArgs^  e) {
-		Connect();
-		Application::DoEvents();
-		Sleep(200);
-		ResetArduino();
-		Application::DoEvents();
-		Sleep(200);
-		ShellExecute((HWND) this->Handle.ToInt32(), TEXT("open"), TEXT("flashRicardoLaptop.bat"), TEXT(""), TEXT("C:\\Users\\Jucko13\\Documents\\GitHub\\swagbot\\software\\arduino\\src\\"), SW_SHOWNORMAL);
-	}
+		}
+		System::Void cmdUpload_Click(System::Object^  sender, System::EventArgs^  e) {
+			Connect();
+			Application::DoEvents();
+			Sleep(200);
+			ResetArduino();
+			Application::DoEvents();
+			Sleep(200);
+			ShellExecute((HWND) this->Handle.ToInt32(), TEXT("open"), TEXT("flashRicardoLaptop.bat"), TEXT(""), TEXT("C:\\Users\\Jucko13\\Documents\\GitHub\\swagbot\\software\\arduino\\src\\"), SW_SHOWNORMAL);
+		}
 
-	
-};
+
+	};
 }

@@ -17,7 +17,7 @@ void updateSensors(){
 }
 
 void updateBatteryLeds(){
-	if(ledsOn == 1 || sensorData.sensorStruct.batteryPercentage > 50){
+	if(ledsOn == 1 || sensorData.sensorStruct.batteryPercentage > 68){
 		instructionData.instructionstruct.ledStatus &= ~(1<<1 | 1<<2 | 1<<4 | 1<<5);
 		ledsOn = 0;
 	}else{

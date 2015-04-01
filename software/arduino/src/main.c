@@ -31,17 +31,25 @@ int main(void)
 	setSteeringMode(manual);
 	resetAutomaticMode(); //TODO init automatic mode
 	
-	setEmotion(1);
-	
+	//setScrollText("/gSwagbot /bPro");
+	setEmotion(2);
 	moveMotors(0, 0);
 	
 	while(1){
-		if(counter++ >= 0x8FFF){ //im there
+		if(counter++ >= 0x7FFF){ //im there
 			counter = 0;
 			updateSensors(); //could not create timer for this one.
 		}
 		updateModeManager();
 		updateCommunication();
+		
+		/*
+		if(sensorData.sensorStruct.bumperLeft == 1){
+			setEmotion(1);
+		}else{
+			//setEmotion(2);
+			setSubEmotion(sensorData.sensorStruct.compassDegrees / 11);
+		}*/
 	}
 
 	return 1998;

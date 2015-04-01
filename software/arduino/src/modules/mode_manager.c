@@ -19,18 +19,10 @@ void setSteeringMode(enum SteeringMode s) {
 		}
 	}
 
-	/*
-	if(steeringMode == manual){
-		sensorData.sensorStruct.steeringMode = 1;
-	}else if(steeringMode == automatic){
-		sensorData.sensorStruct.steeringMode = 2;
-	}*/
-
 	steeringMode = s;
 }
 
 void inputKeyDown (uint8_t key) {
-	//TODO
 	if (steeringMode == automatic) {
         //handleKeyDownAutomaticMode(key);
 	} else {
