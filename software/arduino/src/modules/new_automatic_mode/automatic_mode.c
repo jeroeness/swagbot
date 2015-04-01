@@ -2,18 +2,18 @@
 
 volatile ActionList * actionList;
 
-volatile uint8_t currentAction = ACTION_IDLE;
+volatile uint8_t currentAction;
 
-volatile uint16_t targetDegrees;
-volatile uint16_t targetDistance;
+volatile uint16_t targetDegrees = 0;
+volatile uint16_t targetDistance = 0;
 
-volatile uint16_t targetMillis;
-volatile uint16_t currentMillis;
-volatile uint16_t overflowCount;
+volatile uint16_t targetMillis = 0;
+volatile uint16_t currentMillis = 0;
+volatile uint16_t overflowCount = 0;
 
 
-volatile int8_t speed;
-volatile int8_t defaultSpeed;
+volatile int8_t speed = 0;
+volatile int8_t defaultSpeed = 100;
 
 volatile ActionList normalActionList;
 volatile ActionList routeFindingActionList;
@@ -25,6 +25,8 @@ void initAutomaticMode() {
 	initFunctionList();
 	initActionList(2);
 	initTimer0();
+
+	currentAction = ACTION_IDLE;
 
 	addToActionList(F_TURN_BY_DEGREES, 50, 50);
 	addToActionList(F_MOVE_FOR, 100, 200);
