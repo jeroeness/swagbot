@@ -4,7 +4,7 @@
  * Created: 3-3-2015 11:07:02
  *  Author: gerald
  *
- * v1.15
+ * v1.10
  */
 
 #include "../globalincsanddefs.h"
@@ -36,6 +36,7 @@ void i2c_init(uint8_t masteraddress) {
 	TCCR1B |= (1 << CS12) | (0<<CS10); //timer1: prescaler of 256
 	TCNT1 = 30000; //timer1: init counter
 	TIMSK1 |= (1 << TOIE1); //timer0: enable overflow interrupt
+	
 }
 
 ISR(TIMER1_OVF_vect){
@@ -68,7 +69,7 @@ void i2c_write_cmd_wrap(void) {
 
 void i2c_read_sensors_wrap(void) {
 	i2c_readFromCompass();
-	i2c_readFromRP6();
+	i2c_readFromRP6();	
 }
 
 
@@ -83,6 +84,7 @@ void i2c_readFromRP6(void) {
 }
 
 void i2c_readFromCompass(void) {
+	//i2c_read(0xC0, 1, sizeof(sensorData.sensorStruct) - 1, sizeof(sensorData.sensorStruct.compassDegrees));
 	i2c_read(0xC0, 1, sizeof(sensorData.sensorStruct) - 1, sizeof(sensorData.sensorStruct.compassDegrees));
 	return;
 }
@@ -104,7 +106,6 @@ void i2c_waitforidle(void) {
 
 void i2c_write(uint8_t destaddr, uint8_t destoffs, uint8_t offset, uint8_t amount) {
 	i2c_waitforidle();
-	i2c_state = BUSY;
 	destaddress = (destaddr & 0xFE) | 0;// write
 	destoffset = destoffs;
 	startindex = offset;
@@ -124,7 +125,6 @@ void i2c_write(uint8_t destaddr, uint8_t destoffs, uint8_t offset, uint8_t amoun
 
 void i2c_read(uint8_t destaddr, uint8_t destoffs, uint8_t offset, uint8_t amount) {
 	i2c_waitforidle();
-	i2c_state = BUSY;
 	destaddress = (destaddr & 0xFE) | 1;// read
 	destoffset = destoffs;
 	startindex = offset;
