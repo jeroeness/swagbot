@@ -20,7 +20,7 @@ extern union USD sensorData;
 
 uint8_t volatile destaddress, destoffset, startindex, stopindex;
 
-enum i2c_rxtx_stats {IDLE, BUSY, ERROR};
+enum i2c_rxtx_stats {IDLE, BUSY};
 enum i2c_rxtx_stats volatile i2c_state;
 
 uint8_t volatile OverFlowToggle = 0; //for timer overflow
@@ -90,7 +90,7 @@ void i2c_readFromCompass(void) {
 
 void i2c_waitforidle(void) {
 	uint8_t register timeoutcounter = 200;
-	while (i2c_state != IDLE)	// wait while async process is still busy
+	while (i2c_state == BUSY)	// wait while async process is still busy
 	{
 		if (!--timeoutcounter)
 		{
