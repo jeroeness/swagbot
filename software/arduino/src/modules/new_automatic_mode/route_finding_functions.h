@@ -2,7 +2,7 @@
 #define ROUTE_FINDING_FUNCTIONS
 //DEFINES:
 
-#define MIN_DISTANCE 		50
+#define MIN_DISTANCE 		10 
 #define OUTSIDE_MARGIN_RP6	10
 
 

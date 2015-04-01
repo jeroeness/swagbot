@@ -28,7 +28,7 @@ void initAutomaticMode() {
 
 	currentAction = ACTION_IDLE;
 
-	addToActionList(F_TURN_BY_DEGREES, 50, 50);
+	addToActionList(F_TURN_FOR, 50, 50);
 	addToActionList(F_MOVE_FOR, 100, 200);
 }
 
@@ -48,7 +48,7 @@ void updateAutomaticMode() {
 			findAngleToPoint();
 		}
 	} else {
-		//checkObstacle();
+		checkObstacle();
 	}
 	
 
