@@ -86,6 +86,8 @@ void i2c_readFromRP6(void) {
 }
 
 void i2c_readFromCompass(void) {
+	//compass information: http://www.robot-electronics.co.uk/htm/cmps3tech.htm
+	
 	i2c_read(0xC0, 1, sizeof(sensorData.sensorStruct) - 1, sizeof(sensorData.sensorStruct.compassDegrees));
 	return;
 }
