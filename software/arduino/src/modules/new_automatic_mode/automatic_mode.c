@@ -48,7 +48,7 @@ void updateAutomaticMode() {
 			findAngleToPoint();
 		}
 	} else {
-		checkObstacle();
+		//checkObstacle();
 	}
 	
 

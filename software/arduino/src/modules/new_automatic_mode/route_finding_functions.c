@@ -19,13 +19,13 @@ extern volatile ActionList routeFindingActionList;
 
 extern union USD sensorData; 
 
-volatile uint8_t previousDirection; // TODO implement the use of this. //think fixed
+volatile uint8_t previousDirection = 0; // TODO implement the use of this. //think fixed
 
 
-volatile float totalDeviation;
-volatile float desiredProgression;
-volatile uint8_t routeFindingDepth;				
-volatile uint8_t findingAngleToPoint;
+volatile float totalDeviation = 0;
+volatile float desiredProgression = 0;
+volatile uint8_t routeFindingDepth = 0;				
+volatile uint8_t findingAngleToPoint = 0;
 
 void checkObstacle() {
 	if (sensorData.sensorStruct.ultrasonic > MIN_DISTANCE)
