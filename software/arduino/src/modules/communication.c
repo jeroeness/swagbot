@@ -33,7 +33,7 @@ void initCommunication() {
 	instructionData.instructionstruct.ledStatus = 1<<7;
 	sensorData.sensorStruct.ultrasonic = 0;
 	sensorData.sensorStruct.compassDegrees = 0;
-	
+
 	for (int8_t i = 0; i < KEYSTATESCOUNT; i++) {
         keyState[i] = 0;
     }
@@ -56,43 +56,6 @@ void updateCommunication () {
 	printVerbose();
 }
 
-char* comm_itoa(int i, char b[]){
-	char const digit[] = "0123456789";
-	char* p = b;
-	if(i<0) {
-		*p++ = '-';
-		i *= -1;
-	}
-	int shifter = i;
-	do{ //Move to where representation ends
-		++p;
-		shifter = shifter/10;
-	}while(shifter);
-	*p = '\0';
-	do{ //Move back, inserting digits as you go
-		*--p = digit[i%10];
-		i = i/10;
-	}while(i);
-	return b;
-}
-
-char* uitoa(unsigned int i, char b[]){
-	char const digit[] = "0123456789";
-	char* p = b;
-	int shifter = i;
-	do{ //Move to where representation ends
-		++p;
-		shifter = shifter/10;
-	}while(shifter);
-	*p = '\0';
-	do{ //Move back, inserting digits as you go
-		*--p = digit[i%10];
-		i = i/10;
-	}while(i);
-	return b;
-}
-
-
 void printVerbose() {
 
 	if (vebosityTimer-- == 0) {
@@ -109,7 +72,7 @@ void printVerbose() {
 
 		while (!outputBufferWalked());
 		clearBuffer();
-		
+
 		uint8_t str[dl];
 
         uint8_t i = 0;
@@ -126,7 +89,7 @@ void printVerbose() {
 		str[i++] = currentFace;
 
 		str[i++] = 255;
-		
+
 		for (i = 0; i < (dl-1); i++) {
 			if (str[i] == 255) str[i]--;
 		}
@@ -158,18 +121,10 @@ int8_t keyIndex (char key) {
 
 char charIndex (int8_t key) {
     switch (key) {
-        case 0:
-			return 'w';
-			break;
-        case 1:
-			return 'a';
-			break;
-        case 2:
-			return 's';
-			break;
-        case 3:
-			return 'd';
-			break;
+        case 0:	return 'w';
+        case 1:	return 'a';
+        case 2:	return 's';
+        case 3: return 'd';
     }
 	return 'w';
 }
@@ -208,22 +163,9 @@ void readInputs () {
 		}
     }
 
-	//the following loop is not needed because:
-	//we set on the keypress: the motor speeds
-	//those values will never change in the struct so no need for this loop
-	//this loop hangs the transmitter because of the 12c_lib wires not to be connected to the arduino
-	//this results in an timeout of the i2c_lib. I will send 2 chars after eachother in the GUI on keyUp to be sure
-	//the motors will be off btw.
-
-	//if i2c is connected this loop will drastically slowdown the arduino process. WHY?
-	//because this function is triggered as fast as it can. This loop will be so much to handle in that way
-	//that it will slow down the custom timers like 0x8FFF values.
-	
     for (int8_t i = 0; i < KEYSTATESCOUNT; i++) {
         if (keyState[i] == 1) {
             inputKeyDown(charIndex(i));
         }
     }
-
-
 }
