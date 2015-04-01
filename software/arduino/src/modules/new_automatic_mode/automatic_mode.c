@@ -163,7 +163,7 @@ void checkTurn() {
 		}
 	} else if (!turning) {
 		turning = 1;
-		turn(speed); // TODO do deze shit niet elke keer man, wtf.
+		turn(speed);
 	}
 }
 

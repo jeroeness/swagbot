@@ -24,6 +24,7 @@ void turnToDegrees(Action * action) {
 	action->origin = sensorData.sensorStruct.compassDegrees;
 
 	setTargetDegrees(action->target);
+	
 
 	// TODO check which way to turn
 
