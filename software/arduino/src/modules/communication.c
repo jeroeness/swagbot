@@ -60,7 +60,7 @@ void printVerbose() {
 
 	if (vebosityTimer-- == 0) {
 
-		vebosityTimer = 0x5FFF;
+		vebosityTimer = 0x4FFF;
 
 /*
 		if(sensorData.sensorStruct.compassDegrees > 240){
@@ -101,6 +101,7 @@ void printVerbose() {
 		connectionTimeOut++;
 		if(connectionTimeOut > 4){ //about 2 seconds i hope then connection timeout?
 			//do something with the timout? automatic mode?
+			
 		}
 
 

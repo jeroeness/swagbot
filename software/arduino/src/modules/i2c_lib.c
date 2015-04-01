@@ -36,6 +36,9 @@ void i2c_init(uint8_t masteraddress) {
 	TCCR1B |= (1 << CS12) | (0<<CS10); //timer1: prescaler of 256
 	TCNT1 = 30000; //timer1: init counter
 	TIMSK1 |= (1 << TOIE1); //timer0: enable overflow interrupt
+	
+	DDRB |= 1<<PB7; //led on the arduino mega 2560 on pin 13
+	
 }
 
 ISR(TIMER1_OVF_vect){
@@ -58,7 +61,7 @@ ISR(TIMER1_OVF_vect){
 			break;
 	}
 	
-	TCNT1 = 50000;
+	TCNT1 = 59000;
 }
 
 
@@ -105,6 +108,8 @@ void i2c_waitforidle(void) {
 void i2c_write(uint8_t destaddr, uint8_t destoffs, uint8_t offset, uint8_t amount) {
 	i2c_waitforidle();
 	i2c_state = BUSY;
+	PORTB |= 1<<PB7; //pin 13 led on
+	
 	destaddress = (destaddr & 0xFE) | 0;// write
 	destoffset = destoffs;
 	startindex = offset;
@@ -125,6 +130,8 @@ void i2c_write(uint8_t destaddr, uint8_t destoffs, uint8_t offset, uint8_t amoun
 void i2c_read(uint8_t destaddr, uint8_t destoffs, uint8_t offset, uint8_t amount) {
 	i2c_waitforidle();
 	i2c_state = BUSY;
+	PORTB |= 1<<PB7; //pin 13 led on
+	
 	destaddress = (destaddr & 0xFE) | 1;// read
 	destoffset = destoffs;
 	startindex = offset;
@@ -152,6 +159,8 @@ void i2c_stop(void)
 {
 	TWCR = (1 << TWINT) | (1 << TWEA) | (1 << TWSTO) | (1 << TWEN) | (1 << TWIE);
 	while(TWCR & (1 << TWSTO));
+	
+	PORTB &= ~(1<<PB7); //pin 13 led off
 	
 	i2c_state = IDLE;
 	return;
@@ -217,7 +226,7 @@ ISR(TWI_vect)
 		//-----------------------------------------------------------------------------------------/\ slave /\  |  \/ master \/
 
 		case 0x08:	// START condition was send					MR
-			i2c_state = BUSY;
+			//i2c_state = BUSY;
 			rwaddress = startindex;
 			TWDR = destaddress & 0xFE;//write first
 			i2c_continue();
@@ -279,6 +288,7 @@ ISR(TWI_vect)
 		case 0x38:	// arbitration lost (SLA+W/R or data)				MT/MR
 			i2c_continue();
 			i2c_state = IDLE;
+			PORTB &= ~(1<<PB7); //pin 13 led off
 			break;
 
 		case 0x20:	// SLA+W sent, nAck was received				MT

@@ -148,8 +148,8 @@ void updateEmotion(void){
 			
 		case 1: //angry red face >:(
 			clearDisplayData();
-			rd[0] = 0x81; rd[1] = 0x66; rd[3] = 0x24; 
-			rd[4] = 0x24; rd[6] = 0x7E; rd[7] = 0x81; 
+			rd[1] = 0x24; rd[2] = 0x24; rd[5] = 0x3C;
+			rd[6] = 0x42; rd[7] = 0x81;
 			break;
 			
 		case 2: //compass
@@ -210,6 +210,9 @@ void updateLedGrid(void){
 		CurrentPrintLine++;
 		if(CurrentPrintLine == 8) CurrentPrintLine = 0;
 	}
+	
+	//CurrentPrintLine++;
+	//if(CurrentPrintLine == 8) CurrentPrintLine = 0;
 	
 	pushArraysToGrid(CurrentPrintLine,CurrentPrintColor);
 }

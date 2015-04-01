@@ -2,7 +2,7 @@
 
 volatile ActionList * actionList;
 
-volatile uint8_t currentAction;
+volatile uint8_t currentAction = ACTION_IDLE;
 
 volatile uint16_t targetDegrees;
 volatile uint16_t targetDistance;
@@ -31,6 +31,8 @@ void initAutomaticMode() {
 
 void updateAutomaticMode() {
 	checkCrash();
+	
+	
 	if (routeFindingDepth > 0) {
 		if (currentAction == ACTION_IDLE && checkFuzzy(totalDeviation, 0, 5)) { // TODO gauge 5 to correct value
 			// TODO return original actionList
@@ -42,6 +44,7 @@ void updateAutomaticMode() {
 	} else {
 		checkObstacle();
 	}
+	
 
 	switch (currentAction) {
 		case ACTION_TURN:
