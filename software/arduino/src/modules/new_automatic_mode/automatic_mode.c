@@ -36,22 +36,6 @@ void updateAutomaticMode() {
 	checkCrash();
 	
 	
-	if (routeFindingDepth > 0) {
-		if (currentAction == ACTION_IDLE && checkFuzzy(totalDeviation, 0, 5)) { // TODO gauge 5 to correct value
-			// TODO return original actionList
-			if(actionListCompleted())
-				finishRouteFinding();
-			else 
-				endRouteFinding();
-		} else {
-			// TODO find the new angle and continue route finding.
-			findAngleToPoint();
-		}
-	} else {
-		checkObstacle();
-	}
-	
-
 	switch (currentAction) {
 		case ACTION_TURN:
 		case ACTION_FINDING_ANGLE:
@@ -60,7 +44,23 @@ void updateAutomaticMode() {
 		case ACTION_MOVE:
 			checkMove();
 			break;
+		case ACTION_WAIT:
+			if (routeFindingDepth == 0)
+				checkObstacle(); // WHEN MOVING_FOR or TURNING_FOR // TODO check if moving forward
+
+			break;
 		case ACTION_IDLE:
+			if (routeFindingDepth > 0) {
+				if (checkFuzzy(totalDeviation, 0, 5)) { // TODO gauge 5 to correct value
+					if(actionListCompleted())
+						finishRouteFinding();
+					else 
+						endRouteFinding();
+				} else {
+					findAngleToPoint();
+				}
+			}
+
 			executeNextAction();
 			break;
 	}
