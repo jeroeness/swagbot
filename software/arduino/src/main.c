@@ -17,7 +17,7 @@ int main(void)
 	
 	PORTD = 3;
 
-	i2c_init(0xA8);
+	i2c_init();
 	initAutomaticMode();
 
 	initCommunication();
