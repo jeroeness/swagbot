@@ -47,7 +47,7 @@ int moveMotors(int8_t speedL, int8_t speedR){
 	instructionData.instructionstruct.motorLeft = speedL;
 	instructionData.instructionstruct.motorRight = speedR;
 	
-	i2c_write_cmd_wrap();
+	i2c_writeToRP6();
 
 	return 1;
 }

@@ -6,7 +6,7 @@ extern union USD sensorData;
 void diagnostics(){
 	int step = 0;
 	while(step < 4){
-		i2c_read_sensors_wrap();
+		//i2c_readFromRP6(); // i2c timer is already running so this should not be nessesary
 
 		//compass checks
 		if(step==0 && sensorData.sensorStruct.compassDegrees){	
