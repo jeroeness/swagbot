@@ -5,17 +5,23 @@ extern union USD sensorData;
 
 void diagnostics(){
 	int step = 0;
+	int compassTemp;
+	
 	while(step < 4){
-		//i2c_readFromRP6(); // i2c timer is already running so this should not be nessesary
-
 		//compass checks
-		if(step==0 && sensorData.sensorStruct.compassDegrees){	
-			step = 1;		//next step	
-			turnFunction();
-			//setScrollText("/gCompass Check Passed");
-			specialDelay();		//wait a few seconds
-			//clearDisplayData();	//clear the ledgrid
-			//setScrollText("/bLeft Bumper Check");
+		if(step==0){	
+			compassTemp = sensorData.sensorStruct.compassDegrees;
+			turn(-100);
+			_delay_ms(100);
+			stop();
+			if(sensorData.sensorStruct.compassDegrees != compassTemp){
+				step = 1;		//next step	
+				turnFunction();
+				//setScrollText("/gCompass Check Passed");
+				//specialDelay();		//wait a few seconds
+				//clearDisplayData();	//clear the ledgrid
+				//setScrollText("/bLeft Bumper Check");
+			}
 		}
 		
 		//bumper L
@@ -24,7 +30,7 @@ void diagnostics(){
 			turnFunction();
 			//clearDisplayData();	//clear ledgrid
 			//checkPassed();		//write "check passed"
-			specialDelay();		//wait a few seconds
+			//specialDelay();		//wait a few seconds
 			//clearDisplayData();	//clear ledgrid
 			//setScrollText("/bRight Bumper Check");
 		}
@@ -35,7 +41,7 @@ void diagnostics(){
 			turnFunction();
 			//clearDisplayData();	//clear ledgrid
 			//checkPassed();		//write "check passed"
-			specialDelay();		//wait a few seconds
+			//specialDelay();		//wait a few seconds
 			//clearDisplayData();	//clear ledgrid
 			//setScrollText("/bSonar Check");
 		}
@@ -48,7 +54,7 @@ void diagnostics(){
 			//turnByDegrees(120);	//check motors by turning
 			//turnByDegrees(120);
 			//turnByDegrees(120);
-			specialDelay();		//wait a few seconds
+			//specialDelay();		//wait a few seconds
 			//clearDisplayData();	//clear ledgrid
 		}
 	}
