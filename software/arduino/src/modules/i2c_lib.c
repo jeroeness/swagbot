@@ -87,13 +87,13 @@ void i2c_read_sensors_wrap(void)
 
 void i2c_writeToRP6(void)
 {
-	i2c_write(0xAA, 0, instructionData.instructionstruct, sizeof(instructionData.instructionstruct));
+	i2c_write(0xAA, 0, (uint8_t *) &(instructionData.instructionstruct), sizeof(instructionData.instructionstruct));
 	return;
 }
 
 void i2c_readFromRP6(void)
 {
-	i2c_read(0xAA, 0, sensorData.sensorStruct, sizeof(sensorData.sensorStruct) - 2);
+	i2c_read(0xAA, 0, (uint8_t *) &(sensorData.sensorStruct), sizeof(sensorData.sensorStruct) - 2);
 	return;
 }
 
@@ -101,7 +101,7 @@ void i2c_readFromRP6(void)
 void i2c_SendCompassCalibrateCmd(void)
 {
 	sensorData.sensorStruct.compassDegrees = 0xFF;
-	i2c_write(0xC0, 0x0F, &(sensorData.sensorStruct.compassDegrees), sizeof(sensorData.sensorStruct.compassDegrees);
+	i2c_write(0xC0, 0x0F, &(sensorData.sensorStruct.compassDegrees), sizeof(sensorData.sensorStruct.compassDegrees));
 	i2c_waitforidle();
 	return;
 }

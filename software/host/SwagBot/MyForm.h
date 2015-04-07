@@ -1130,6 +1130,9 @@ namespace SwagBot {
 					compassDegrees = sensordata[7];
 					this->picCompass->Refresh();
 					setPercentage(sensordata[6]);
+					//batteryVoltage = 83;
+					//setPercentage(83);
+					
 					this->picCompass->Refresh();
 
 					//picFront
