@@ -8,5 +8,6 @@
 void diagnostics();
 void checkPassed();
 void specialDelay();
+void turnFunction();
 
 #endif // STARTUPCHECKS.H
