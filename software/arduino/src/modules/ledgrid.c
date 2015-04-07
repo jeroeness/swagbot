@@ -180,7 +180,36 @@ void updateEmotion(void){
 			printCharacter(rd, num1 + '0', 0, 2);
 			printCharacter(gd, num2 + '0', 4, 2);
 			break;
+			
+		case 6: // IT'S A ME, MARIO!
+			clearDisplayData();
+			rd[0] = 0xFF; gd[0] = 0xC3; bd[0] = 0xC3; 
+			rd[1] = 0xFF; gd[1] = 0xA3; bd[1] = 0xA3; 
+			rd[2] = 0xD7; gd[2] = 0xD7; bd[2] = 0xEB; 
+			rd[3] = 0xCF; gd[3] = 0xCF; bd[3] = 0xC3; 
+			rd[4] = 0xDB; gd[4] = 0x81; bd[4] = 0x24; 
+			rd[5] = 0xC3; gd[5] = 0xC3; bd[5] = 0xFF; 
+			rd[6] = 0xC3; gd[6] = 0xC3; bd[6] = 0xFF; 
+			rd[7] = 0xDB; gd[7] = 0xDB; bd[7] = 0xDB; 
+			break;
 		
+		case 7: // Space invaders (animated) alien 1
+			if(currentSubFace > 1){ currentSubFace = 0;}
+			clearDisplayData();
+			switch(currentSubFace){
+				case 0:
+					gd[0] = 0x18; gd[1] = 0x3C; gd[2] = 0x7E; 
+					gd[3] = 0xDB; gd[4] = 0xFF; gd[5] = 0x5A; 
+					gd[6] = 0x81; gd[7] = 0x42; 
+					break;
+					
+				case 1:
+					gd[0] = 0x18; gd[1] = 0x3C; gd[2] = 0x7E; 
+					gd[3] = 0xDB; gd[4] = 0xFF; gd[5] = 0x24; 
+					gd[6] = 0x5A; gd[7] = 0xA5; 
+					break;
+			}
+					
 		case 254: //scrollable text
 			clearDisplayData();
 			for(i = 0; i < scrollLength; i++){
