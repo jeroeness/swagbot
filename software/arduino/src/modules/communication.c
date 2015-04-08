@@ -4,7 +4,7 @@
 
 #define KEYSTATESCOUNT 4
 
-#define dl 12 //datalength
+#define dl 11 //datalength
 
 extern union UID instructionData;
 extern union USD sensorData;
@@ -81,8 +81,7 @@ void printVerbose() {
 		str[i++] = instructionData.instructionstruct.motorRight+128;
 		str[i++] = instructionData.instructionstruct.ledStatus;
 		str[i++] = sensorData.sensorStruct.ultrasonic;
-		str[i++] = sensorData.sensorStruct.bumperLeft;
-		str[i++] = sensorData.sensorStruct.bumperRight;
+		str[i++] = (sensorData.sensorStruct.bumperLeft<<1) | (sensorData.sensorStruct.bumperRight<<0);
 		str[i++] = sensorData.sensorStruct.batteryPercentage;
 		str[i++] = sensorData.sensorStruct.compassDegrees;
 		str[i++] = (steeringMode == manual ? 0 : 1);
@@ -135,8 +134,6 @@ void readInputs () {
 	while(serialAvailable()){
 		wchar_t input = serialRead();
 		
-		
-		
 		if(uploadActionBits != -1){
 			
 			uploadActionBuffer[uploadActionBits] = input;
@@ -149,7 +146,6 @@ void readInputs () {
 			}
 			return;
 		}
-		
 		
 		switch (input) {
 			case 'w':

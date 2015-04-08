@@ -23,6 +23,7 @@
 
 void initLedGrid(void);
 void clearDisplayData(void);
+void checkColorBrightness(void);
 
 void setEmotion(uint16_t);
 void setSubEmotion(uint16_t);

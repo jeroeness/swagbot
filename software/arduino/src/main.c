@@ -45,6 +45,7 @@ int main(void)
 		if(counter++ >= 0x7FFF){ //im there
 			counter = 0;
 			updateSensors(); //could not create timer for this one.
+			setSubEmotion(sensorData.sensorStruct.compassDegrees / 11);
 		}
 		updateModeManager();
 		updateCommunication();
