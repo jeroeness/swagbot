@@ -50,7 +50,7 @@ void diagnostics(){
 		if(step==3){
 			updateSensors();
 			_delay_ms(200);
-			if(sensorData.sensorStruct.ultrasonic >= 15){
+			if(sensorData.sensorStruct.ultrasonic <= 15){
 				step = 4;			//next step		
 				turnFunction();
 				//checkPassed();		//write "check passed"
