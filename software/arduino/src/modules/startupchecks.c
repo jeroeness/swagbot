@@ -47,15 +47,19 @@ void diagnostics(){
 		}
 		
 		//sonar
-		if(step==3 && sensorData.sensorStruct.ultrasonic >= 15){
-			step = 4;			//next step		
-			turnFunction();
-			//checkPassed();		//write "check passed"
-			//turnByDegrees(120);	//check motors by turning
-			//turnByDegrees(120);
-			//turnByDegrees(120);
-			//specialDelay();		//wait a few seconds
-			//clearDisplayData();	//clear ledgrid
+		if(step==3){
+			updateSensors();
+			_delay_ms(200);
+			if(sensorData.sensorStruct.ultrasonic >= 15){
+				step = 4;			//next step		
+				turnFunction();
+				//checkPassed();		//write "check passed"
+				//turnByDegrees(120);	//check motors by turning
+				//turnByDegrees(120);
+				//turnByDegrees(120);
+				//specialDelay();		//wait a few seconds
+				//clearDisplayData();	//clear ledgrid
+			}
 		}
 	}
 }
