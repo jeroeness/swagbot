@@ -51,8 +51,10 @@ void diagnostics(){
 			updateSensors();
 			_delay_ms(200);
 			if(sensorData.sensorStruct.ultrasonic <= 15){
-				step = 4;			//next step		
-				turnFunction();
+				step = 4;			//next step	
+				turn(-100);
+				_delay_ms(500);
+				stop();
 				//checkPassed();		//write "check passed"
 				//turnByDegrees(120);	//check motors by turning
 				//turnByDegrees(120);
