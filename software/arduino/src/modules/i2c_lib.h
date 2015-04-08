@@ -6,13 +6,11 @@
 #include "../globalincsanddefs.h"
 
 void i2c_init(void);
-//void i2c_write_cmd_wrap(void);
-//void i2c_read_sensors_wrap(void);
 void i2c_writeToRP6(void);
 void i2c_readFromRP6(void);
 void i2c_SendCompassCalibrateCmd(void);
 void i2c_readFromCompass(void);
-
+void i2c_initCalibration(void);
 
 
 // i2c core \/ .

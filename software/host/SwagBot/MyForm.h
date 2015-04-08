@@ -14,7 +14,7 @@ namespace SwagBot {
 	using namespace System::Data;
 	using namespace System::Drawing;
 	using namespace System::IO::Ports;
-
+	using namespace System::IO;
 	using namespace System::Text;
 
 
@@ -231,9 +231,10 @@ namespace SwagBot {
 			// 
 			this->cmbComm->DropDownStyle = System::Windows::Forms::ComboBoxStyle::DropDownList;
 			this->cmbComm->FormattingEnabled = true;
-			this->cmbComm->Location = System::Drawing::Point(6, 16);
+			this->cmbComm->Location = System::Drawing::Point(9, 25);
+			this->cmbComm->Margin = System::Windows::Forms::Padding(4, 5, 4, 5);
 			this->cmbComm->Name = L"cmbComm";
-			this->cmbComm->Size = System::Drawing::Size(75, 21);
+			this->cmbComm->Size = System::Drawing::Size(110, 28);
 			this->cmbComm->TabIndex = 1;
 			this->cmbComm->TabStop = false;
 			// 
@@ -245,9 +246,10 @@ namespace SwagBot {
 			// cmdDisconnect
 			// 
 			this->cmdDisconnect->Enabled = false;
-			this->cmdDisconnect->Location = System::Drawing::Point(86, 42);
+			this->cmdDisconnect->Location = System::Drawing::Point(129, 65);
+			this->cmdDisconnect->Margin = System::Windows::Forms::Padding(4, 5, 4, 5);
 			this->cmdDisconnect->Name = L"cmdDisconnect";
-			this->cmdDisconnect->Size = System::Drawing::Size(102, 23);
+			this->cmdDisconnect->Size = System::Drawing::Size(153, 35);
 			this->cmdDisconnect->TabIndex = 2;
 			this->cmdDisconnect->TabStop = false;
 			this->cmdDisconnect->Text = L"Disconnect";
@@ -288,35 +290,40 @@ namespace SwagBot {
 			this->frmSensor->Controls->Add(this->label1);
 			this->frmSensor->Controls->Add(this->lblRes0);
 			this->frmSensor->Controls->Add(this->lblSensor);
-			this->frmSensor->Location = System::Drawing::Point(6, 77);
+			this->frmSensor->Location = System::Drawing::Point(9, 118);
+			this->frmSensor->Margin = System::Windows::Forms::Padding(4, 5, 4, 5);
 			this->frmSensor->Name = L"frmSensor";
-			this->frmSensor->Size = System::Drawing::Size(333, 109);
+			this->frmSensor->Padding = System::Windows::Forms::Padding(4, 5, 4, 5);
+			this->frmSensor->Size = System::Drawing::Size(500, 168);
 			this->frmSensor->TabIndex = 4;
 			this->frmSensor->TabStop = false;
 			this->frmSensor->Text = L"Live SensorData";
 			// 
 			// lblRes7
 			// 
-			this->lblRes7->Location = System::Drawing::Point(195, 29);
+			this->lblRes7->Location = System::Drawing::Point(292, 45);
+			this->lblRes7->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
 			this->lblRes7->Name = L"lblRes7";
-			this->lblRes7->Size = System::Drawing::Size(102, 13);
+			this->lblRes7->Size = System::Drawing::Size(153, 20);
 			this->lblRes7->TabIndex = 27;
 			this->lblRes7->Text = L"N/A";
 			// 
 			// label7
 			// 
 			this->label7->AutoSize = true;
-			this->label7->Location = System::Drawing::Point(160, 29);
+			this->label7->Location = System::Drawing::Point(240, 45);
+			this->label7->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
 			this->label7->Name = L"label7";
-			this->label7->Size = System::Drawing::Size(34, 13);
+			this->label7->Size = System::Drawing::Size(49, 20);
 			this->label7->TabIndex = 26;
 			this->label7->Text = L"Face:";
 			// 
 			// lblRes6
 			// 
-			this->lblRes6->Location = System::Drawing::Point(195, 16);
+			this->lblRes6->Location = System::Drawing::Point(292, 25);
+			this->lblRes6->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
 			this->lblRes6->Name = L"lblRes6";
-			this->lblRes6->Size = System::Drawing::Size(78, 13);
+			this->lblRes6->Size = System::Drawing::Size(117, 20);
 			this->lblRes6->TabIndex = 25;
 			this->lblRes6->Text = L"N/A";
 			// 
@@ -324,9 +331,10 @@ namespace SwagBot {
 			// 
 			this->picLed7->BackColor = System::Drawing::Color::DarkRed;
 			this->picLed7->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
-			this->picLed7->Location = System::Drawing::Point(168, 44);
+			this->picLed7->Location = System::Drawing::Point(252, 68);
+			this->picLed7->Margin = System::Windows::Forms::Padding(4, 5, 4, 5);
 			this->picLed7->Name = L"picLed7";
-			this->picLed7->Size = System::Drawing::Size(8, 11);
+			this->picLed7->Size = System::Drawing::Size(11, 16);
 			this->picLed7->TabIndex = 24;
 			this->picLed7->TabStop = false;
 			this->picLed7->Visible = false;
@@ -335,9 +343,10 @@ namespace SwagBot {
 			// 
 			this->picLed6->BackColor = System::Drawing::Color::Olive;
 			this->picLed6->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
-			this->picLed6->Location = System::Drawing::Point(159, 44);
+			this->picLed6->Location = System::Drawing::Point(238, 68);
+			this->picLed6->Margin = System::Windows::Forms::Padding(4, 5, 4, 5);
 			this->picLed6->Name = L"picLed6";
-			this->picLed6->Size = System::Drawing::Size(8, 11);
+			this->picLed6->Size = System::Drawing::Size(11, 16);
 			this->picLed6->TabIndex = 23;
 			this->picLed6->TabStop = false;
 			this->picLed6->Visible = false;
@@ -345,9 +354,10 @@ namespace SwagBot {
 			// picFront
 			// 
 			this->picFront->BackColor = System::Drawing::Color::Lime;
-			this->picFront->Location = System::Drawing::Point(305, 44);
+			this->picFront->Location = System::Drawing::Point(458, 68);
+			this->picFront->Margin = System::Windows::Forms::Padding(4, 5, 4, 5);
 			this->picFront->Name = L"picFront";
-			this->picFront->Size = System::Drawing::Size(18, 52);
+			this->picFront->Size = System::Drawing::Size(27, 80);
 			this->picFront->TabIndex = 18;
 			this->picFront->TabStop = false;
 			this->picFront->Paint += gcnew System::Windows::Forms::PaintEventHandler(this, &MyForm::picFront_Paint);
@@ -355,9 +365,10 @@ namespace SwagBot {
 			// picBack
 			// 
 			this->picBack->BackColor = System::Drawing::Color::White;
-			this->picBack->Location = System::Drawing::Point(303, 20);
+			this->picBack->Location = System::Drawing::Point(454, 31);
+			this->picBack->Margin = System::Windows::Forms::Padding(4, 5, 4, 5);
 			this->picBack->Name = L"picBack";
-			this->picBack->Size = System::Drawing::Size(22, 78);
+			this->picBack->Size = System::Drawing::Size(33, 120);
 			this->picBack->TabIndex = 16;
 			this->picBack->TabStop = false;
 			// 
@@ -365,18 +376,20 @@ namespace SwagBot {
 			// 
 			this->picLed5->BackColor = System::Drawing::Color::DarkRed;
 			this->picLed5->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
-			this->picLed5->Location = System::Drawing::Point(150, 44);
+			this->picLed5->Location = System::Drawing::Point(225, 68);
+			this->picLed5->Margin = System::Windows::Forms::Padding(4, 5, 4, 5);
 			this->picLed5->Name = L"picLed5";
-			this->picLed5->Size = System::Drawing::Size(8, 11);
+			this->picLed5->Size = System::Drawing::Size(11, 16);
 			this->picLed5->TabIndex = 22;
 			this->picLed5->TabStop = false;
 			// 
 			// pictureBox3
 			// 
 			this->pictureBox3->BackColor = System::Drawing::Color::Gray;
-			this->pictureBox3->Location = System::Drawing::Point(308, 13);
+			this->pictureBox3->Location = System::Drawing::Point(462, 20);
+			this->pictureBox3->Margin = System::Windows::Forms::Padding(4, 5, 4, 5);
 			this->pictureBox3->Name = L"pictureBox3";
-			this->pictureBox3->Size = System::Drawing::Size(12, 10);
+			this->pictureBox3->Size = System::Drawing::Size(18, 15);
 			this->pictureBox3->TabIndex = 17;
 			this->pictureBox3->TabStop = false;
 			// 
@@ -384,18 +397,20 @@ namespace SwagBot {
 			// 
 			this->picLed4->BackColor = System::Drawing::Color::DarkRed;
 			this->picLed4->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
-			this->picLed4->Location = System::Drawing::Point(141, 44);
+			this->picLed4->Location = System::Drawing::Point(212, 68);
+			this->picLed4->Margin = System::Windows::Forms::Padding(4, 5, 4, 5);
 			this->picLed4->Name = L"picLed4";
-			this->picLed4->Size = System::Drawing::Size(8, 11);
+			this->picLed4->Size = System::Drawing::Size(11, 16);
 			this->picLed4->TabIndex = 21;
 			this->picLed4->TabStop = false;
 			// 
 			// pictureBox1
 			// 
 			this->pictureBox1->BackColor = System::Drawing::Color::Gray;
-			this->pictureBox1->Location = System::Drawing::Point(301, 18);
+			this->pictureBox1->Location = System::Drawing::Point(452, 28);
+			this->pictureBox1->Margin = System::Windows::Forms::Padding(4, 5, 4, 5);
 			this->pictureBox1->Name = L"pictureBox1";
-			this->pictureBox1->Size = System::Drawing::Size(26, 82);
+			this->pictureBox1->Size = System::Drawing::Size(39, 126);
 			this->pictureBox1->TabIndex = 5;
 			this->pictureBox1->TabStop = false;
 			// 
@@ -403,9 +418,10 @@ namespace SwagBot {
 			// 
 			this->picLed3->BackColor = System::Drawing::Color::DarkGreen;
 			this->picLed3->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
-			this->picLed3->Location = System::Drawing::Point(132, 44);
+			this->picLed3->Location = System::Drawing::Point(198, 68);
+			this->picLed3->Margin = System::Windows::Forms::Padding(4, 5, 4, 5);
 			this->picLed3->Name = L"picLed3";
-			this->picLed3->Size = System::Drawing::Size(8, 11);
+			this->picLed3->Size = System::Drawing::Size(11, 16);
 			this->picLed3->TabIndex = 20;
 			this->picLed3->TabStop = false;
 			// 
@@ -413,9 +429,10 @@ namespace SwagBot {
 			// 
 			this->picLed2->BackColor = System::Drawing::Color::DarkRed;
 			this->picLed2->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
-			this->picLed2->Location = System::Drawing::Point(123, 44);
+			this->picLed2->Location = System::Drawing::Point(184, 68);
+			this->picLed2->Margin = System::Windows::Forms::Padding(4, 5, 4, 5);
 			this->picLed2->Name = L"picLed2";
-			this->picLed2->Size = System::Drawing::Size(8, 11);
+			this->picLed2->Size = System::Drawing::Size(11, 16);
 			this->picLed2->TabIndex = 19;
 			this->picLed2->TabStop = false;
 			// 
@@ -423,9 +440,10 @@ namespace SwagBot {
 			// 
 			this->picLed1->BackColor = System::Drawing::Color::DarkRed;
 			this->picLed1->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
-			this->picLed1->Location = System::Drawing::Point(114, 44);
+			this->picLed1->Location = System::Drawing::Point(171, 68);
+			this->picLed1->Margin = System::Windows::Forms::Padding(4, 5, 4, 5);
 			this->picLed1->Name = L"picLed1";
-			this->picLed1->Size = System::Drawing::Size(8, 11);
+			this->picLed1->Size = System::Drawing::Size(11, 16);
 			this->picLed1->TabIndex = 18;
 			this->picLed1->TabStop = false;
 			// 
@@ -433,120 +451,134 @@ namespace SwagBot {
 			// 
 			this->picLed0->BackColor = System::Drawing::Color::DarkGreen;
 			this->picLed0->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
-			this->picLed0->Location = System::Drawing::Point(105, 44);
+			this->picLed0->Location = System::Drawing::Point(158, 68);
+			this->picLed0->Margin = System::Windows::Forms::Padding(4, 5, 4, 5);
 			this->picLed0->Name = L"picLed0";
-			this->picLed0->Size = System::Drawing::Size(8, 11);
+			this->picLed0->Size = System::Drawing::Size(11, 16);
 			this->picLed0->TabIndex = 17;
 			this->picLed0->TabStop = false;
 			// 
 			// label6
 			// 
 			this->label6->AutoSize = true;
-			this->label6->Location = System::Drawing::Point(160, 16);
+			this->label6->Location = System::Drawing::Point(240, 25);
+			this->label6->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
 			this->label6->Name = L"label6";
-			this->label6->Size = System::Drawing::Size(37, 13);
+			this->label6->Size = System::Drawing::Size(53, 20);
 			this->label6->TabIndex = 16;
 			this->label6->Text = L"Mode:";
 			// 
 			// lblRes5
 			// 
-			this->lblRes5->Location = System::Drawing::Point(102, 81);
+			this->lblRes5->Location = System::Drawing::Point(153, 125);
+			this->lblRes5->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
 			this->lblRes5->Name = L"lblRes5";
-			this->lblRes5->Size = System::Drawing::Size(78, 13);
+			this->lblRes5->Size = System::Drawing::Size(117, 20);
 			this->lblRes5->TabIndex = 15;
 			this->lblRes5->Text = L"N/A";
 			// 
 			// lblRes4
 			// 
-			this->lblRes4->Location = System::Drawing::Point(102, 68);
+			this->lblRes4->Location = System::Drawing::Point(153, 105);
+			this->lblRes4->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
 			this->lblRes4->Name = L"lblRes4";
-			this->lblRes4->Size = System::Drawing::Size(78, 13);
+			this->lblRes4->Size = System::Drawing::Size(117, 20);
 			this->lblRes4->TabIndex = 14;
 			this->lblRes4->Text = L"N/A";
 			// 
 			// lblRes3
 			// 
-			this->lblRes3->Location = System::Drawing::Point(102, 55);
+			this->lblRes3->Location = System::Drawing::Point(153, 85);
+			this->lblRes3->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
 			this->lblRes3->Name = L"lblRes3";
-			this->lblRes3->Size = System::Drawing::Size(78, 13);
+			this->lblRes3->Size = System::Drawing::Size(117, 20);
 			this->lblRes3->TabIndex = 13;
 			this->lblRes3->Text = L"N/A";
 			// 
 			// lblRes1
 			// 
-			this->lblRes1->Location = System::Drawing::Point(102, 29);
+			this->lblRes1->Location = System::Drawing::Point(153, 45);
+			this->lblRes1->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
 			this->lblRes1->Name = L"lblRes1";
-			this->lblRes1->Size = System::Drawing::Size(78, 13);
+			this->lblRes1->Size = System::Drawing::Size(117, 20);
 			this->lblRes1->TabIndex = 11;
 			this->lblRes1->Text = L"N/A";
 			// 
 			// label5
 			// 
 			this->label5->AutoSize = true;
-			this->label5->Location = System::Drawing::Point(6, 81);
+			this->label5->Location = System::Drawing::Point(9, 125);
+			this->label5->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
 			this->label5->Name = L"label5";
-			this->label5->Size = System::Drawing::Size(71, 13);
+			this->label5->Size = System::Drawing::Size(107, 20);
 			this->label5->TabIndex = 10;
 			this->label5->Text = L"BumperRight:";
 			// 
 			// label4
 			// 
 			this->label4->AutoSize = true;
-			this->label4->Location = System::Drawing::Point(6, 68);
+			this->label4->Location = System::Drawing::Point(9, 105);
+			this->label4->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
 			this->label4->Name = L"label4";
-			this->label4->Size = System::Drawing::Size(64, 13);
+			this->label4->Size = System::Drawing::Size(97, 20);
 			this->label4->TabIndex = 9;
 			this->label4->Text = L"BumperLeft:";
 			// 
 			// label3
 			// 
 			this->label3->AutoSize = true;
-			this->label3->Location = System::Drawing::Point(6, 55);
+			this->label3->Location = System::Drawing::Point(9, 85);
+			this->label3->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
 			this->label3->Name = L"label3";
-			this->label3->Size = System::Drawing::Size(99, 13);
+			this->label3->Size = System::Drawing::Size(147, 20);
 			this->label3->TabIndex = 8;
 			this->label3->Text = L"UltrasonicDistance:";
 			// 
 			// label2
 			// 
 			this->label2->AutoSize = true;
-			this->label2->Location = System::Drawing::Point(6, 42);
+			this->label2->Location = System::Drawing::Point(9, 65);
+			this->label2->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
 			this->label2->Name = L"label2";
-			this->label2->Size = System::Drawing::Size(58, 13);
+			this->label2->Size = System::Drawing::Size(87, 20);
 			this->label2->TabIndex = 7;
 			this->label2->Text = L"LedStatus:";
 			// 
 			// label1
 			// 
 			this->label1->AutoSize = true;
-			this->label1->Location = System::Drawing::Point(6, 29);
+			this->label1->Location = System::Drawing::Point(9, 45);
+			this->label1->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
 			this->label1->Name = L"label1";
-			this->label1->Size = System::Drawing::Size(59, 13);
+			this->label1->Size = System::Drawing::Size(88, 20);
 			this->label1->TabIndex = 6;
 			this->label1->Text = L"MotorRight";
 			// 
 			// lblRes0
 			// 
-			this->lblRes0->Location = System::Drawing::Point(102, 16);
+			this->lblRes0->Location = System::Drawing::Point(153, 25);
+			this->lblRes0->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
 			this->lblRes0->Name = L"lblRes0";
-			this->lblRes0->Size = System::Drawing::Size(78, 13);
+			this->lblRes0->Size = System::Drawing::Size(117, 20);
 			this->lblRes0->TabIndex = 5;
 			this->lblRes0->Text = L"N/A";
 			// 
 			// lblSensor
 			// 
 			this->lblSensor->AutoSize = true;
-			this->lblSensor->Location = System::Drawing::Point(6, 16);
+			this->lblSensor->Location = System::Drawing::Point(9, 25);
+			this->lblSensor->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
 			this->lblSensor->Name = L"lblSensor";
-			this->lblSensor->Size = System::Drawing::Size(58, 13);
+			this->lblSensor->Size = System::Drawing::Size(86, 20);
 			this->lblSensor->TabIndex = 4;
 			this->lblSensor->Text = L"MotorLeft: ";
 			// 
 			// picCompass
 			// 
-			this->picCompass->Location = System::Drawing::Point(179, 195);
+			this->picCompass->Location = System::Drawing::Point(268, 302);
+			this->picCompass->Margin = System::Windows::Forms::Padding(4, 5, 4, 5);
 			this->picCompass->Name = L"picCompass";
-			this->picCompass->Size = System::Drawing::Size(160, 160);
+			this->picCompass->Size = System::Drawing::Size(240, 246);
 			this->picCompass->TabIndex = 5;
 			this->picCompass->TabStop = false;
 			this->picCompass->Click += gcnew System::EventHandler(this, &MyForm::picCompass_Click);
@@ -562,18 +594,21 @@ namespace SwagBot {
 			this->frmControls->Controls->Add(this->lblA);
 			this->frmControls->Controls->Add(this->lblP);
 			this->frmControls->Controls->Add(this->lblW);
-			this->frmControls->Location = System::Drawing::Point(6, 190);
+			this->frmControls->Location = System::Drawing::Point(9, 292);
+			this->frmControls->Margin = System::Windows::Forms::Padding(4, 5, 4, 5);
 			this->frmControls->Name = L"frmControls";
-			this->frmControls->Size = System::Drawing::Size(165, 167);
+			this->frmControls->Padding = System::Windows::Forms::Padding(4, 5, 4, 5);
+			this->frmControls->Size = System::Drawing::Size(248, 257);
 			this->frmControls->TabIndex = 22;
 			this->frmControls->TabStop = false;
 			this->frmControls->Text = L"Controls";
 			// 
 			// lblKeyInfo
 			// 
-			this->lblKeyInfo->Location = System::Drawing::Point(7, 145);
+			this->lblKeyInfo->Location = System::Drawing::Point(10, 223);
+			this->lblKeyInfo->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
 			this->lblKeyInfo->Name = L"lblKeyInfo";
-			this->lblKeyInfo->Size = System::Drawing::Size(151, 13);
+			this->lblKeyInfo->Size = System::Drawing::Size(226, 20);
 			this->lblKeyInfo->TabIndex = 29;
 			// 
 			// lblN
@@ -582,9 +617,10 @@ namespace SwagBot {
 			this->lblN->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
 			this->lblN->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 15.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->lblN->Location = System::Drawing::Point(59, 113);
+			this->lblN->Location = System::Drawing::Point(88, 174);
+			this->lblN->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
 			this->lblN->Name = L"lblN";
-			this->lblN->Size = System::Drawing::Size(47, 25);
+			this->lblN->Size = System::Drawing::Size(70, 37);
 			this->lblN->TabIndex = 28;
 			this->lblN->Text = L"N";
 			this->lblN->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
@@ -599,9 +635,10 @@ namespace SwagBot {
 			this->lblD->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
 			this->lblD->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 15.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->lblD->Location = System::Drawing::Point(112, 61);
+			this->lblD->Location = System::Drawing::Point(168, 94);
+			this->lblD->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
 			this->lblD->Name = L"lblD";
-			this->lblD->Size = System::Drawing::Size(47, 41);
+			this->lblD->Size = System::Drawing::Size(70, 62);
 			this->lblD->TabIndex = 25;
 			this->lblD->Text = L"D";
 			this->lblD->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
@@ -617,9 +654,10 @@ namespace SwagBot {
 			this->lblM->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
 			this->lblM->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 15.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->lblM->Location = System::Drawing::Point(6, 113);
+			this->lblM->Location = System::Drawing::Point(9, 174);
+			this->lblM->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
 			this->lblM->Name = L"lblM";
-			this->lblM->Size = System::Drawing::Size(47, 25);
+			this->lblM->Size = System::Drawing::Size(70, 37);
 			this->lblM->TabIndex = 27;
 			this->lblM->Tag = L"hallsodisodisod asd";
 			this->lblM->Text = L"M";
@@ -635,9 +673,10 @@ namespace SwagBot {
 			this->lblS->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
 			this->lblS->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 15.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->lblS->Location = System::Drawing::Point(59, 61);
+			this->lblS->Location = System::Drawing::Point(88, 94);
+			this->lblS->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
 			this->lblS->Name = L"lblS";
-			this->lblS->Size = System::Drawing::Size(47, 41);
+			this->lblS->Size = System::Drawing::Size(70, 62);
 			this->lblS->TabIndex = 24;
 			this->lblS->Text = L"S";
 			this->lblS->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
@@ -652,9 +691,10 @@ namespace SwagBot {
 			this->lblA->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
 			this->lblA->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 15.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->lblA->Location = System::Drawing::Point(6, 61);
+			this->lblA->Location = System::Drawing::Point(9, 94);
+			this->lblA->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
 			this->lblA->Name = L"lblA";
-			this->lblA->Size = System::Drawing::Size(47, 41);
+			this->lblA->Size = System::Drawing::Size(70, 62);
 			this->lblA->TabIndex = 23;
 			this->lblA->Text = L"A";
 			this->lblA->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
@@ -669,11 +709,12 @@ namespace SwagBot {
 			this->lblP->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
 			this->lblP->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 15.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->lblP->Location = System::Drawing::Point(112, 113);
+			this->lblP->Location = System::Drawing::Point(168, 174);
+			this->lblP->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
 			this->lblP->Name = L"lblP";
-			this->lblP->Size = System::Drawing::Size(47, 25);
+			this->lblP->Size = System::Drawing::Size(70, 37);
 			this->lblP->TabIndex = 26;
-			this->lblP->Text = L"P";
+			this->lblP->Text = L"K";
 			this->lblP->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
 			this->lblP->MouseDown += gcnew System::Windows::Forms::MouseEventHandler(this, &MyForm::lblP_MouseDown);
 			this->lblP->MouseEnter += gcnew System::EventHandler(this, &MyForm::lblP_MouseEnter);
@@ -686,9 +727,10 @@ namespace SwagBot {
 			this->lblW->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
 			this->lblW->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 15.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->lblW->Location = System::Drawing::Point(59, 14);
+			this->lblW->Location = System::Drawing::Point(88, 22);
+			this->lblW->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
 			this->lblW->Name = L"lblW";
-			this->lblW->Size = System::Drawing::Size(47, 41);
+			this->lblW->Size = System::Drawing::Size(70, 62);
 			this->lblW->TabIndex = 22;
 			this->lblW->Text = L"W";
 			this->lblW->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
@@ -699,24 +741,26 @@ namespace SwagBot {
 			// 
 			// sStrip
 			// 
+			this->sStrip->ImageScalingSize = System::Drawing::Size(24, 24);
 			this->sStrip->Items->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(2) { this->lblStatus, this->lblConnection });
-			this->sStrip->Location = System::Drawing::Point(0, 363);
+			this->sStrip->Location = System::Drawing::Point(0, 562);
 			this->sStrip->Name = L"sStrip";
-			this->sStrip->Size = System::Drawing::Size(345, 22);
+			this->sStrip->Padding = System::Windows::Forms::Padding(2, 0, 21, 0);
+			this->sStrip->Size = System::Drawing::Size(518, 30);
 			this->sStrip->TabIndex = 23;
 			this->sStrip->Text = L"statusStrip1";
 			// 
 			// lblStatus
 			// 
 			this->lblStatus->Name = L"lblStatus";
-			this->lblStatus->Size = System::Drawing::Size(196, 17);
+			this->lblStatus->Size = System::Drawing::Size(290, 25);
 			this->lblStatus->Text = L"Select CommPort and click connect";
 			// 
 			// lblConnection
 			// 
 			this->lblConnection->ForeColor = System::Drawing::Color::Red;
 			this->lblConnection->Name = L"lblConnection";
-			this->lblConnection->Size = System::Drawing::Size(134, 17);
+			this->lblConnection->Size = System::Drawing::Size(205, 25);
 			this->lblConnection->Spring = true;
 			this->lblConnection->Text = L"TimeOuts: 0";
 			this->lblConnection->TextAlign = System::Drawing::ContentAlignment::MiddleRight;
@@ -736,9 +780,10 @@ namespace SwagBot {
 			this->cmdConnect->BackColor = System::Drawing::Color::Red;
 			this->cmdConnect->FlatStyle = System::Windows::Forms::FlatStyle::System;
 			this->cmdConnect->ForeColor = System::Drawing::Color::Lime;
-			this->cmdConnect->Location = System::Drawing::Point(5, 42);
+			this->cmdConnect->Location = System::Drawing::Point(8, 65);
+			this->cmdConnect->Margin = System::Windows::Forms::Padding(4, 5, 4, 5);
 			this->cmdConnect->Name = L"cmdConnect";
-			this->cmdConnect->Size = System::Drawing::Size(77, 23);
+			this->cmdConnect->Size = System::Drawing::Size(116, 35);
 			this->cmdConnect->TabIndex = 25;
 			this->cmdConnect->TabStop = false;
 			this->cmdConnect->Text = L"Connect";
@@ -748,18 +793,20 @@ namespace SwagBot {
 			// chkReconnect
 			// 
 			this->chkReconnect->AutoSize = true;
-			this->chkReconnect->Location = System::Drawing::Point(88, 19);
+			this->chkReconnect->Location = System::Drawing::Point(132, 29);
+			this->chkReconnect->Margin = System::Windows::Forms::Padding(4, 5, 4, 5);
 			this->chkReconnect->Name = L"chkReconnect";
-			this->chkReconnect->Size = System::Drawing::Size(104, 17);
+			this->chkReconnect->Size = System::Drawing::Size(151, 24);
 			this->chkReconnect->TabIndex = 26;
 			this->chkReconnect->Text = L"Auto Reconnect";
 			this->chkReconnect->UseVisualStyleBackColor = true;
 			// 
 			// cmdReset
 			// 
-			this->cmdReset->Location = System::Drawing::Point(6, 15);
+			this->cmdReset->Location = System::Drawing::Point(9, 23);
+			this->cmdReset->Margin = System::Windows::Forms::Padding(4, 5, 4, 5);
 			this->cmdReset->Name = L"cmdReset";
-			this->cmdReset->Size = System::Drawing::Size(117, 23);
+			this->cmdReset->Size = System::Drawing::Size(176, 35);
 			this->cmdReset->TabIndex = 27;
 			this->cmdReset->TabStop = false;
 			this->cmdReset->Text = L"Reset Arduino";
@@ -770,21 +817,25 @@ namespace SwagBot {
 			// 
 			this->frmArduino->Controls->Add(this->cmdUpload);
 			this->frmArduino->Controls->Add(this->cmdReset);
-			this->frmArduino->Location = System::Drawing::Point(210, 2);
+			this->frmArduino->Location = System::Drawing::Point(315, 3);
+			this->frmArduino->Margin = System::Windows::Forms::Padding(4, 5, 4, 5);
 			this->frmArduino->Name = L"frmArduino";
-			this->frmArduino->Size = System::Drawing::Size(129, 72);
+			this->frmArduino->Padding = System::Windows::Forms::Padding(4, 5, 4, 5);
+			this->frmArduino->Size = System::Drawing::Size(194, 111);
 			this->frmArduino->TabIndex = 28;
 			this->frmArduino->TabStop = false;
 			this->frmArduino->Text = L"Arduino Options";
 			// 
 			// cmdUpload
 			// 
-			this->cmdUpload->Location = System::Drawing::Point(6, 41);
+			this->cmdUpload->Enabled = false;
+			this->cmdUpload->Location = System::Drawing::Point(9, 63);
+			this->cmdUpload->Margin = System::Windows::Forms::Padding(4, 5, 4, 5);
 			this->cmdUpload->Name = L"cmdUpload";
-			this->cmdUpload->Size = System::Drawing::Size(117, 23);
+			this->cmdUpload->Size = System::Drawing::Size(176, 35);
 			this->cmdUpload->TabIndex = 28;
 			this->cmdUpload->TabStop = false;
-			this->cmdUpload->Text = L"Upload Program";
+			this->cmdUpload->Text = L"Upload Actionlist.txt";
 			this->cmdUpload->UseVisualStyleBackColor = true;
 			this->cmdUpload->Click += gcnew System::EventHandler(this, &MyForm::cmdUpload_Click);
 			// 
@@ -794,19 +845,21 @@ namespace SwagBot {
 			this->frmComm->Controls->Add(this->cmdConnect);
 			this->frmComm->Controls->Add(this->chkReconnect);
 			this->frmComm->Controls->Add(this->cmdDisconnect);
-			this->frmComm->Location = System::Drawing::Point(6, 2);
+			this->frmComm->Location = System::Drawing::Point(9, 3);
+			this->frmComm->Margin = System::Windows::Forms::Padding(4, 5, 4, 5);
 			this->frmComm->Name = L"frmComm";
-			this->frmComm->Size = System::Drawing::Size(194, 72);
+			this->frmComm->Padding = System::Windows::Forms::Padding(4, 5, 4, 5);
+			this->frmComm->Size = System::Drawing::Size(291, 111);
 			this->frmComm->TabIndex = 29;
 			this->frmComm->TabStop = false;
 			this->frmComm->Text = L"Commport Selection";
 			// 
 			// MyForm
 			// 
-			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
+			this->AutoScaleDimensions = System::Drawing::SizeF(9, 20);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->BackColor = System::Drawing::Color::WhiteSmoke;
-			this->ClientSize = System::Drawing::Size(345, 385);
+			this->ClientSize = System::Drawing::Size(518, 592);
 			this->Controls->Add(this->frmComm);
 			this->Controls->Add(this->frmArduino);
 			this->Controls->Add(this->sStrip);
@@ -815,6 +868,7 @@ namespace SwagBot {
 			this->Controls->Add(this->frmSensor);
 			this->DoubleBuffered = true;
 			this->KeyPreview = true;
+			this->Margin = System::Windows::Forms::Padding(4, 5, 4, 5);
 			this->Name = L"MyForm";
 			this->Text = L"SwagBot Controller v1.302.999 rev: 30202";
 			this->Load += gcnew System::EventHandler(this, &MyForm::MyForm_Load);
@@ -855,12 +909,15 @@ namespace SwagBot {
 		private:
 		static array<int>^ keyCode = gcnew array<int>(7) { 0x57, 0x41, 0x44, 0x53, 0x50, 0x4D, 0x4E };
 		static array<bool>^ keyDown = gcnew array<bool>(7) { false, false, false, false, false, false, false };
-		static array<unsigned char>^ keySendUp = gcnew array<unsigned char>(8) { 'W', 'A', 'D', 'S', 'P', 'M', 'N', 'F' };
-		static array<unsigned char>^ keySendDown = gcnew array<unsigned char>(8) { 'w', 'a', 'd', 's', 'p', 'm', 'n', 'f' };
+		static array<unsigned char>^ keySendUp = gcnew array<unsigned char>(8) { 'W', 'A', 'D', 'S', 'K', 'M', 'N', 'F' };
+		static array<unsigned char>^ keySendDown = gcnew array<unsigned char>(8) { 'w', 'a', 'd', 's', 'k', 'm', 'n', 'f' };
 		static array<Label^>^ keyLabels = gcnew array<Label^>(7) {};
 		static array<bool>^ MouseDown = gcnew array<bool>(7) {};
 		static array<String ^>^ Faces = gcnew array<String ^>(7) { "Green Smiley", "Angry Smiley", "Compass", "Bumper Unpressed", "Bumper Pressed", "TEST", "UNKNOWN_FACE" };
 
+		array<int,2>^ actionList = gcnew array<int,2>(150,3);
+
+		int actionListCount = 0;
 
 		array<int>^ databuffer = gcnew array<int>(100);
 		int bufferlen = 0;
@@ -1012,7 +1069,7 @@ namespace SwagBot {
 				this->cmdDisconnect->Enabled = true;
 				this->cmdConnect->Enabled = false;
 				this->cmdReset->Enabled = false;
-				this->cmdUpload->Enabled = false;
+				this->cmdUpload->Enabled = true;
 
 				this->cmbComm->Enabled = false;
 
@@ -1021,7 +1078,7 @@ namespace SwagBot {
 				this->cmdDisconnect->Enabled = false;
 				this->cmdConnect->Enabled = true;
 				this->cmdReset->Enabled = true;
-				this->cmdUpload->Enabled = true;
+				this->cmdUpload->Enabled = false;
 
 				this->cmbComm->Enabled = true;
 
@@ -1179,6 +1236,56 @@ namespace SwagBot {
 			}
 
 		}
+
+		void ReadFile() {
+			String^ fileName = "actionlist.txt";
+			int i = 0;
+
+			try {
+				//Console::WriteLine("trying to open file {0}...", fileName);
+				StreamReader^ din = File::OpenText(fileName);
+
+				String^ str;
+				actionListCount = 0;
+				while ((str = din->ReadLine()) != nullptr) {
+					
+					if (str != ""){
+						if (! str->StartsWith("//")) {
+							
+							//tmpAction[];
+							for each(String^ s in str->Split(';')) {
+								if (s == "") continue;
+								if (i > 2) {
+									setStatusMessage("Syntax error in: " + fileName, true);
+									return;
+								}
+
+								actionList[actionListCount, i++] = Convert::ToInt16(s);
+								
+							}
+							actionListCount++;
+							i = 0;
+						}
+					}
+					
+					
+					//Console::WriteLine("line {0}: {1}", count, str);
+				}
+			} catch (Exception^ e) {
+				if (dynamic_cast<FileNotFoundException^>(e)){
+					setStatusMessage("Could not read file: " + fileName, true);
+				} else{
+					setStatusMessage("Error while accessing file: " + fileName, true);
+				}
+					//Console::WriteLine("file '{0}' not found", fileName);
+				
+					//Console::WriteLine("problem reading file '{0}'", fileName);
+			}
+
+			return;
+		}
+
+
 
 		void ForceReconnect() {
 			if (this->chkReconnect->Checked == false) {
@@ -1457,7 +1564,25 @@ namespace SwagBot {
 			Sleep(200);
 
 		}
+
+		void uploadArray(){
+			setStatusMessage("Uploading actionlist...",false);
+			Application::DoEvents();
+			Sleep(50);
+
+			if (actionListCount > 0){
+			
+			
+			}
+
+			
+		}
+
 		System::Void cmdUpload_Click(System::Object^  sender, System::EventArgs^  e) {
+			ReadFile();
+			uploadArray();
+
+			/*
 			Connect();
 			Application::DoEvents();
 			Sleep(200);
@@ -1465,6 +1590,7 @@ namespace SwagBot {
 			Application::DoEvents();
 			Sleep(200);
 			ShellExecute((HWND) this->Handle.ToInt32(), TEXT("open"), TEXT("flashRicardoLaptop.bat"), TEXT(""), TEXT("C:\\Users\\Jucko13\\Documents\\GitHub\\swagbot\\software\\arduino\\src\\"), SW_SHOWNORMAL);
+			*/
 		}
 
 

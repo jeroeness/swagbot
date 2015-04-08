@@ -29,7 +29,7 @@ void (*i2c_ST_SR_Done) (void);
 void (*i2c_error_call) (void);
 //i2c core /\ .
 
-uint8_t OverFlowToggle = 0; //for timer overflow
+uint8_t OverFlowToggle = 10; //for timer overflow
 
 void i2c_init(void)
 {
@@ -39,7 +39,9 @@ void i2c_init(void)
 	// Timer1
 	TCCR1A = (1 << WGM11) | (0 << WGM10);// timer mode 14(fast pwm)(pwm is not used)(IRC1 = TOP)
 	TCCR1B = (1 << WGM13) | (1 << WGM12) | (1 << CS12); //prescaler = div256 (16Mhz/256 = 62500hz)
-	TCCR1B = 0;
+	TCCR1C = 0;
+	
+	//ICR1 = 4167; 
 	ICR1 = 4167; //set counter TOP    (16Mhz/256)/15hz = 4167
 	TCNT1 = 0; //reset count
 	TIFR1 = (1 << TOV1); //clear overflow flag
@@ -49,41 +51,51 @@ void i2c_init(void)
 	PORTB &= ~(1<<PB7); //arduinomega pin 13 led off
 }
 
+void i2c_initCalibration(void){
+	OverFlowToggle = 0;
+	ICR1 = 0xFFFF;
+}
+
 ISR(TIMER1_OVF_vect)
 {
 	//15hz
-
+	
+	//PORTB ^= (1<<PB7); //arduinomega pin 13 led toggle
+	
 	switch(OverFlowToggle) {
 		case 0:
+		case 3:
+		case 6:
+		case 9:
+			OverFlowToggle++;
+			i2c_SendCompassCalibrateCmd();
+			break;
+			
+		case 10:
+			ICR1 = 4167;
 			i2c_writeToRP6();
-			OverFlowToggle = 1;
+			OverFlowToggle = 11;
 			break;
 			
-		case 1:
+		case 11:
 			i2c_readFromCompass();
-			OverFlowToggle = 2;
+			OverFlowToggle = 12;
 			break;
 			
-		case 2:
+		case 12:
 			i2c_readFromRP6();
-			OverFlowToggle = 0;
+			OverFlowToggle = 10;
+			break;
+			
+		
+		default:
+			OverFlowToggle++;
 			break;
 	}
+
+	
 }
 
-/* old functions
-
-void i2c_write_cmd_wrap(void)
-{
-	i2c_writeToRP6();
-}
-
-void i2c_read_sensors_wrap(void)
-{
-	i2c_readFromCompass();
-	i2c_readFromRP6();
-}
-*/
 
 void i2c_writeToRP6(void)
 {

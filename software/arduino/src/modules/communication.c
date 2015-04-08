@@ -21,7 +21,8 @@ int8_t connectionTimeOut = 0;
 
 int8_t keyState[KEYSTATESCOUNT];
 
-
+int8_t uploadActionBits = -1;
+uint8_t uploadActionBuffer[] = {0,0,0,0};
 
 void initCommunication() {
 	openConnection();
@@ -133,14 +134,29 @@ char charIndex (int8_t key) {
 void readInputs () {
 	while(serialAvailable()){
 		wchar_t input = serialRead();
-
+		
+		
+		
+		if(uploadActionBits != -1){
+			
+			uploadActionBuffer[uploadActionBits] = input;
+			
+			connectionTimeOut = 0; //prevent timeout
+			uploadActionBits++;
+			if(uploadActionBits == 3){ //add the action to the list
+				addToActionList(uploadActionBuffer[0], uploadActionBuffer[1], uploadActionBuffer[2]);
+				uploadActionBits = -1;
+			}
+			return;
+		}
+		
+		
 		switch (input) {
 			case 'w':
 			case 'a':
 			case 's':
 			case 'd':
 			    keyState[keyIndex(input)] = 1;
-				//sensorData.sensorStruct.compassDegrees = input;
                 inputKeyPress(input);
 				break;
             case 'W':
@@ -160,6 +176,15 @@ void readInputs () {
 			case 'f': //keepconnection alive
 			case 'F': //keepconnection alive
 				connectionTimeOut = 0;
+				break;
+			
+			case 'u': //uploading actionlist
+				uploadActionBits = 0;
+				connectionTimeOut = 0;
+				break;
+				
+			case 'k':
+				i2c_initCalibration();
 				break;
 		}
     }

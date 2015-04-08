@@ -25,8 +25,14 @@ int main(void)
 	initLedGrid();
 
 	sei();
-
-	//diagnostics();
+	
+	
+	
+	updateSensors();
+	_delay_ms(200);
+	if(sensorData.sensorStruct.bumperLeft == 1 && sensorData.sensorStruct.bumperRight == 1){
+		diagnostics();
+	}
 	
 	setSteeringMode(manual);
 	resetAutomaticMode(); //TODO init automatic mode
