@@ -154,10 +154,41 @@ void updateEmotion(void){
 			
 		case 2: //compass
 			clearDisplayData();
-			gd[0] = 0x3C; gd[1] = 0x42; rd[2] = 0x60; 
-			gd[2] = 0x81; rd[3] = 0x18; gd[3] = 0x81; 
-			gd[4] = 0x81; bd[4] = 0x18; gd[5] = 0x81; 
-			bd[5] = 0x6; gd[6] = 0x42; gd[7] = 0x3C; 
+			
+			if(currentSubFace > 23){ currentSubFace = 0;}
+			clearDisplayData();
+			
+			gd[0] = 0x3E; gd[1] = 0x41; gd[2] = 0x41;
+			gd[3] = 0x41; gd[4] = 0x41; gd[5] = 0x41;
+			gd[6] = 0x3E;
+			
+			switch(currentSubFace){
+				case 0: rd[1] = 0x8; rd[2] = 0x8; rd[3] = 0x8;  break;
+				case 1: rd[1] = 0x10; rd[2] = 0x8; rd[3] = 0x8;  break;
+				case 2: rd[1] = 0x10; rd[2] = 0x10; rd[3] = 0x8; break;
+				case 3: rd[1] = 0x20; rd[2] = 0x10; rd[3] = 0x8;  break;
+				case 4: rd[2] = 0x30; rd[3] = 0x8;  break;
+				case 5: rd[2] = 0x20; rd[3] = 0x18;  break;
+				case 6: rd[3] = 0x38;  break;
+				case 7: rd[3] = 0x18; rd[4] = 0x20;  break;
+				case 8: rd[3] = 0x8; rd[4] = 0x30;  break;
+				case 9: rd[3] = 0x8; rd[4] = 0x10; rd[5] = 0x20;  break;
+				case 10: rd[3] = 0x8; rd[4] = 0x10; rd[5] = 0x10;  break;
+				case 11: rd[3] = 0x8; rd[4] = 0x8; rd[5] = 0x10;  break;
+				case 12: rd[3] = 0x8; rd[4] = 0x8; rd[5] = 0x8;  break;
+				case 13: rd[3] = 0x8; rd[4] = 0x8; rd[5] = 0x4;  break;
+				case 14: rd[3] = 0x8; rd[4] = 0x4; rd[5] = 0x4;  break;
+				case 15: rd[3] = 0x8; rd[4] = 0x4; rd[5] = 0x2;  break;
+				case 16: rd[3] = 0x8; rd[4] = 0x6;  break;
+				case 17: rd[3] = 0xC; rd[4] = 0x2;  break;
+				case 18: rd[3] = 0xE;  break;
+				case 19: rd[2] = 0x2; rd[3] = 0xC;  break;
+				case 20: rd[2] = 0x6; rd[3] = 0x8;  break;
+				case 21: rd[1] = 0x2; rd[2] = 0x4; rd[3] = 0x8;  break;
+				case 22: rd[1] = 0x4; rd[2] = 0x4; rd[3] = 0x8;  break;
+				case 23: rd[1] = 0x4; rd[2] = 0x8; rd[3] = 0x8;  break;
+		
+			}
 			break;
 		
 		case 3: //bumper (not pressed) Right

@@ -42,7 +42,7 @@ void i2c_init(void)
 	TCCR1C = 0;
 	
 	//ICR1 = 4167; 
-	ICR1 = 4167; //set counter TOP    (16Mhz/256)/15hz = 4167
+	ICR1 = 2083; //set counter TOP    (16Mhz/256)/15hz = 4167
 	TCNT1 = 0; //reset count
 	TIFR1 = (1 << TOV1); //clear overflow flag
 	TIMSK1 = (1 << TOIE1); //enable overflow interrupt
@@ -72,7 +72,7 @@ ISR(TIMER1_OVF_vect)
 			break;
 			
 		case 10:
-			ICR1 = 4167;
+			ICR1 = 2083;
 			i2c_writeToRP6();
 			OverFlowToggle = 11;
 			break;

@@ -42,12 +42,12 @@ int moveMotors(int8_t speedL, int8_t speedR){
 	if(speedL < -100 || speedL > 100)
 	    return 0;
 	
-	if(instructionData.instructionstruct.motorLeft == speedL && instructionData.instructionstruct.motorRight == speedR) return 0;
+	//if(instructionData.instructionstruct.motorLeft == speedL && instructionData.instructionstruct.motorRight == speedR) return 0;
 	
 	instructionData.instructionstruct.motorLeft = speedL;
 	instructionData.instructionstruct.motorRight = speedR;
 	
-	i2c_writeToRP6();
+	//i2c_writeToRP6();
 
 	return 1;
 }

@@ -1509,7 +1509,7 @@ namespace SwagBot {
 		}
 
 		System::Void lblP_MouseEnter(System::Object^ sender, System::EventArgs^) {
-			this->lblKeyInfo->Text = "Get SensorData";
+			this->lblKeyInfo->Text = "Calibrate Compass";
 		}
 
 		System::Void lblM_MouseUp(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
