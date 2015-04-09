@@ -65,7 +65,7 @@ void checkPassed(){
 }
 
 void specialDelay(){
-	_delay_ms(4000);
+	_delay_ms(8000);
 }
 
 /*

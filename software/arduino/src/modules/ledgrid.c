@@ -12,6 +12,8 @@ uint8_t currentPrintColor = 0;
 uint8_t refreshColors[3] = {0,0,0};
 uint8_t refreshColorNum = 0;
 
+uint8_t scrolledAllTest = 0;
+
 //much much better this way huh?
 uint8_t rd[8] = {0,0,0,0,0,0,0,0};
 uint8_t gd[8] = {0,0,0,0,0,0,0,0};
@@ -112,6 +114,7 @@ void setScrollText(const char * text){
 	
 	scrollText[StringCounter] = '\0';
 	scrollLength = StringCounter;
+	scrolledAllTest = 0;
 	
 	currentFace = 254; //scrolling text
 	currentSubFace = 0; //what xOffset are we at?
@@ -119,6 +122,9 @@ void setScrollText(const char * text){
 	updateLedGrid();
 }
 
+uint8_t checkTextScrolled(void){
+	return scrolledAllTest;
+}
 
 void updateScrollText(void){
 	if(currentFace == 254){
@@ -249,6 +255,7 @@ void updateEmotion(void){
 				offsetCount += printCharacter(scrollColor[i], scrollText[i], offsetCount - currentSubFace + 8, 0);
 			}
 			if(currentSubFace >= offsetCount+8){
+				scrolledAllTest++;
 				currentSubFace = 0;
 			}
 			break;

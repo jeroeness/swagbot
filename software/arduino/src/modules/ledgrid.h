@@ -24,6 +24,7 @@
 void initLedGrid(void);
 void clearDisplayData(void);
 void checkColorBrightness(void);
+uint8_t checkTextScrolled(void);
 
 void setEmotion(uint16_t);
 void setSubEmotion(uint16_t);

@@ -248,7 +248,7 @@ void initTimer0() {
 	TIMSK0 = (1 << TOIE0);
 	TCCR0B = (1 << CS02) | (1 << CS00); // prescaler 1024; fcpu 16000000 = 61 overflows per second
 	OCR0A = 156;						// 100 times per second.
-	TIMSK2 = (1 << OCIE2A); // on Compare Match interrupt enable
+	TIMSK0 = (1 << OCIE0A); // on Compare Match interrupt enable
 }
 
 
