@@ -155,9 +155,9 @@ void findAngleToPoint() {
 	}
 
 	resetClock();
-	targetMillis = abs(newAngle)/(TURN_SPEED * 100); // degrees / (d/cs) = cs
-	turn(200 * ((newAngle > 0) ? 1 : -1));
-//	currentAction = ACTION_FINDING_ANGLE;
+	targetMillis = 10;//abs(newAngle)/(TURN_SPEED * 100); // degrees / (d/cs) = cs
+	turn(100 * ((newAngle > 0) ? 1 : -1));
+	currentAction = ACTION_FINDING_ANGLE;
 	// setTargetDegrees(sensorData.sensorStruct.compassDegrees + newAngle);
 }
 
