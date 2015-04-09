@@ -28,6 +28,9 @@ void initAutomaticMode() {
 
 	currentAction = ACTION_IDLE;
 
+	addToActionList(F_TURN_FOR, 10, 100);
+	addToActionList(F_TURN_FOR, 10, -100);
+	addToActionList(F_TURN_FOR, 10, 100);
 	addToActionList(F_MOVE_FOR, 1000, 100);
 	addToActionList(F_MOVE_FOR, 1000, -100);
 }
@@ -241,6 +244,7 @@ void beginAutomaticMode(){
 }
 
 void stopAutomaticMode(){
+	resetAutomaticMode();
 	stop();
 }
 
@@ -255,7 +259,7 @@ void initTimer0() {
 // ISR
 
 ISR(TIMER0_COMPA_vect) {
-	TCNT2 = 0;
+	TCNT0 = 0;
 	if (targetMillis != 0 && checkFuzzy(targetMillis, ++currentMillis, TIME_MARGIN)) {
 		stop();
 		resetClock();
