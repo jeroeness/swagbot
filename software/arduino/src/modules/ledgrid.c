@@ -323,8 +323,8 @@ uint8_t printCharacter(uint8_t color[8], wchar_t character, int8_t xOffset, int8
 	switch(character){
 		case 'M': lb[0] = 0x63; lb[1] = 0x63; lb[2] = 0x55; lb[3] = 0x55; lb[4] = 0x49; lb[5] = 0x49; lb[6] = 0x41;  cw = 8; break;
 		case 'W': lb[0] = 0x81; lb[1] = 0x81; lb[2] = 0x81; lb[3] = 0x42; lb[4] = 0x5A; lb[5] = 0x5A; lb[6] = 0x24;  cw = 9; break;
-		case 'm': lb[3] = 0x3F; lb[4] = 0x49; lb[5] = 0x49; lb[6] = 0x49;  cw = 8; break;
-		case 'w': lb[3] = 0x11; lb[4] = 0x15; lb[5] = 0x15; lb[6] = 0xA;  cw = 7; break;
+		case 'm': lb[4] = 0x3F; lb[5] = 0x49; lb[6] = 0x49; lb[7] = 0x49;  cw = 8; break;
+		case 'w': lb[4] = 0x11; lb[5] = 0x15; lb[6] = 0x15; lb[7] = 0xE;  cw = 7; break;
 	
 		case 'A': lb[0] = 0xC; lb[1] = 0xC; lb[2] = 0x12; lb[3] = 0x12; lb[4] = 0x12; lb[5] = 0x3F; lb[6] = 0x21; lb[7] = 0x21;  cw = 7; break;
 		case 'B': lb[0] = 0x1F; lb[1] = 0x21; lb[2] = 0x21; lb[3] = 0x1F; lb[4] = 0x21; lb[5] = 0x21; lb[6] = 0x21; lb[7] = 0x1F;  cw = 7; break;

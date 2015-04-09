@@ -26,7 +26,7 @@ void UltrasonicSensorRead(void)
 	//Timer5
 	TCCR5A = (1 << WGM51) | (1 << WGM50);//wgm=15 fpwm ocr1a=top
 	TCCR5B = (1 << ICNC5) | (0 << ICES5) | (1 << WGM53) | (1 << WGM52) | (0 << CS50);//falling edge, cs1 = div1	//todo: prescalervalue must be tested
-	OCR5A = 0x7FFF;// timer TOP value
+	OCR5A = 0x4FFF;// timer TOP value
 	TCNT5 = 0;
 	
 	
@@ -66,6 +66,8 @@ ISR(TIMER5_COMPA_vect)
 {
 	//(sort of) the overflow, no pulse falingedge detected
 	//(can give error)
+	
+	sensorData.sensorStruct.ultrasonic = 0;
 	
 	//timer off
 	TIMSK5 &= ~((1 << ICIE5) | (1 << OCIE5A));//inputcapture interrupt and OCR5A(overflow) interrupt  off

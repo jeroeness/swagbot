@@ -61,7 +61,7 @@ void printVerbose() {
 
 	if (vebosityTimer-- == 0) {
 
-		vebosityTimer = 0x4FFF;
+		vebosityTimer = 0x1FFF;
 
 /*
 		if(sensorData.sensorStruct.compassDegrees > 240){

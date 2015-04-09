@@ -238,7 +238,7 @@ namespace SwagBot {
 			// 
 			// tmrGetData
 			// 
-			this->tmrGetData->Interval = 10;
+			this->tmrGetData->Interval = 1;
 			this->tmrGetData->Tick += gcnew System::EventHandler(this, &MyForm::tmrGetData_Tick);
 			// 
 			// frmSensor
@@ -1212,12 +1212,17 @@ namespace SwagBot {
 						this->lblRes7->Text = Faces[6];
 					}
 
-					for (i = 0; i <= 50; i++) {
+					/*
+					for (i = 0; i <= 10; i++) {
 						Application::DoEvents();
 						Sleep(1);
-					}
+					}*/
 
 					CheckConnectionAlive();
+
+					for (i = 0; i < 7; i++) {
+						this->TriggerKeyState(i, GetAsyncKeyState(keyCode[i]) != 0);
+					}
 
 				} else if (gchar == 255) {
 					bufferlen = 0;
@@ -1234,9 +1239,7 @@ namespace SwagBot {
 				}
 			}
 
-			for (i = 0; i < 7; i++) {
-				this->TriggerKeyState(i, GetAsyncKeyState(keyCode[i]) != 0);
-			}
+			
 
 		}
 

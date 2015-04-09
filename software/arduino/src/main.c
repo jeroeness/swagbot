@@ -42,7 +42,7 @@ int main(void)
 	moveMotors(0, 0);
 	
 	while(1){
-		if(counter++ >= 0x5FFF){ //im there
+		if(counter++ >= 0x4FFF){ //im there
 			counter = 0;
 			updateSensors(); //could not create timer for this one.
 			setSubEmotion(sensorData.sensorStruct.compassDegrees / 11);
