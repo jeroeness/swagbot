@@ -16,10 +16,10 @@ void diagnosticsLedgrid(){
 			stop();
 			if(sensorData.sensorStruct.compassDegrees != compassTemp){
 				step = 1;									//next step	
-				setScrollText("/gCompass Check Passed");
+				checkPassed();
 				specialDelay();								//wait a few seconds
 				clearDisplayData();							//clear the ledgrid
-				setScrollText("/bLeft Bumper Check");
+				setScrollText("/rleft bumper check");
 			}
 		}
 		
@@ -30,7 +30,7 @@ void diagnosticsLedgrid(){
 			checkPassed();									//write "check passed"
 			specialDelay();									//wait a few seconds
 			clearDisplayData();								//clear ledgrid
-			setScrollText("/bRight Bumper Check");
+			setScrollText("/rright bumper check");
 		}
 		
 		//bumper R
@@ -40,7 +40,7 @@ void diagnosticsLedgrid(){
 			checkPassed();									//write "check passed"
 			specialDelay();									//wait a few seconds
 			clearDisplayData();								//clear ledgrid
-			setScrollText("/bSonar Check");
+			setScrollText("/rsonar check");
 		}
 		
 		//sonar
@@ -61,11 +61,11 @@ void diagnosticsLedgrid(){
 }
 
 void checkPassed(){
-	setScrollText("/gCheck Passed");
+	setScrollText("/gcheck passed");
 }
 
 void specialDelay(){
-	_delay_ms(3000);
+	_delay_ms(4000);
 }
 
 /*
