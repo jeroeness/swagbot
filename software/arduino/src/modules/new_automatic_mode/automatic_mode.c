@@ -28,9 +28,9 @@ void initAutomaticMode() {
 
 	currentAction = ACTION_IDLE;
 
-	addToActionList(F_TURN_FOR, 10, 100);
-	addToActionList(F_TURN_FOR, 10, -100);
-	addToActionList(F_TURN_FOR, 10, 100);
+//	addToActionList(F_TURN_FOR, 10, 100);
+//	addToActionList(F_TURN_FOR, 10, -100);
+//	addToActionList(F_TURN_FOR, 10, 100);
 	addToActionList(F_MOVE_FOR, 1000, 100);
 	addToActionList(F_MOVE_FOR, 1000, -100);
 }
