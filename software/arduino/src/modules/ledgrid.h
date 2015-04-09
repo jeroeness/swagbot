@@ -26,9 +26,10 @@ void clearDisplayData(void);
 void checkColorBrightness(void);
 uint8_t checkTextScrolled(void);
 
-void setEmotion(uint16_t);
-void setSubEmotion(uint16_t);
+void setEmotion(uint8_t);
+void setSubEmotion(uint8_t);
 void setScrollText(const char * text);
+void displayText(const char *text);
 void setNextSubEmotion(void);
 
 void updateScrollText(void);

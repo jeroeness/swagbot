@@ -26,37 +26,28 @@ int main(void)
 
 	sei();
 	
-	
-	
-	updateSensors();
-	_delay_ms(200);
+	_delay_ms(100);
 	if(sensorData.sensorStruct.bumperLeft == 1 && sensorData.sensorStruct.bumperRight == 1){
+		while(sensorData.sensorStruct.bumperLeft > 0 || sensorData.sensorStruct.bumperRight > 0){
+			_delay_ms(100);
+		}
+		_delay_ms(100);
 		diagnosticsLedgrid();
 	}
 	
 	setSteeringMode(manual);
 	resetAutomaticMode(); //TODO init automatic mode
 	
-	//setScrollText("/gSwagbot /bPro");
-	setEmotion(2);
 	moveMotors(0, 0);
 	
 	while(1){
 		if(counter++ >= 0x4FFF){ //im there
 			counter = 0;
 			updateSensors(); //could not create timer for this one.
-			setSubEmotion(sensorData.sensorStruct.compassDegrees / 11);
 		}
 		updateModeManager();
 		updateCommunication();
 		
-		/*
-		if(sensorData.sensorStruct.bumperLeft == 1){
-			setEmotion(1);
-		}else{
-			//setEmotion(2);
-			setSubEmotion(sensorData.sensorStruct.compassDegrees / 11);
-		}*/
 	}
 
 	return 1998;

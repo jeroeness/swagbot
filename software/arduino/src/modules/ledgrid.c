@@ -1,11 +1,11 @@
 #include "../globalincsanddefs.h"
 #include "ledgrid.h"
 
-int16_t currentFace = -1;     //use this as extern to select an face. max value: 5. -1 for displayOff
-int16_t currentSubFace = 0;  //use this as extern to select the subinterface of the face (for animation purposes). max value: 99 or the textlength
+uint8_t currentFace = 0;     //use this as extern to select an face. max value: 5. -1 for displayOff
+uint8_t currentSubFace = 0;  //use this as extern to select the subinterface of the face (for animation purposes). max value: 99 or the textlength
 
-int16_t previousFace = 255;
-int16_t previousSubFace = 255;
+uint8_t previousFace = 255;
+uint8_t previousSubFace = 255;
 uint8_t currentPrintLine = 0;
 uint8_t currentPrintColor = 0;
 
@@ -75,12 +75,12 @@ void clearDisplayData(void){
 }
 
 
-void setEmotion(uint16_t em){
+void setEmotion(uint8_t em){
 	currentFace = em;
 	updateEmotion();
 }
 
-void setSubEmotion(uint16_t subem){
+void setSubEmotion(uint8_t subem){
 	currentSubFace = subem;
 	updateEmotion();
 }
@@ -95,7 +95,7 @@ void displayText(const char *text) {
 	uint8_t * currentColor = rd;
 	int8_t i, sc = 0;
 
-	uint8_t tmpStringLength = min(strlen(text), 4);
+	uint8_t tmpStringLength = strlen(text);
 
 	for(i = 0; i < tmpStringLength; i++){
 		if(text[i] == '/'){
@@ -109,6 +109,7 @@ void displayText(const char *text) {
 			}
 			continue;
 		} else {
+			if(sc == 4) break;
 			dispText[sc] = text[i];
 			dispColor[sc] = currentColor;
 			sc++;
@@ -117,16 +118,17 @@ void displayText(const char *text) {
 
 	tmpStringLength = sc;
 	dispText[sc] = '\0';
-
+	
+	/*
 	int8_t offset = 0;
 	for(i = 0; i < tmpStringLength; i++){
 		offset += printCharacter(dispColor[i], dispText[i] + '0', offset, 0);
-	}
+	}*/
 
 	currentFace = 253; //scrolling text
 	currentSubFace = 0; //what xOffset are we at?
 
-	updateLedGrid();
+	updateEmotion();
 }
 
 void setScrollText(const char * text){
@@ -161,7 +163,7 @@ void setScrollText(const char * text){
 	currentFace = 254; //scrolling text
 	currentSubFace = 0; //what xOffset are we at?
 
-	updateLedGrid();
+	//updateLedGrid();
 }
 
 uint8_t checkTextScrolled(void){
@@ -186,24 +188,24 @@ void updateEmotion(void){
 	previousSubFace = currentSubFace;
 
 	switch(currentFace){ //here some other faces or sensor stats!
-		case -1://just clear the display
+		case 0://just clear the display
 			clearDisplayData();
 			break;
 
-		case 0: //green SMILEY!!! <:)
+		case 1: //green SMILEY!!! <:)
 			clearDisplayData();
 			gd[0] = 0x66; gd[1] = 0x81; gd[2] = 0x24;
 			gd[3] = 0x24; gd[5] = 0x81; gd[6] = 0x42;
 			gd[7] = 0x3C;
 			break;
 
-		case 1: //angry red face >:(
+		case 2: //angry red face >:(
 			clearDisplayData();
 			rd[1] = 0x24; rd[2] = 0x24; rd[5] = 0x3C;
 			rd[6] = 0x42; rd[7] = 0x81;
 			break;
 
-		case 2: //compass
+		case 3: //compass
 			clearDisplayData();
 
 			if(currentSubFace > 23){ currentSubFace = 0;}
@@ -241,27 +243,28 @@ void updateEmotion(void){
 			}
 			break;
 
-		case 3: //bumper (not pressed) Right
+		case 4: //bumper (not pressed) Right
 			clearDisplayData();
 			rd[0] = 0xC0; rd[1] = 0x30; rd[2] = 0xC;
 			rd[3] = 0x2; rd[4] = 0xFF; rd[5] = 0x81;
 			rd[6] = 0x81; rd[7] = 0xFF;
 			break;
 
-		case 4: //bumper (pressed) Right
+		case 5: //bumper (pressed) Right
 			clearDisplayData();
 			gd[2] = 0xFC; gd[3] = 0x2; gd[4] = 0xFF;
 			gd[5] = 0x81; gd[6] = 0x81; gd[7] = 0xFF;
 			break;
 
-		case 5: //display numbers
+		case 6: //display numbers
 			clearDisplayData();
 			num1 = currentSubFace / 10;
 			num2 = currentSubFace % 10;
 			printCharacter(rd, num1 + '0', 0, 2);
 			printCharacter(gd, num2 + '0', 4, 2);
 			break;
-		case 6: // IT'S A ME, MARIO!
+			
+		case 7: // IT'S A ME, MARIO!
 			clearDisplayData();
 			rd[0] = 0xFF; gd[0] = 0xC3; bd[0] = 0xC3;
 			rd[1] = 0xFF; gd[1] = 0xA3; bd[1] = 0xA3;
@@ -273,7 +276,7 @@ void updateEmotion(void){
 			rd[7] = 0xDB; gd[7] = 0xDB; bd[7] = 0xDB;
 			break;
 
-		case 7: // Space invaders (animated) alien 1
+		case 8: // Space invaders (animated) alien 1
 			if(currentSubFace > 1){ currentSubFace = 0;}
 			clearDisplayData();
 			switch(currentSubFace){
@@ -289,6 +292,19 @@ void updateEmotion(void){
 					gd[6] = 0x5A; gd[7] = 0xA5;
 					break;
 			}
+			break;
+			
+		case 253: //scrollable text
+			clearDisplayData();
+			
+			for(i = 0; i < 4; i++){
+				num1 = i / 2;
+				num2 = i % 2;
+				printCharacter(dispColor[i], dispText[i], num2 * 4, num1 * 4);
+			}
+
+			break;
+			
 		case 254: //scrollable text
 			clearDisplayData();
 			for(i = 0; i < scrollLength; i++){
@@ -414,6 +430,8 @@ uint8_t printCharacter(uint8_t color[8], wchar_t character, int8_t xOffset, int8
 		case 'y': lb[3] = 0x9; lb[4] = 0x9; lb[5] = 0x9; lb[6] = 0xA; lb[7] = 0x4;  cw = 5; break;
 		case 'z': lb[3] = 0xF; lb[4] = 0x4; lb[5] = 0x2; lb[6] = 0x1; lb[7] = 0xF;  cw = 5; break;
 		case ' ':  cw = 2; break;
+		
+		/*
 		case '0': lb[0] = 0xE; lb[1] = 0x11; lb[2] = 0x11; lb[3] = 0x11; lb[4] = 0x11; lb[5] = 0x11; lb[6] = 0x11; lb[7] = 0xE;  cw = 6; break;
 		case '1': lb[0] = 0x4; lb[1] = 0x7; lb[2] = 0x4; lb[3] = 0x4; lb[4] = 0x4; lb[5] = 0x4; lb[6] = 0x4; lb[7] = 0x4;  cw = 4; break;
 		case '2': lb[0] = 0xE; lb[1] = 0x11; lb[2] = 0x10; lb[3] = 0x8; lb[4] = 0x4; lb[5] = 0x2; lb[6] = 0x1; lb[7] = 0x1F;  cw = 6; break;
@@ -424,6 +442,19 @@ uint8_t printCharacter(uint8_t color[8], wchar_t character, int8_t xOffset, int8
 		case '7': lb[0] = 0x1F; lb[1] = 0x10; lb[2] = 0x8; lb[3] = 0x8; lb[4] = 0x4; lb[5] = 0x4; lb[6] = 0x4; lb[7] = 0x4;  cw = 6; break;
 		case '8': lb[0] = 0xE; lb[1] = 0x11; lb[2] = 0x11; lb[3] = 0xE; lb[4] = 0x11; lb[5] = 0x11; lb[6] = 0x11; lb[7] = 0xE;  cw = 6; break;
 		case '9': lb[0] = 0xE; lb[1] = 0x11; lb[2] = 0x11; lb[3] = 0x1E; lb[4] = 0x10; lb[5] = 0x10; lb[6] = 0x11; lb[7] = 0xE;  cw = 6; break;
+		*/
+		
+		case '0': lb[0] = 0x2; lb[1] = 0x5; lb[2] = 0x5; lb[3] = 0x5; lb[4] = 0x2;  cw = 4; break;
+		case '1': lb[0] = 0x2; lb[1] = 0x3; lb[2] = 0x2; lb[3] = 0x2; lb[4] = 0x2;  cw = 3; break;
+		case '2': lb[0] = 0x3; lb[1] = 0x4; lb[2] = 0x2; lb[3] = 0x1; lb[4] = 0x7;  cw = 4; break;
+		case '3': lb[0] = 0x3; lb[1] = 0x4; lb[2] = 0x2; lb[3] = 0x4; lb[4] = 0x3;  cw = 4; break;
+		case '4': lb[0] = 0x4; lb[1] = 0x6; lb[2] = 0x5; lb[3] = 0x7; lb[4] = 0x4;  cw = 4; break;
+		case '5': lb[0] = 0x7; lb[1] = 0x1; lb[2] = 0x7; lb[3] = 0x4; lb[4] = 0x3;  cw = 4; break;
+		case '6': lb[0] = 0x2; lb[1] = 0x1; lb[2] = 0x3; lb[3] = 0x5; lb[4] = 0x2;  cw = 4; break;
+		case '7': lb[0] = 0x7; lb[1] = 0x4; lb[2] = 0x2; lb[3] = 0x2; lb[4] = 0x2;  cw = 4; break;
+		case '8': lb[0] = 0x2; lb[1] = 0x5; lb[2] = 0x2; lb[3] = 0x5; lb[4] = 0x2;  cw = 4; break;
+		case '9': lb[0] = 0x2; lb[1] = 0x5; lb[2] = 0x7; lb[3] = 0x4; lb[4] = 0x2;  cw = 4; break;
+
 		case '-': lb[4] = 0xF;  cw = 5; break;
 		case '+': lb[2] = 0x4; lb[3] = 0x4; lb[4] = 0x1F; lb[5] = 0x4; lb[6] = 0x4;  cw = 6; break;
 		case '_':  cw = 6; break;

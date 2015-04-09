@@ -81,7 +81,7 @@ void printVerbose() {
 		str[i++] = instructionData.instructionstruct.motorRight+128;
 		str[i++] = instructionData.instructionstruct.ledStatus;
 		str[i++] = sensorData.sensorStruct.ultrasonic;
-		str[i++] = (sensorData.sensorStruct.bumperLeft<<1) | (sensorData.sensorStruct.bumperRight<<0);
+		str[i++] = (sensorData.sensorStruct.bumperLeft<<1) | (sensorData.sensorStruct.bumperRight<<0) | (i2c_checkstatus()<<2);
 		str[i++] = sensorData.sensorStruct.batteryPercentage;
 		str[i++] = sensorData.sensorStruct.compassDegrees;
 		str[i++] = (steeringMode == manual ? 0 : 1);
@@ -142,6 +142,7 @@ void readInputs () {
 			uploadActionBits++;
 			if(uploadActionBits == 3){ //add the action to the list
 				addToActionList(uploadActionBuffer[0], uploadActionBuffer[1], uploadActionBuffer[2]);
+				displayText("/r8/g9/b1");
 				uploadActionBits = -1;
 			}
 			return;
