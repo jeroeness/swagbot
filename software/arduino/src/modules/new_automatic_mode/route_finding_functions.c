@@ -125,7 +125,7 @@ void findAngleToPoint() {
 	}
 
 
-	uint16_t testingAngle = 90 ; // TODO fix this nu check hij zowel in lagere als hogere diepte de volledige 90 graden hoek.
+	int16_t testingAngle = 90 ; // TODO fix this nu check hij zowel in lagere als hogere diepte de volledige 90 graden hoek.
 
 	uint8_t angleLimit = (angleToPoint * ((checkingRight) ? 1 : -1) >= testingAngle);
 	
