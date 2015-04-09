@@ -15,35 +15,21 @@ void diagnostics(){
 			_delay_ms(100);
 			stop();
 			if(sensorData.sensorStruct.compassDegrees != compassTemp){
-				step = 1;		//next step	
+				step = 1;		
 				turnFunction();
-				//setScrollText("/gCompass Check Passed");
-				//specialDelay();		//wait a few seconds
-				//clearDisplayData();	//clear the ledgrid
-				//setScrollText("/bLeft Bumper Check");
 			}
 		}
 		
 		//bumper L
 		if(step==1 && sensorData.sensorStruct.bumperLeft){
-			step = 2;		//next step
+			step = 2;		
 			turnFunction();
-			//clearDisplayData();	//clear ledgrid
-			//checkPassed();		//write "check passed"
-			//specialDelay();		//wait a few seconds
-			//clearDisplayData();	//clear ledgrid
-			//setScrollText("/bRight Bumper Check");
 		}
 		
 		//bumper R
 		if(step==2 && sensorData.sensorStruct.bumperRight){
-			step = 3;			//next step
+			step = 3;			
 			turnFunction();
-			//clearDisplayData();	//clear ledgrid
-			//checkPassed();		//write "check passed"
-			//specialDelay();		//wait a few seconds
-			//clearDisplayData();	//clear ledgrid
-			//setScrollText("/bSonar Check");
 		}
 		
 		//sonar
@@ -51,29 +37,13 @@ void diagnostics(){
 			updateSensors();
 			_delay_ms(200);
 			if(sensorData.sensorStruct.ultrasonic <= 15){
-				step = 4;			//next step	
+				step = 4;				
 				turn(-100);
 				_delay_ms(500);
 				stop();
-				//checkPassed();		//write "check passed"
-				//turnByDegrees(120);	//check motors by turning
-				//turnByDegrees(120);
-				//turnByDegrees(120);
-				//specialDelay();		//wait a few seconds
-				//clearDisplayData();	//clear ledgrid
 			}
 		}
 	}
-}
-
-void checkPassed(){
-	setScrollText("/gCheck Passed");
-}
-
-void specialDelay(){
-	//int i;
-	//for(i=0;i<30000){}
-	_delay_ms(3000);
 }
 
 void turnFunction(){
