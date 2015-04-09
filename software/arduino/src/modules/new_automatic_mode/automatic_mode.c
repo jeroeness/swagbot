@@ -28,39 +28,42 @@ void initAutomaticMode() {
 
 	currentAction = ACTION_IDLE;
 
-	addToActionList(F_TURN_FOR, 50, 50);
-	addToActionList(F_MOVE_FOR, 100, 200);
+//	addToActionList(F_TURN_FOR, 10, 100);
+//	addToActionList(F_TURN_FOR, 10, -100);
+//	addToActionList(F_TURN_FOR, 10, 100);
+	addToActionList(F_MOVE_FOR, 1000, 100);
+	addToActionList(F_MOVE_FOR, 1000, -100);
 }
 
 void updateAutomaticMode() {
 	checkCrash();
 	
 	
-	if (routeFindingDepth > 0) {
-		if (currentAction == ACTION_IDLE && checkFuzzy(totalDeviation, 0, 5)) { // TODO gauge 5 to correct value
-			// TODO return original actionList
-			if(actionListCompleted())
-				finishRouteFinding();
-			else 
-				endRouteFinding();
-		} else {
-			// TODO find the new angle and continue route finding.
-			findAngleToPoint();
-		}
-	} else {
-		checkObstacle();
-	}
-	
-
 	switch (currentAction) {
 		case ACTION_TURN:
-		case ACTION_FINDING_ANGLE:
+//		case ACTION_FINDING_ANGLE:
 			checkTurn();
 			break;
 		case ACTION_MOVE:
 			checkMove();
 			break;
+		case ACTION_WAIT:
+			if (routeFindingDepth == 0)
+				checkObstacle(); // WHEN MOVING_FOR or TURNING_FOR // TODO check if moving forward
+
+			break;
 		case ACTION_IDLE:
+			if (routeFindingDepth > 0) {
+				if (checkFuzzy(totalDeviation, 0, 5)) { // TODO gauge 5 to correct value
+					if(actionListCompleted())
+						finishRouteFinding();
+					else 
+						endRouteFinding();
+				} else {
+					findAngleToPoint();
+				}
+			}
+
 			executeNextAction();
 			break;
 	}
@@ -85,11 +88,6 @@ void initFunctionList() {
 	functionList[4] = moveToDistance;
 	functionList[5] = moveFor;
 	functionList[6] = waitFor;
-}
-
-void initTimer0() {
-	TIMSK0 = (1 << TOIE0);
-	TCCR0B = (1 << CS02) | (1 << CS00); // prescaler 1024; fcpu 16000000 = 61 overflows per second
 }
 
 void fillEmptyActionList() {
@@ -246,24 +244,29 @@ void beginAutomaticMode(){
 }
 
 void stopAutomaticMode(){
+	resetAutomaticMode();
 	stop();
 }
 
+void initTimer0() {
+	TIMSK0 = (1 << TOIE0);
+	TCCR0B = (1 << CS02) | (1 << CS00); // prescaler 1024; fcpu 16000000 = 61 overflows per second
+	OCR0A = 156;						// 100 times per second.
+	TIMSK0 = (1 << OCIE0A); // on Compare Match interrupt enable
+}
 
 
 // ISR
 
-ISR(TIMER0_OVF_vect) {
-	if ((++overflowCount) == 2) {
-		overflowCount = 0;
-		if (targetMillis != 0 && checkFuzzy(targetMillis, ++currentMillis, TIME_MARGIN)) {
-			stop();
-			resetClock();
-			if (currentAction == ACTION_WAIT) {
-				currentAction = ACTION_IDLE;
-			} else {
-
-			}
+ISR(TIMER0_COMPA_vect) {
+	TCNT0 = 0;
+	if (targetMillis != 0 && checkFuzzy(targetMillis, ++currentMillis, TIME_MARGIN)) {
+		stop();
+		resetClock();
+		if (currentAction == ACTION_WAIT) {
+			currentAction = ACTION_IDLE;
+		} else if (currentAction == ACTION_FINDING_ANGLE) {
+			findAngleToPoint();
 		}
 	}
 }

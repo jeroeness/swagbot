@@ -17,7 +17,7 @@ int main(void)
 	
 	PORTD = 3;
 
-	i2c_init(0xA8);
+	i2c_init();
 	initAutomaticMode();
 
 	initCommunication();
@@ -25,8 +25,14 @@ int main(void)
 	initLedGrid();
 
 	sei();
-
-	//diagnostics();
+	
+	
+	
+	updateSensors();
+	_delay_ms(200);
+	if(sensorData.sensorStruct.bumperLeft == 1 && sensorData.sensorStruct.bumperRight == 1){
+		diagnosticsLedgrid();
+	}
 	
 	setSteeringMode(manual);
 	resetAutomaticMode(); //TODO init automatic mode
@@ -36,9 +42,10 @@ int main(void)
 	moveMotors(0, 0);
 	
 	while(1){
-		if(counter++ >= 0x7FFF){ //im there
+		if(counter++ >= 0x4FFF){ //im there
 			counter = 0;
 			updateSensors(); //could not create timer for this one.
+			setSubEmotion(sensorData.sensorStruct.compassDegrees / 11);
 		}
 		updateModeManager();
 		updateCommunication();

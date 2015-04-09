@@ -36,6 +36,7 @@
 #include "modules/motor.h"
 #include "modules/ultrasonic_sensor.h"
 #include "modules/startupchecks.h"
+#include "modules/startupchecks_ledgrid.h"
 #include "modules/ledgrid.h"
 
 #endif /* GLOBALINCSANDDEFS_H_ */

@@ -2,8 +2,12 @@
 #define ROUTE_FINDING_FUNCTIONS
 //DEFINES:
 
-#define MIN_DISTANCE 		10 
-#define OUTSIDE_MARGIN_RP6	10
+#define MIN_DISTANCE 		20 	// TODO GAUGE
+#define OUTSIDE_MARGIN_RP6	10	// TODO GAUGE
+#define CHECKING_ANGLE		10	// TODO GAUGE
+#define DELTA_DISTANCE		15	// TODO GAUGE
+#define SPEED				0.5 // m/s // TODO gauge
+#define TURN_SPEED			90 // degrees/s // TODO gauge
 
 
 void checkObstacle();

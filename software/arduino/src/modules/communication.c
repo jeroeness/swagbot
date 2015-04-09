@@ -4,7 +4,7 @@
 
 #define KEYSTATESCOUNT 4
 
-#define dl 12 //datalength
+#define dl 11 //datalength
 
 extern union UID instructionData;
 extern union USD sensorData;
@@ -21,7 +21,8 @@ int8_t connectionTimeOut = 0;
 
 int8_t keyState[KEYSTATESCOUNT];
 
-
+int8_t uploadActionBits = -1;
+uint8_t uploadActionBuffer[] = {0,0,0,0};
 
 void initCommunication() {
 	openConnection();
@@ -60,7 +61,7 @@ void printVerbose() {
 
 	if (vebosityTimer-- == 0) {
 
-		vebosityTimer = 0x4FFF;
+		vebosityTimer = 0x1FFF;
 
 /*
 		if(sensorData.sensorStruct.compassDegrees > 240){
@@ -80,8 +81,7 @@ void printVerbose() {
 		str[i++] = instructionData.instructionstruct.motorRight+128;
 		str[i++] = instructionData.instructionstruct.ledStatus;
 		str[i++] = sensorData.sensorStruct.ultrasonic;
-		str[i++] = sensorData.sensorStruct.bumperLeft;
-		str[i++] = sensorData.sensorStruct.bumperRight;
+		str[i++] = (sensorData.sensorStruct.bumperLeft<<1) | (sensorData.sensorStruct.bumperRight<<0);
 		str[i++] = sensorData.sensorStruct.batteryPercentage;
 		str[i++] = sensorData.sensorStruct.compassDegrees;
 		str[i++] = (steeringMode == manual ? 0 : 1);
@@ -133,14 +133,26 @@ char charIndex (int8_t key) {
 void readInputs () {
 	while(serialAvailable()){
 		wchar_t input = serialRead();
-
+		
+		if(uploadActionBits != -1){
+			
+			uploadActionBuffer[uploadActionBits] = input;
+			
+			connectionTimeOut = 0; //prevent timeout
+			uploadActionBits++;
+			if(uploadActionBits == 3){ //add the action to the list
+				addToActionList(uploadActionBuffer[0], uploadActionBuffer[1], uploadActionBuffer[2]);
+				uploadActionBits = -1;
+			}
+			return;
+		}
+		
 		switch (input) {
 			case 'w':
 			case 'a':
 			case 's':
 			case 'd':
 			    keyState[keyIndex(input)] = 1;
-				//sensorData.sensorStruct.compassDegrees = input;
                 inputKeyPress(input);
 				break;
             case 'W':
@@ -160,6 +172,15 @@ void readInputs () {
 			case 'f': //keepconnection alive
 			case 'F': //keepconnection alive
 				connectionTimeOut = 0;
+				break;
+			
+			case 'u': //uploading actionlist
+				uploadActionBits = 0;
+				connectionTimeOut = 0;
+				break;
+				
+			case 'k':
+				i2c_initCalibration();
 				break;
 		}
     }

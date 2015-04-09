@@ -139,15 +139,16 @@ void serialPrintCharacterSynchronous (const char c) {
 	sleepUntilEmptyOutputBuffer();
 }
 
+
 void serialPrintSynchronous (const char *c, int8_t len) {
 	serialPrint(c, len);
 	sleepUntilEmptyOutputBuffer();
 }
 
-/*
+
 void serialPrintSynchronous (const char *c) {
 	serialPrintSynchronous(c, strlen(c));
-}*/
+}
 
 void serialPrintLine(const char *c, int8_t len) {
 	char *ln = (char*)malloc((len + 3) * sizeof(char));
