@@ -1347,6 +1347,7 @@ namespace SwagBot {
 		}
 
 		System::Void cmdDisconnect_Click(System::Object^  sender, System::EventArgs^  e) {
+			setStatusMessage("User disconnected!", false);
 			Disconnect();
 		}
 

@@ -67,7 +67,7 @@ ISR(TIMER5_COMPA_vect)
 	//(sort of) the overflow, no pulse falingedge detected
 	//(can give error)
 	
-	sensorData.sensorStruct.ultrasonic = 0;
+	sensorData.sensorStruct.ultrasonic = 254;
 	
 	//timer off
 	TIMSK5 &= ~((1 << ICIE5) | (1 << OCIE5A));//inputcapture interrupt and OCR5A(overflow) interrupt  off
