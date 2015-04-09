@@ -112,6 +112,8 @@ void findAngleToPoint() {
 	static uint8_t firstCall = 1;
 
 	int16_t newAngle;
+	
+	serialPrintSynchronous("findingAngleToPoint\n", 20);
 
 	if (firstCall) {
 		firstCall = angleToPoint = previousAngleToPoint = previousAngle = previousDistance = checkingRight = 0;
