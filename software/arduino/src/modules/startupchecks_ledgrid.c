@@ -19,7 +19,7 @@ void diagnosticsLedgrid(){
 				checkPassed();
 				specialDelay();								//wait a few seconds
 				clearDisplayData();							//clear the ledgrid
-				setScrollText("/rleft bumper check");
+				setScrollText("/gl bumper");
 			}
 		}
 		
@@ -30,7 +30,7 @@ void diagnosticsLedgrid(){
 			checkPassed();									//write "check passed"
 			specialDelay();									//wait a few seconds
 			clearDisplayData();								//clear ledgrid
-			setScrollText("/rright bumper check");
+			setScrollText("/gr bumper");
 		}
 		
 		//bumper R
@@ -40,7 +40,7 @@ void diagnosticsLedgrid(){
 			checkPassed();									//write "check passed"
 			specialDelay();									//wait a few seconds
 			clearDisplayData();								//clear ledgrid
-			setScrollText("/rsonar check");
+			setScrollText("/gsonar");
 		}
 		
 		//sonar
@@ -61,7 +61,7 @@ void diagnosticsLedgrid(){
 }
 
 void checkPassed(){
-	setScrollText("/gcheck passed");
+	setScrollText("/gok!");
 }
 
 void specialDelay(){
