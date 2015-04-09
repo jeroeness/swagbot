@@ -28,8 +28,8 @@ void initAutomaticMode() {
 
 	currentAction = ACTION_IDLE;
 
-	addToActionList(F_TURN_FOR, 50, 50);
-	addToActionList(F_MOVE_FOR, 100, 200);
+	addToActionList(F_MOVE_FOR, 1000, 100);
+	addToActionList(F_MOVE_FOR, 1000, -100);
 }
 
 void updateAutomaticMode() {
@@ -85,11 +85,6 @@ void initFunctionList() {
 	functionList[4] = moveToDistance;
 	functionList[5] = moveFor;
 	functionList[6] = waitFor;
-}
-
-void initTimer0() {
-	TIMSK0 = (1 << TOIE0);
-	TCCR0B = (1 << CS02) | (1 << CS00); // prescaler 1024; fcpu 16000000 = 61 overflows per second
 }
 
 void fillEmptyActionList() {
@@ -249,21 +244,25 @@ void stopAutomaticMode(){
 	stop();
 }
 
+void initTimer0() {
+	TIMSK0 = (1 << TOIE0);
+	TCCR0B = (1 << CS02) | (1 << CS00); // prescaler 1024; fcpu 16000000 = 61 overflows per second
+	OCR0A = 156;						// 100 times per second.
+	TIMSK2 = (1 << OCIE2A); // on Compare Match interrupt enable
+}
 
 
 // ISR
 
-ISR(TIMER0_OVF_vect) {
-	if ((++overflowCount) == 2) {
-		overflowCount = 0;
-		if (targetMillis != 0 && checkFuzzy(targetMillis, ++currentMillis, TIME_MARGIN)) {
-			stop();
-			resetClock();
-			if (currentAction == ACTION_WAIT) {
-				currentAction = ACTION_IDLE;
-			} else {
+ISR(TIMER0_COMPA_vect) {
+	TCNT2 = 0;
+	if (targetMillis != 0 && checkFuzzy(targetMillis, ++currentMillis, TIME_MARGIN)) {
+		stop();
+		resetClock();
+		if (currentAction == ACTION_WAIT) {
+			currentAction = ACTION_IDLE;
+		} else {
 
-			}
 		}
 	}
 }

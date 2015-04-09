@@ -129,11 +129,12 @@ void findAngleToPoint() {
 
 	uint8_t angleLimit = (abs(angleToPoint) >= testingAngle);
 	
-	if ((previousDistance != 0 && sensorData.sensorStruct.ultrasonic - previousDistance > 10) || angleLimit) { // indicates end of finding the angle (either found or none-existent) //TODO gauge 10
+	if ((previousDistance != 0 && sensorData.sensorStruct.ultrasonic - previousDistance > DELTA_DISTANCE) || angleLimit) { // indicates end of finding the angle (either found or none-existent) //TODO gauge 10
 		if (checkingRight || routeFindingDepth > 0) { // done with both sides or it's only necessary to check one side
 			if (angleLimit) {
 				// TODO implement angle limit rage quit
 				// REVERSE ROUTE FINDING ACTIONS AND LAST NORMAL ACTION
+				// TODO switch manual mode
 			} else {
 				findRoute((angleToPoint < previousAngleToPoint) ? angleToPoint : previousAngleToPoint, angleToPoint, previousDistance); // call find route with the smallest angle
 			}
@@ -149,7 +150,7 @@ void findAngleToPoint() {
 	} else {
 		previousDistance = sensorData.sensorStruct.ultrasonic;
 
-		newAngle = 5 * ((checkingRight) ? 1 : -1); // TODO gauge this shit // if checking right the angle should be positive, otherwise it should be negative
+		newAngle = CHECKING_ANGLE * ((checkingRight) ? 1 : -1); // TODO gauge this shit // if checking right the angle should be positive, otherwise it should be negative
 		angleToPoint += newAngle;
 	}
 
@@ -174,8 +175,10 @@ void endRouteFinding() {
 
 int16_t convertToTime(int16_t ultrasonic) {
 	// TODO implement and gauge
+	int16_t timeToObject = ultrasonic/SPEED; // in seconds
+	timeToObject = timeToObject * 100; // in centiseconds
 
-	return ultrasonic/2;
+	return timeToObject;
 }
 
 
