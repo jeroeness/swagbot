@@ -714,15 +714,6 @@
 			<Option target="Arduino Uno" />
 			<Option target="Arduino Mega 2560/ADK" />
 		</Unit>
-		<Unit filename="src/modules/automatic_mode.c">
-			<Option compilerVar="CC" />
-			<Option target="Arduino Uno" />
-			<Option target="Arduino Mega 2560/ADK" />
-		</Unit>
-		<Unit filename="src/modules/automatic_mode.h">
-			<Option target="Arduino Uno" />
-			<Option target="Arduino Mega 2560/ADK" />
-		</Unit>
 		<Unit filename="src/modules/communication.c">
 			<Option compilerVar="CC" />
 			<Option target="Arduino Uno" />
@@ -737,6 +728,13 @@
 			<Option target="Arduino Mega 2560/ADK" />
 		</Unit>
 		<Unit filename="src/modules/i2c_lib.h">
+			<Option target="Arduino Mega 2560/ADK" />
+		</Unit>
+		<Unit filename="src/modules/ledgrid.c">
+			<Option compilerVar="CC" />
+			<Option target="Arduino Mega 2560/ADK" />
+		</Unit>
+		<Unit filename="src/modules/ledgrid.h">
 			<Option target="Arduino Mega 2560/ADK" />
 		</Unit>
 		<Unit filename="src/modules/manual_mode.c">
@@ -764,6 +762,13 @@
 		</Unit>
 		<Unit filename="src/modules/motor.h">
 			<Option target="Arduino Uno" />
+			<Option target="Arduino Mega 2560/ADK" />
+		</Unit>
+		<Unit filename="src/modules/startupchecks.c">
+			<Option compilerVar="CC" />
+			<Option target="Arduino Mega 2560/ADK" />
+		</Unit>
+		<Unit filename="src/modules/startupchecks.h">
 			<Option target="Arduino Mega 2560/ADK" />
 		</Unit>
 		<Unit filename="src/modules/ultrasonic_sensor.c">
