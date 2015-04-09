@@ -89,7 +89,6 @@ ISR(TIMER1_OVF_vect)
 			OverFlowToggle = 10;
 			break;
 			
-		
 		default:
 			OverFlowToggle++;
 			break;
@@ -189,7 +188,6 @@ uint8_t i2c_checkforbusy(void)
 {
 	static uint8_t timeoutcounter = 1;
 	
-	timeoutcounter--;
 	if(!timeoutcounter) 
 	{
 		timeoutcounter = 1;
@@ -199,6 +197,7 @@ uint8_t i2c_checkforbusy(void)
 	
 	if(i2c_state == BUSY) 
 	{
+		timeoutcounter--;
 		ICR1 = 1562; //250*0.1ms (16000000/256)/((1/(250*0.1))*1000)
 		return 1;
 	}
@@ -279,7 +278,7 @@ void i2c_stop(void)
 void i2c_lockUp(void)
 {
   TWCR = 0; //releases SDA and SCL lines to high impedance
-  TWCR = _BV(TWEN) | _BV(TWEA); //reinitialize TWI 
+  TWCR = _BV(TWEN) | _BV(TWEA) | (1 << TWIE); //reinitialize TWI 
   
   PORTB &= ~(1<<PB7); //arduinomega pin 13 led off
   
