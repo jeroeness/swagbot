@@ -78,11 +78,13 @@ ISR(TIMER1_OVF_vect)
 			break;
 			
 		case 11:
+			ICR1 = 2083;
 			i2c_readFromCompass();
 			OverFlowToggle = 12;
 			break;
 			
 		case 12:
+			ICR1 = 2083;
 			i2c_readFromRP6();
 			OverFlowToggle = 10;
 			break;
@@ -183,20 +185,40 @@ uint8_t i2c_checkstatus(void)
 	return i2c_state;
 }
 
+uint8_t i2c_checkforbusy(void)
+{
+	static uint8_t timeoutcounter = 1;
+	
+	timeoutcounter--;
+	if(!timeoutcounter) 
+	{
+		timeoutcounter = 1;
+		i2c_lockUp();
+		return 0;
+	}
+	
+	if(i2c_state == BUSY) 
+	{
+		ICR1 = 1562; //250*0.1ms (16000000/256)/((1/(250*0.1))*1000)
+		return 1;
+	}
+	else
+	{
+		timeoutcounter = 1;
+		return 0;
+	}
+	
+}
+
 void i2c_waitforidle(void)
 {
 	uint8_t register timeoutcounter = 250;
-	while (i2c_state == BUSY)	// wait while async process is still busy
+	while (i2c_state == BUSY && --timeoutcounter > 0)	// wait while async process is still busy
 	{
-		if (!--timeoutcounter)
-		{
-			break;
-		}
-		_delay_us(500);
+		_delay_us(100);
 	}
-	return;
 }
-
+	
 void i2c_callback_attach(void (*i2c_master_Done) (void), void (*i2c_slave_Done) (void), void (*i2c_error) (void))
 {
 	i2c_waitforidle();
@@ -207,7 +229,8 @@ void i2c_callback_attach(void (*i2c_master_Done) (void), void (*i2c_slave_Done) 
 
 void i2c_write(uint8_t destSLA, uint8_t destregaddress, uint8_t *dataptr, uint8_t amount)
 {
-	i2c_waitforidle();
+	if (i2c_checkforbusy()) return;
+
 	i2c_state = BUSY;
 
 	PORTB |= 1<<PB7; //arduinomega pin 13 led on
@@ -222,7 +245,8 @@ void i2c_write(uint8_t destSLA, uint8_t destregaddress, uint8_t *dataptr, uint8_
 
 void i2c_read(uint8_t destSLA, uint8_t destregaddress, uint8_t *dataptr, uint8_t amount)
 {
-	i2c_waitforidle();
+	if (i2c_checkforbusy()) return;
+
 	i2c_state = BUSY;
 
 	PORTB |= 1<<PB7; //arduinomega pin 13 led on
@@ -247,9 +271,19 @@ void i2c_stop(void)
 	while(TWCR & (1 << TWSTO));
 	
 	PORTB &= ~(1<<PB7); //arduinomega pin 13 led off
-
+	
 	i2c_state = IDLE;
 	return;
+}
+
+void i2c_lockUp(void)
+{
+  TWCR = 0; //releases SDA and SCL lines to high impedance
+  TWCR = _BV(TWEN) | _BV(TWEA); //reinitialize TWI 
+  
+  PORTB &= ~(1<<PB7); //arduinomega pin 13 led off
+  
+  i2c_state = IDLE;
 }
 
 ISR(TWI_vect)

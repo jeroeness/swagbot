@@ -182,6 +182,11 @@ void readInputs () {
 			case 'k':
 				i2c_initCalibration();
 				break;
+				
+			case 'z': //we have send the last char in our serialdata from gui so we may send again :)
+				vebosityTimer = 10;
+				break;
+				
 		}
     }
 

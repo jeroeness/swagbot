@@ -35,5 +35,4 @@ void updateScrollText(void);
 void updateEmotion(void);
 void updateLedGrid(void);
 
-
 #endif

@@ -892,10 +892,10 @@ namespace SwagBot {
 #define KEY_DOWN true
 
 		private:
-		static array<int>^ keyCode = gcnew array<int>(7) { 0x57, 0x41, 0x44, 0x53, 0x50, 0x4D, 0x4E };
-		static array<bool>^ keyDown = gcnew array<bool>(7) { false, false, false, false, false, false, false };
-		static array<unsigned char>^ keySendUp = gcnew array<unsigned char>(8) { 'W', 'A', 'D', 'S', 'K', 'M', 'N', 'F' };
-		static array<unsigned char>^ keySendDown = gcnew array<unsigned char>(8) { 'w', 'a', 'd', 's', 'k', 'm', 'n', 'f' };
+		static array<int>^ keyCode = gcnew array<int>(8) { 0x57, 0x41, 0x44, 0x53, 0x00, 0x4D, 0x4E, 0x00 };
+		static array<bool>^ keyDown = gcnew array<bool>(8) { false, false, false, false, false, false, false, false };
+		static array<unsigned char>^ keySendUp = gcnew array<unsigned char>(9) { 'W', 'A', 'D', 'S', 'K', 'M', 'N', 'F', 'Z' };
+		static array<unsigned char>^ keySendDown = gcnew array<unsigned char>(9) { 'w', 'a', 'd', 's', 'k', 'm', 'n', 'f', 'z' };
 		static array<Label^>^ keyLabels = gcnew array<Label^>(7) {};
 		static array<bool>^ MouseDown = gcnew array<bool>(7) {};
 		static array<String ^>^ Faces = gcnew array<String ^>(7) { "Green Smiley", "Angry Smiley", "Compass", "Bumper Unpressed", "Bumper Pressed", "TEST", "UNKNOWN_FACE" };
@@ -1223,6 +1223,8 @@ namespace SwagBot {
 					for (i = 0; i < 7; i++) {
 						this->TriggerKeyState(i, GetAsyncKeyState(keyCode[i]) != 0);
 					}
+
+					this->serialPort1->Write(keySendDown, 8, 1);
 
 				} else if (gchar == 255) {
 					bufferlen = 0;
