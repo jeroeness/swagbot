@@ -23,26 +23,29 @@ char scrollText[100]; //current text to scroll
 int16_t scrollLength; //text length (only calculate once)
 uint8_t * scrollColor[100]; //the array with the color
 
+char dispText[5];
+uint8_t *dispColor[5];
+
 void initLedGrid(void){
-	DDR_STROBE |= STROBE; 
+	DDR_STROBE |= STROBE;
 	DDR_DATA |= DATA;
 	DDR_CLOCK |= CLOCK;
 	DDR_POSITIVE |= POSITIVE;
-	
+
 	PORT_CLOCK &= ~CLOCK;
 	PORT_STROBE &= ~STROBE;
 	PORT_POSITIVE |= POSITIVE;
-	
+
 	//ledgrid drawing
 	TCCR3B |= (1 << CS31) | (0<<CS30); //timer3: set prescaler of 8
 	TCNT3 = 63000; //timer3: init counter
 	TIMSK3 |= (1 << TOIE3); //timer3: enable overflow interrupt
-	
+
 	//scrolling text
 	TCCR4B |= (1 << CS42) | (0<<CS40); //timer 4: prescaler of 256
 	TCNT4 = 58000; //timer4: init counter differently than others to prevent simultaneously execution
 	TIMSK4 |= (1 << TOIE4); //timer4: enable overflow interrupt
-	
+
 	setEmotion(0);
 }
 
@@ -51,7 +54,7 @@ ISR(TIMER3_OVF_vect){
 	TCNT3 = 65000;
 }
 
-ISR(TIMER4_OVF_vect){	
+ISR(TIMER4_OVF_vect){
 	updateScrollText();
 	TCNT4 = 58000;
 }
@@ -83,12 +86,50 @@ void setNextSubEmotion(void){
 }
 
 
+void displayText(const char *text) {
+	uint8_t * currentColor = rd;
+	int8_t i, sc = 0;
+
+	uint8_t tmpStringLength = min(strlen(text), 4);
+
+	for(i = 0; i < tmpStringLength; i++){
+		if(text[i] == '/'){
+			i++;
+			if(text[i] == 'r'){
+				currentColor = rd;
+			}else if(text[i] == 'g'){
+				currentColor = gd;
+			}else if(text[i] == 'b'){
+				currentColor = bd;
+			}
+			continue;
+		} else {
+			dispText[sc] = text[i];
+			dispColor[sc] = currentColor;
+			sc++;
+		}
+	}
+
+	tmpStringLength = sc;
+	dispText[sc] = '\0';
+
+	int8_t offset = 0;
+	for(i = 0; i < tmpStringLength; i++){
+		offset += printCharacter(dispColor[i], dispText[i] + '0', offset, 0);
+	}
+
+	currentFace = 253; //scrolling text
+	currentSubFace = 0; //what xOffset are we at?
+
+	updateLedGrid();
+}
+
 void setScrollText(const char * text){
 	uint8_t * currentColor = rd;
 	uint8_t i = 0;
 	uint8_t StringCounter = 0;
 	uint8_t tmpStringLength = strlen(text);
-	
+
 	for(i = 0; i < tmpStringLength; i++){
 		if(text[i] == '/'){
 			i++;
@@ -106,13 +147,13 @@ void setScrollText(const char * text){
 			StringCounter++;
 		}
 	}
-	
+
 	scrollText[StringCounter] = '\0';
 	scrollLength = StringCounter;
-	
+
 	currentFace = 254; //scrolling text
 	currentSubFace = 0; //what xOffset are we at?
-	
+
 	updateLedGrid();
 }
 
@@ -129,58 +170,58 @@ void updateEmotion(void){
 	uint8_t num2 = 0;
 	int8_t i = 0;
 	int16_t offsetCount = 0;
-	
+
 	if(currentFace == previousFace && currentSubFace == previousSubFace) return;
 	previousFace = currentFace;
 	previousSubFace = currentSubFace;
-			
+
 	switch(currentFace){ //here some other faces or sensor stats!
 		case -1://just clear the display
 			clearDisplayData();
 			break;
-			
+
 		case 0: //green SMILEY!!! <:)
 			clearDisplayData();
-			gd[0] = 0x66; gd[1] = 0x81; gd[2] = 0x24; 
-			gd[3] = 0x24; gd[5] = 0x81; gd[6] = 0x42; 
-			gd[7] = 0x3C; 
+			gd[0] = 0x66; gd[1] = 0x81; gd[2] = 0x24;
+			gd[3] = 0x24; gd[5] = 0x81; gd[6] = 0x42;
+			gd[7] = 0x3C;
 			break;
-			
+
 		case 1: //angry red face >:(
 			clearDisplayData();
 			rd[1] = 0x24; rd[2] = 0x24; rd[5] = 0x3C;
 			rd[6] = 0x42; rd[7] = 0x81;
 			break;
-			
+
 		case 2: //compass
 			clearDisplayData();
-			gd[0] = 0x3C; gd[1] = 0x42; rd[2] = 0x60; 
-			gd[2] = 0x81; rd[3] = 0x18; gd[3] = 0x81; 
-			gd[4] = 0x81; bd[4] = 0x18; gd[5] = 0x81; 
-			bd[5] = 0x6; gd[6] = 0x42; gd[7] = 0x3C; 
+			gd[0] = 0x3C; gd[1] = 0x42; rd[2] = 0x60;
+			gd[2] = 0x81; rd[3] = 0x18; gd[3] = 0x81;
+			gd[4] = 0x81; bd[4] = 0x18; gd[5] = 0x81;
+			bd[5] = 0x6; gd[6] = 0x42; gd[7] = 0x3C;
 			break;
-		
+
 		case 3: //bumper (not pressed) Right
 			clearDisplayData();
-			rd[0] = 0xC0; rd[1] = 0x30; rd[2] = 0xC; 
-			rd[3] = 0x2; rd[4] = 0xFF; rd[5] = 0x81; 
-			rd[6] = 0x81; rd[7] = 0xFF; 
+			rd[0] = 0xC0; rd[1] = 0x30; rd[2] = 0xC;
+			rd[3] = 0x2; rd[4] = 0xFF; rd[5] = 0x81;
+			rd[6] = 0x81; rd[7] = 0xFF;
 			break;
-		
+
 		case 4: //bumper (pressed) Right
 			clearDisplayData();
-			gd[2] = 0xFC; gd[3] = 0x2; gd[4] = 0xFF; 
-			gd[5] = 0x81; gd[6] = 0x81; gd[7] = 0xFF; 
+			gd[2] = 0xFC; gd[3] = 0x2; gd[4] = 0xFF;
+			gd[5] = 0x81; gd[6] = 0x81; gd[7] = 0xFF;
 			break;
-		
-		case 5: //display numbers 
+
+		case 5: //display numbers
 			clearDisplayData();
 			num1 = currentSubFace / 10;
 			num2 = currentSubFace % 10;
 			printCharacter(rd, num1 + '0', 0, 2);
 			printCharacter(gd, num2 + '0', 4, 2);
 			break;
-		
+
 		case 254: //scrollable text
 			clearDisplayData();
 			for(i = 0; i < scrollLength; i++){
@@ -190,14 +231,14 @@ void updateEmotion(void){
 				currentSubFace = 0;
 			}
 			break;
-		
+
 		default: //unknown face? Question Mark ??????
 			clearDisplayData();
-			gd[0] = 0x38; bd[0] = 0xC7; gd[1] = 0x44; 
-			bd[1] = 0xBB; gd[2] = 0x40; bd[2] = 0xBF; 
-			gd[3] = 0x20; bd[3] = 0xDF; gd[4] = 0x10; 
-			bd[4] = 0xEF; gd[5] = 0x10; bd[5] = 0xEF; 
-			bd[6] = 0xFF; gd[7] = 0x10; bd[7] = 0xEF; 
+			gd[0] = 0x38; bd[0] = 0xC7; gd[1] = 0x44;
+			bd[1] = 0xBB; gd[2] = 0x40; bd[2] = 0xBF;
+			gd[3] = 0x20; bd[3] = 0xDF; gd[4] = 0x10;
+			bd[4] = 0xEF; gd[5] = 0x10; bd[5] = 0xEF;
+			bd[6] = 0xFF; gd[7] = 0x10; bd[7] = 0xEF;
 
 			break;
 	}
@@ -210,10 +251,10 @@ void updateLedGrid(void){
 		CurrentPrintLine++;
 		if(CurrentPrintLine == 8) CurrentPrintLine = 0;
 	}
-	
+
 	//CurrentPrintLine++;
 	//if(CurrentPrintLine == 8) CurrentPrintLine = 0;
-	
+
 	pushArraysToGrid(CurrentPrintLine,CurrentPrintColor);
 }
 
@@ -223,7 +264,7 @@ uint8_t printCharacter(uint8_t color[8], wchar_t character, int8_t xOffset, int8
 	int8_t y = 0;
 	uint8_t lb[6] = {0,0,0,0,0,0};
 	int8_t cw = 0; //CharWidth
-	
+
 	switch(character){
 		case 'A': lb[0] = 0x6; lb[1] = 0x6; lb[2] = 0x9; lb[3] = 0xF; lb[4] = 0x9;  cw = 5; break;
 		case 'B': lb[0] = 0x7; lb[1] = 0x9; lb[2] = 0x7; lb[3] = 0x9; lb[4] = 0x7;  cw = 5; break;
@@ -309,9 +350,9 @@ uint8_t printCharacter(uint8_t color[8], wchar_t character, int8_t xOffset, int8
 			lb[0] = 0xF; lb[1] = 0xF; lb[2] = 0xF; lb[3] = 0xF; lb[4] = 0xF; lb[5] = 0xF; cw = 4; break;
 			break;
 	}
-	
+
 	if(xOffset < -3 && xOffset > 9) return cw;
-	
+
 	for(y = 0; y < 6; y++){
 		for(x = 0; x < cw; x++){
 			if(lb[y] & (1<<x)){
@@ -322,15 +363,15 @@ uint8_t printCharacter(uint8_t color[8], wchar_t character, int8_t xOffset, int8
 		}
 
 	}
-	
+
 	return cw;
 }
 
 void pushArraysToGrid(uint8_t i, uint8_t c){
 	int8_t j = 0;
-	
+
 	PORT_STROBE &= ~STROBE; //prevent bits from flowing into output
-	
+
 	for(j = 4; j < 8; j++){ //turn row on first part
 		if(j == i){
 			PORT_DATA |= DATA;
@@ -340,7 +381,7 @@ void pushArraysToGrid(uint8_t i, uint8_t c){
 		PORT_CLOCK |= CLOCK;
 		PORT_CLOCK &= ~CLOCK;
 	}
-			
+
 	for(j = 4; j < 8; j++){ //green second part
 		if((gd[i] & (1 << (7-j))) && c == 1){
 			PORT_DATA &= ~DATA;
@@ -350,7 +391,7 @@ void pushArraysToGrid(uint8_t i, uint8_t c){
 		PORT_CLOCK |= CLOCK;
 		PORT_CLOCK &= ~CLOCK;
 	}
-			
+
 	for(j = 0; j < 4; j++){ //turn row on second part
 		if(j == i){
 			PORT_DATA |= DATA;
@@ -359,8 +400,8 @@ void pushArraysToGrid(uint8_t i, uint8_t c){
 		}
 		PORT_CLOCK |= CLOCK;
 		PORT_CLOCK &= ~CLOCK;
-	}	
-			
+	}
+
 	for(j = 0; j < 4; j++){ //green fisrt part
 		if((gd[i] & (1 << (7-j))) && c == 1){
 			PORT_DATA &= ~DATA;
@@ -370,7 +411,7 @@ void pushArraysToGrid(uint8_t i, uint8_t c){
 		PORT_CLOCK |= CLOCK;
 		PORT_CLOCK &= ~CLOCK;
 	}
-			
+
 	for(j = 4; j < 8; j++){ //blue second part
 		if((bd[i] & (1 << (7-j))) && c == 2){
 			PORT_DATA &= ~DATA;
@@ -380,7 +421,7 @@ void pushArraysToGrid(uint8_t i, uint8_t c){
 		PORT_CLOCK |= CLOCK;
 		PORT_CLOCK &= ~CLOCK;
 	}
-			
+
 	for(j = 0; j < 4; j++){ //blue first part
 		if((bd[i] & (1 << (7-j))) && c == 2){
 			PORT_DATA &= ~DATA;
@@ -389,8 +430,8 @@ void pushArraysToGrid(uint8_t i, uint8_t c){
 		}
 		PORT_CLOCK |= CLOCK;
 		PORT_CLOCK &= ~CLOCK;
-	}	
-			
+	}
+
 	for(j = 4; j < 8; j++){ //red second part
 		if((rd[i] & (1 << (7-j))) && c == 0){
 			PORT_DATA &= ~DATA;
@@ -400,7 +441,7 @@ void pushArraysToGrid(uint8_t i, uint8_t c){
 		PORT_CLOCK |= CLOCK;
 		PORT_CLOCK &= ~CLOCK;
 	}
-			
+
 	for(j = 0; j < 4; j++){ //red first part
 		if((rd[i] & (1 << (7-j))) && c == 0){
 			PORT_DATA &= ~DATA;
