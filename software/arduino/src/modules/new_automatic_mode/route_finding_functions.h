@@ -7,6 +7,7 @@
 #define CHECKING_ANGLE		5	// TODO GAUGE
 #define DELTA_DISTANCE		10	// TODO GAUGE
 #define SPEED				0.5 // m/s // TODO gauge
+#define TURN_SPEED			180 // degrees/s // TODO gauge
 
 
 void checkObstacle();

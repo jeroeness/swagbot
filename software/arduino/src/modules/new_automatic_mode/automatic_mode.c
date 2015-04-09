@@ -38,7 +38,7 @@ void updateAutomaticMode() {
 	
 	switch (currentAction) {
 		case ACTION_TURN:
-		case ACTION_FINDING_ANGLE:
+//		case ACTION_FINDING_ANGLE:
 			checkTurn();
 			break;
 		case ACTION_MOVE:
@@ -261,8 +261,8 @@ ISR(TIMER0_COMPA_vect) {
 		resetClock();
 		if (currentAction == ACTION_WAIT) {
 			currentAction = ACTION_IDLE;
-		} else {
-
+		} else if (currentAction == ACTION_FINDING_ANGLE) {
+			findAngleToPoint();
 		}
 	}
 }
