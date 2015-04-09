@@ -65,7 +65,10 @@ void checkPassed(){
 }
 
 void specialDelay(){
-	_delay_ms(8000);
+	//_delay_ms(8000);
+	while(!checkTextScrolled()){ 
+		_delay_ms(50);
+	}
 }
 
 /*
