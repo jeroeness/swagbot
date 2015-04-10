@@ -34,8 +34,9 @@
 *.depend
 
 # VS
-software/host/SwagBot/Debug/*
-software/host/Debug/*
+software\host\SwagBot\Debug\*
+!software\host\SwagBot\Debug\SwagBot.exe
+software\host\Debug\*
 *.sdf
 *.Cache
 *.pdb
