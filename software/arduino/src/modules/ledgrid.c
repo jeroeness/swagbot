@@ -126,7 +126,7 @@ void displayText(const char *text) {
 	}*/
 
 	currentFace = 253; //scrolling text
-	currentSubFace = 0; //what xOffset are we at?
+	currentSubFace = (currentSubFace == 0 ? 1 : 0); //what xOffset are we at?
 
 	updateEmotion();
 }

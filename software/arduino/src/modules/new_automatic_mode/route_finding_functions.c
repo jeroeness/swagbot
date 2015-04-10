@@ -26,20 +26,50 @@ volatile float totalDeviation = 0;
 volatile float desiredProgression = 0;
 volatile uint8_t routeFindingDepth = 0;				
 volatile uint8_t findingAngleToPoint = 0;
+volatile Action returnAction;
 
 void checkObstacle() {
 	if (sensorData.sensorStruct.ultrasonic > MIN_DISTANCE)
 		return;
 
-	desiredProgression = targetMillis - currentMillis;
+	if (routeFindingDepth == 1) {
+		stopAutomaticMode();
+		setSteeringMode(manual);
+	}
+//	desiredProgression = targetMillis - currentMillis;
 
 	actionList = &routeFindingActionList;
+	actionList->list = (Action*) malloc(normalActionList.size * sizeof(Action));
+	actionList->size = normalActionList.size;
+	actionList->nextAction = 0;
+	actionList->usedSize = 0;
+
 	clearActionList(); // TODO actually backup actionList;
 
-	previousDirection = 0;
+//	previousDirection = 0;
 	routeFindingDepth = 1;
 
-	findAngleToPoint();
+//	Action moveAction;
+//	moveAction.functionIndex = F_MOVE_FOR;
+//	moveAction.target = currentMillis;
+//	moveAction.speed = -speed;
+	
+//	moveFor(&moveAction);
+	
+//	actionList->list[--actionList->nextAction] = moveAction;
+	reverseActions();
+}
+
+void reverseActions() {
+	for (int i=normalActionList.nextAction-1; i >= 0; i--) {
+		addReverseAction(*(normalActionList.list+i));
+		if (i == normalActionList.nextAction-1) {
+			actionList->list[actionList->usedSize-1].target -= currentMillis;
+		}
+	}
+	actionList->nextAction = 0;
+	normalActionList.nextAction = 0;
+	currentAction = ACTION_IDLE;
 }
 
 void findRoute(int16_t angleToPoint, int16_t turnedAngle, uint16_t distance) {
@@ -99,6 +129,8 @@ void findRoute(int16_t angleToPoint, int16_t turnedAngle, uint16_t distance) {
 	
 	previousDirection = direction;
 
+	displayText("12");
+	
 	addToActionList(F_TURN_FOR, a2/10, direction * 100); 	// add action turn(a2)
 	addToActionList(F_MOVE_FOR, s, 0);
 	addToActionList(F_TURN_FOR, a/10, direction * 100);
@@ -108,15 +140,17 @@ void findAngleToPoint() {
 	static int16_t angleToPoint, previousAngleToPoint;
 	static int16_t previousAngle;
 	static uint8_t previousDistance;
-	static uint8_t checkingRight;
+	static uint8_t checkingRight = 0;
 	static uint8_t firstCall = 1;
 
 	int16_t newAngle;
 	
-	serialPrintSynchronous("findingAngleToPoint\n", 20);
-
+	
+	
 	if (firstCall) {
-		firstCall = angleToPoint = previousAngleToPoint = previousAngle = previousDistance = checkingRight = 0;
+		displayText("11");
+			
+		firstCall = angleToPoint = previousAngleToPoint = previousAngle = previousDistance = 0;
 		currentAction = ACTION_FINDING_ANGLE;
 
 		if (routeFindingDepth > 1) {
@@ -133,15 +167,15 @@ void findAngleToPoint() {
 	
 	if ((previousDistance != 0 && sensorData.sensorStruct.ultrasonic - previousDistance > DELTA_DISTANCE) || angleLimit) { // indicates end of finding the angle (either found or none-existent) //TODO gauge 10
 		if (checkingRight || routeFindingDepth > 0) { // done with both sides or it's only necessary to check one side
-//			if (angleLimit) {
+			if (angleLimit) {
 				// TODO implement angle limit rage quit
 				// REVERSE ROUTE FINDING ACTIONS AND LAST NORMAL ACTION
 				// TODO switch manual mode
-//				stopAutomaticMode();
-//				setSteeringMode(manual);
-//			} else {
+				stopAutomaticMode();
+				setSteeringMode(manual);
+			} else {
 				findRoute((angleToPoint < previousAngleToPoint) ? angleToPoint : previousAngleToPoint, angleToPoint, previousDistance); // call find route with the smallest angle
-//			}
+			}
 
 			firstCall = 1;
 			return;
@@ -161,6 +195,8 @@ void findAngleToPoint() {
 	resetClock();
 	targetMillis = CHECKING_ANGLE/10;//abs(newAngle)/(TURN_SPEED * 100); // degrees / (d/cs) = cs
 	turn(100 * ((checkingRight) ? 1 : -1));
+
+	
 	currentAction = ACTION_FINDING_ANGLE;
 	// setTargetDegrees(sensorData.sensorStruct.compassDegrees + newAngle);
 }
@@ -173,6 +209,7 @@ void endRouteFinding() {
 	clearActionList();
 
 	actionList = &normalActionList;
+	actionList->nextAction = 0;
 	
 	routeFindingDepth = 0; // TODO combine this shit man
 	desiredProgression = 0;
