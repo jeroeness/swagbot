@@ -31,8 +31,11 @@ void initAutomaticMode() {
 //	addToActionList(F_TURN_FOR, 10, 100);
 //	addToActionList(F_TURN_FOR, 10, -100);
 //	addToActionList(F_TURN_FOR, 10, 100);
-	addToActionList(F_MOVE_FOR, 1000, 100);
-	addToActionList(F_MOVE_FOR, 1000, -100);
+	addToActionList(F_MOVE_FOR, 300, 100);
+	addToActionList(F_TURN_FOR, 100, 50);
+	addToActionList(F_MOVE_FOR, 300, 100);
+	addToActionList(F_TURN_FOR, 100, 50);
+//	addToActionList(F_MOVE_FOR, 1000, -100);
 }
 
 void updateAutomaticMode() {
@@ -53,16 +56,16 @@ void updateAutomaticMode() {
 
 			break;
 		case ACTION_IDLE:
-			if (routeFindingDepth > 0) {
-				if (checkFuzzy(totalDeviation, 0, 5)) { // TODO gauge 5 to correct value
-					if(actionListCompleted())
-						finishRouteFinding();
-					else 
-						endRouteFinding();
-				} else {
-					findAngleToPoint();
-				}
-			}
+//			if (routeFindingDepth > 0) {
+//				if (checkFuzzy(totalDeviation, 0, 5)) { // TODO gauge 5 to correct value
+//					if(actionListCompleted())
+//						finishRouteFinding();
+//					else 
+//						endRouteFinding();
+//				} else {
+//					findAngleToPoint();
+//				}
+//			}
 
 			executeNextAction();
 			break;
@@ -100,9 +103,6 @@ void fillEmptyActionList() {
 }
 
 void clearActionList() {
-	free(actionList->list);
-
-	actionList->list = (Action*) malloc(actionList->size * sizeof(Action));
 	actionList->nextAction = 0;
 	actionList->usedSize = 0;
 
@@ -120,9 +120,10 @@ void addToActionList(uint8_t functionIndex, int16_t target, int16_t speed) {
 	newAction->speed = speed;
 }
 
-void addReverseAction(Action action) {
-	//addToActionList(action.action, action.)
-	// TODO implement this
+void addReverseAction(Action  action) {
+	Action reverse;
+	getReverse(action, &reverse);
+	addToActionList(reverse.functionIndex, reverse.target, reverse.speed);
 }
 
 void doubleActionList() {
@@ -180,7 +181,13 @@ void checkMove() {
 
 uint8_t checkCrash() {
 		// TODO implement code
-	return 0;
+	if (sensorData.sensorStruct.bumperLeft || sensorData.sensorStruct.bumperRight) {
+		stopAutomaticMode();
+		setSteeringMode(manual);
+		return 1;
+	} else {
+		return 0;
+	}
 }
 
 uint8_t checkFuzzy(int16_t value1, int16_t value2, int16_t fuzzyness) {
@@ -188,8 +195,14 @@ uint8_t checkFuzzy(int16_t value1, int16_t value2, int16_t fuzzyness) {
 }
 
 void executeNextAction() {
-	if (actionList->nextAction >= actionList->usedSize)
+	if (actionList->nextAction >= actionList->usedSize) {
 		actionList->nextAction = 0;
+		if (routeFindingDepth == 1) {
+				endRouteFinding();
+				stopAutomaticMode();
+				setSteeringMode(manual);
+		}
+	}
 
 	Action next = actionList->list[actionList->nextAction++];
 
@@ -202,21 +215,17 @@ void setSpeed(int8_t s) {
 	speed = (s == 0) ? defaultSpeed : s;
 }
 
-Action getReverse(Action action) {
+void getReverse(Action action, Action * reverse) {
 	// TODO implement waitFor reverse
-	Action reverse;
-
-	reverse.functionIndex = action.functionIndex;
+	reverse->functionIndex = action.functionIndex;
 
 	if (action.functionIndex == F_TURN_FOR || action.functionIndex == F_MOVE_FOR) {
-		reverse.target = action.target;
-		reverse.speed = -1 * action.speed;
+		reverse->target = action.target;
+		reverse->speed = -1 * action.speed;
 	} else {
-		reverse.target = action.origin;
-		reverse.speed = action.speed;
+		reverse->target = action.origin;
+		reverse->speed = action.speed;
 	}
-
-	return reverse;
 }
 
 void setTargetDegrees(int16_t newTarget) {
@@ -244,7 +253,10 @@ void beginAutomaticMode(){
 }
 
 void stopAutomaticMode(){
+	endRouteFinding();
 	resetAutomaticMode();
+	resetClock();
+	targetMillis = 0;
 	stop();
 }
 
@@ -260,12 +272,14 @@ void initTimer0() {
 
 ISR(TIMER0_COMPA_vect) {
 	TCNT0 = 0;
-	if (targetMillis != 0 && checkFuzzy(targetMillis, ++currentMillis, TIME_MARGIN)) {
+	if (currentAction != ACTION_IDLE && targetMillis != 0 && checkFuzzy(targetMillis, ++currentMillis, TIME_MARGIN)) {
 		stop();
 		resetClock();
 		if (currentAction == ACTION_WAIT) {
 			currentAction = ACTION_IDLE;
 		} else if (currentAction == ACTION_FINDING_ANGLE) {
+//			_delay_ms(100);
+			displayText("60");
 			findAngleToPoint();
 		}
 	}

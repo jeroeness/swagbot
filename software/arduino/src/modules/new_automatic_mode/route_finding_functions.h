@@ -11,6 +11,7 @@
 
 
 void checkObstacle();
+void reverseActions();
 void findRoute(int16_t angleToPoint, int16_t turnedAngle, uint16_t distance);
 void findAngleToPoint();
 

@@ -40,8 +40,8 @@ int main(void)
 	
 	moveMotors(0, 0);
 	
-	displayText("/g14");
-	
+	setEmotion(1);
+
 	while(1){
 		if(counter++ >= 0x4FFF){ //im there
 			counter = 0;

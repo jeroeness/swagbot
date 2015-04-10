@@ -65,7 +65,7 @@ uint8_t checkFuzzy(int16_t value1, int16_t value2, int16_t fuzzyness); // TODO a
 void executeNextAction();
 void setSpeed(int8_t s);
 
-Action getReverse(Action action);
+void getReverse(Action action, Action * reverse);
 
 void setTargetDegrees(int16_t newTarget);
 
