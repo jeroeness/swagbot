@@ -27,6 +27,15 @@ void initMotor();
  * 	@return 			1 if successfull, 0 if wrong speed
  */
 int moveMotors(int8_t speedL, int8_t speedR);
+int changeCourse(int8_t, int8_t);
+
+#define min(a,b) ((a)<(b)?(a):(b))
+#define max(a,b) ((a)>(b)?(a):(b))
+#define abs(x) ((x)>0?(x):-(x))
+//#define round(x)     ((x)>=0?(long)((x)+0.5):(long)((x)-0.5))
+#define radians(deg) ((deg)*DEG_TO_RAD)
+#define degrees(rad) ((rad)*RAD_TO_DEG)
+#define sq(x) ((x)*(x))
 
 #endif
 

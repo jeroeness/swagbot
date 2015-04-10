@@ -16,10 +16,10 @@
 const char *newLineCharacters = "\r\n";
 
 volatile char outputBuffer[OUTPUTBUFFER_SIZE];
-int16_t outputBufferLength;
+volatile int16_t outputBufferLength;
 volatile int8_t outputBufferPtr;
 volatile char inputBuffer[INPUTBUFFER_SIZE];
-uint16_t inputBufferLength;
+volatile uint16_t inputBufferLength;
 volatile int8_t inputBufferPtr;
 
 
@@ -40,10 +40,14 @@ void serialEnd() {
 }
 
 ISR(USART0_RX_vect) {
+	
 	if (inputBufferLength < INPUTBUFFER_SIZE) {
 		inputBuffer[inputBufferLength++] = UDR0;
+	}else{
+		inputBufferLength = 0;
 	}
 	//TODO Write callbacks here
+	//readInputs(UDR0);
 }
 
 ISR(USART0_TX_vect) {
@@ -178,6 +182,11 @@ int8_t outputBufferWalked() {
 void sleepUntilEmptyOutputBuffer() {
 	while (!outputBufferWalked());
 	clearBuffer();
+}
+
+void clearInputBuffer(){
+	inputBufferLength = 0;
+
 }
 
 void clearBuffer() {

@@ -1013,6 +1013,7 @@ namespace SwagBot {
 				this->serialPort1->PortName = this->cmbComm->Text;
 				this->serialPort1->Parity = System::IO::Ports::Parity::None;
 				this->serialPort1->DataBits = 8;
+				this->serialPort1->WriteBufferSize = 2;
 
 				try {
 					this->serialPort1->Open();
@@ -1090,14 +1091,25 @@ namespace SwagBot {
 			int i = 0;
 
 			if (!this->serialPort1->IsOpen) return;
+			//TODO: fix this errro
 
-			while (this->serialPort1->BytesToRead > 0) {
-				//gchar = this->serialPort1->ReadChar();
-				//try {
+			
+			while (1) {
+				try{
+					if (this->serialPort1->BytesToRead <= 0) break;
+				} catch (Exception ^) {
+					setStatusMessage("Connection Lost!", true);
+					Disconnect();
+					//setControlstate(true);
+					return;
+				} catch(System::IO::IOException^) {
+					setStatusMessage("COMMPORT DISCONNECTED!", true);
+					Disconnect();
+					//setControlstate(true);
+					return;
+				}
+
 				gchar = this->serialPort1->ReadByte();
-				//} //catch() {
-
-				//}
 
 				TimeOutCount = 0;
 				const int datalen = 10;
@@ -1161,7 +1173,9 @@ namespace SwagBot {
 					this->lblRes4->Text = (sensordata[4] & 2 ? "Pressed" : "Not Pressed");
 					this->lblRes5->Text = (sensordata[4] & 1 ? "Pressed" : "Not Pressed");
 
-					this->lblRes8->Text = I2CStates[sensordata[4] >> 2];
+					int tmpsensor = sensordata[4] >> 2;
+
+					if(tmpsensor < 4) this->lblRes8->Text = I2CStates[sensordata[4] >> 2];
 
 
 					this->picFront->BackColor = Color::Lime;
@@ -1201,19 +1215,24 @@ namespace SwagBot {
 						this->lblRes7->Text = "UNKNOWN_FACE";
 					}
 
-					/*
-					for (i = 0; i <= 10; i++) {
-						Application::DoEvents();
-						Sleep(1);
-					}*/
+					
+					//for (i = 0; i <= 10; i++) {
+						//Application::DoEvents();
+						//Sleep(20);
+						//Application::DoEvents();
+					//}
 
 					CheckConnectionAlive();
 
 					for (i = 0; i < 7; i++) {
-						this->TriggerKeyState(i, GetAsyncKeyState(keyCode[i]) != 0);
+						this->TriggerKeyState(i, GetAsyncKeyState(keyCode[i]) != 0 || MouseDown[i]);
 					}
 
-					this->serialPort1->Write(keySendDown, 8, 1);
+					try {
+						this->serialPort1->Write(keySendDown, 8, 1);
+					} catch(Exception^) {};
+
+					//Sleep(10);
 
 				} else if (gchar == 255) {
 					bufferlen = 0;
@@ -1332,9 +1351,9 @@ namespace SwagBot {
 				} catch (System::IO::IOException^) {
 
 				}
-				loadCommports();
-				setControlstate(true);
 			}
+			loadCommports();
+			setControlstate(true);
 		}
 
 		System::Void cmdDisconnect_Click(System::Object^  sender, System::EventArgs^  e) {
@@ -1423,12 +1442,12 @@ namespace SwagBot {
 
 		System::Void lblW_MouseUp(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
 			MouseDown[0] = false;
-			this->TriggerKeyState(0, KEY_UP);
+			//this->TriggerKeyState(0, KEY_UP);
 		}
 
 		System::Void lblW_MouseDown(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
 			MouseDown[0] = true;
-			this->TriggerKeyState(0, KEY_DOWN);
+			//this->TriggerKeyState(0, KEY_DOWN);
 		}
 
 		System::Void lblW_MouseLeave(System::Object^ sender, System::EventArgs^) {
@@ -1441,12 +1460,12 @@ namespace SwagBot {
 
 		System::Void lblA_MouseUp(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
 			MouseDown[1] = false;
-			this->TriggerKeyState(1, KEY_UP);
+			//this->TriggerKeyState(1, KEY_UP);
 		}
 
 		System::Void lblA_MouseDown(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
 			MouseDown[1] = true;
-			this->TriggerKeyState(1, KEY_DOWN);
+			//this->TriggerKeyState(1, KEY_DOWN);
 		}
 
 		System::Void lblA_MouseLeave(System::Object^ sender, System::EventArgs^) {
@@ -1459,12 +1478,12 @@ namespace SwagBot {
 
 		System::Void lblD_MouseUp(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
 			MouseDown[2] = false;
-			this->TriggerKeyState(2, KEY_UP);
+			//this->TriggerKeyState(2, KEY_UP);
 		}
 
 		System::Void lblD_MouseDown(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
 			MouseDown[2] = true;
-			this->TriggerKeyState(2, KEY_DOWN);
+			//this->TriggerKeyState(2, KEY_DOWN);
 		}
 
 		System::Void lblD_MouseLeave(System::Object^ sender, System::EventArgs^) {
@@ -1477,12 +1496,12 @@ namespace SwagBot {
 
 		System::Void lblS_MouseUp(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
 			MouseDown[3] = false;
-			this->TriggerKeyState(3, KEY_UP);
+			//this->TriggerKeyState(3, KEY_UP);
 		}
 
 		System::Void lblS_MouseDown(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
 			MouseDown[3] = true;
-			this->TriggerKeyState(3, KEY_DOWN);
+			//this->TriggerKeyState(3, KEY_DOWN);
 		}
 
 		System::Void lblS_MouseLeave(System::Object^ sender, System::EventArgs^) {
@@ -1495,7 +1514,7 @@ namespace SwagBot {
 
 		System::Void lblP_MouseUp(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
 			MouseDown[4] = false;
-			this->TriggerKeyState(4, KEY_UP);
+			//this->TriggerKeyState(4, KEY_UP);
 		}
 
 		System::Void lblP_MouseDown(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
@@ -1506,7 +1525,7 @@ namespace SwagBot {
 
 			Application::DoEvents();
 
-			this->TriggerKeyState(5, KEY_UP);
+			//this->TriggerKeyState(5, KEY_UP);
 			MouseDown[4] = false;
 		}
 
@@ -1520,12 +1539,12 @@ namespace SwagBot {
 
 		System::Void lblM_MouseUp(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
 			MouseDown[5] = false;
-			this->TriggerKeyState(5, KEY_UP);
+			//this->TriggerKeyState(5, KEY_UP);
 		}
 
 		System::Void lblM_MouseDown(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
 			MouseDown[5] = true;
-			this->TriggerKeyState(5, KEY_DOWN);
+			//this->TriggerKeyState(5, KEY_DOWN);
 		}
 
 		System::Void lblM_MouseLeave(System::Object^ sender, System::EventArgs^) {
@@ -1538,12 +1557,12 @@ namespace SwagBot {
 
 		System::Void lblN_MouseUp(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
 			MouseDown[6] = false;
-			this->TriggerKeyState(6, KEY_UP);
+			//this->TriggerKeyState(6, KEY_UP);
 		}
 
 		System::Void lblN_MouseDown(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
 			MouseDown[6] = true;
-			this->TriggerKeyState(6, KEY_DOWN);
+			//this->TriggerKeyState(6, KEY_DOWN);
 		}
 
 		System::Void lblN_MouseLeave(System::Object^ sender, System::EventArgs^) {

@@ -28,5 +28,6 @@ int8_t outputBufferWalked();
 void sleepUntilEmptyOutputBuffer();
 void writeCharacterFromBuffer();
 void clearBuffer();
+void clearInputBuffer();
 
 #endif // SERIAL_H

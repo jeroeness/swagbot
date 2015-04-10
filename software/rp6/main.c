@@ -33,7 +33,7 @@ int main(void) {
 	i2c_init(0xAA);
 	initTimerMain();
 	
-	moveMotors(0,0);
+	changeCourse(0, 0);
 	
 	sei();
 	

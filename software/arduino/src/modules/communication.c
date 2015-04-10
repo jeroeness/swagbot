@@ -186,6 +186,7 @@ void readInputs () {
 				
 			case 'z': //we have send the last char in our serialdata from gui so we may send again :)
 				vebosityTimer = 10;
+				//clearInputBuffer();
 				break;
 				
 		}

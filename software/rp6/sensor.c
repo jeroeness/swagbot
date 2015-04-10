@@ -23,7 +23,7 @@ void parseInstruction(void){
 		setLed(i+1, (instructionData.instructionStruct.ledStatus & (1<<i)) != 0);
 	}
 
-	moveMotors(instructionData.instructionStruct.motorLeft, instructionData.instructionStruct.motorRight);
+	changeCourse(instructionData.instructionStruct.motorLeft, instructionData.instructionStruct.motorRight);
 }
 
 

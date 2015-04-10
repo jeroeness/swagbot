@@ -52,7 +52,7 @@ void handleKeyReleaseAutomaticMode (uint8_t key) {
 
 void updateModeManager () {
     if (steeringMode == manual) {
-        //TODO update manual mode
+		//updateManualMode();
     } else {
         updateAutomaticMode();
     }
