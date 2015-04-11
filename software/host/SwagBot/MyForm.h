@@ -16,8 +16,7 @@ namespace SwagBot {
 	using namespace System::IO::Ports;
 	using namespace System::IO;
 	using namespace System::Text;
-
-
+	using namespace System::Management;
 
 
 
@@ -108,7 +107,7 @@ namespace SwagBot {
 
 		private: System::Windows::Forms::Label^  lblRes7;
 		private: System::Windows::Forms::Label^  label7;
-		private: System::Windows::Forms::Timer^  tmrRefresh;
+
 
 		private: System::Windows::Forms::Button^  cmdConnect;
 		private: System::Windows::Forms::CheckBox^  chkReconnect;
@@ -125,6 +124,8 @@ namespace SwagBot {
 	private: System::Windows::Forms::Label^  lblRes10;
 	private: System::Windows::Forms::Label^  lblRes9;
 	private: System::Windows::Forms::ToolStripStatusLabel^  lblBufferLength;
+private: System::Windows::Forms::Button^  cmdRefresh;
+
 
 
 		private: System::ComponentModel::IContainer^  components;
@@ -194,13 +195,13 @@ namespace SwagBot {
 			this->lblStatus = (gcnew System::Windows::Forms::ToolStripStatusLabel());
 			this->lblBufferLength = (gcnew System::Windows::Forms::ToolStripStatusLabel());
 			this->tmrAlive = (gcnew System::Windows::Forms::Timer(this->components));
-			this->tmrRefresh = (gcnew System::Windows::Forms::Timer(this->components));
 			this->cmdConnect = (gcnew System::Windows::Forms::Button());
 			this->chkReconnect = (gcnew System::Windows::Forms::CheckBox());
 			this->cmdReset = (gcnew System::Windows::Forms::Button());
 			this->frmArduino = (gcnew System::Windows::Forms::GroupBox());
 			this->cmdUpload = (gcnew System::Windows::Forms::Button());
 			this->frmComm = (gcnew System::Windows::Forms::GroupBox());
+			this->cmdRefresh = (gcnew System::Windows::Forms::Button());
 			this->tmrCompass = (gcnew System::Windows::Forms::Timer(this->components));
 			this->frmSensor->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->picLed7))->BeginInit();
@@ -226,9 +227,9 @@ namespace SwagBot {
 			// 
 			this->cmbComm->DropDownStyle = System::Windows::Forms::ComboBoxStyle::DropDownList;
 			this->cmbComm->FormattingEnabled = true;
-			this->cmbComm->Location = System::Drawing::Point(6, 16);
+			this->cmbComm->Location = System::Drawing::Point(8, 16);
 			this->cmbComm->Name = L"cmbComm";
-			this->cmbComm->Size = System::Drawing::Size(100, 21);
+			this->cmbComm->Size = System::Drawing::Size(203, 21);
 			this->cmbComm->TabIndex = 1;
 			this->cmbComm->TabStop = false;
 			// 
@@ -240,9 +241,9 @@ namespace SwagBot {
 			// cmdDisconnect
 			// 
 			this->cmdDisconnect->Enabled = false;
-			this->cmdDisconnect->Location = System::Drawing::Point(111, 42);
+			this->cmdDisconnect->Location = System::Drawing::Point(76, 42);
 			this->cmdDisconnect->Name = L"cmdDisconnect";
-			this->cmdDisconnect->Size = System::Drawing::Size(102, 23);
+			this->cmdDisconnect->Size = System::Drawing::Size(70, 23);
 			this->cmdDisconnect->TabIndex = 2;
 			this->cmdDisconnect->TabStop = false;
 			this->cmdDisconnect->Text = L"Disconnect";
@@ -289,7 +290,7 @@ namespace SwagBot {
 			this->frmSensor->Controls->Add(this->label1);
 			this->frmSensor->Controls->Add(this->lblRes0);
 			this->frmSensor->Controls->Add(this->lblSensor);
-			this->frmSensor->Location = System::Drawing::Point(6, 77);
+			this->frmSensor->Location = System::Drawing::Point(6, 97);
 			this->frmSensor->Name = L"frmSensor";
 			this->frmSensor->Size = System::Drawing::Size(358, 109);
 			this->frmSensor->TabIndex = 4;
@@ -403,6 +404,7 @@ namespace SwagBot {
 			this->picFront->Size = System::Drawing::Size(18, 52);
 			this->picFront->TabIndex = 18;
 			this->picFront->TabStop = false;
+			this->picFront->Click += gcnew System::EventHandler(this, &MyForm::picFront_Click);
 			this->picFront->Paint += gcnew System::Windows::Forms::PaintEventHandler(this, &MyForm::picFront_Paint);
 			// 
 			// picBack
@@ -597,7 +599,7 @@ namespace SwagBot {
 			// 
 			// picCompass
 			// 
-			this->picCompass->Location = System::Drawing::Point(191, 196);
+			this->picCompass->Location = System::Drawing::Point(191, 216);
 			this->picCompass->Name = L"picCompass";
 			this->picCompass->Size = System::Drawing::Size(160, 160);
 			this->picCompass->TabIndex = 5;
@@ -615,7 +617,7 @@ namespace SwagBot {
 			this->frmControls->Controls->Add(this->lblA);
 			this->frmControls->Controls->Add(this->lblP);
 			this->frmControls->Controls->Add(this->lblW);
-			this->frmControls->Location = System::Drawing::Point(6, 190);
+			this->frmControls->Location = System::Drawing::Point(6, 210);
 			this->frmControls->Name = L"frmControls";
 			this->frmControls->Size = System::Drawing::Size(165, 167);
 			this->frmControls->TabIndex = 22;
@@ -731,7 +733,6 @@ namespace SwagBot {
 			this->lblP->MouseDown += gcnew System::Windows::Forms::MouseEventHandler(this, &MyForm::lblP_MouseDown);
 			this->lblP->MouseEnter += gcnew System::EventHandler(this, &MyForm::lblP_MouseEnter);
 			this->lblP->MouseLeave += gcnew System::EventHandler(this, &MyForm::lblP_MouseLeave);
-			this->lblP->MouseUp += gcnew System::Windows::Forms::MouseEventHandler(this, &MyForm::lblP_MouseUp);
 			// 
 			// lblW
 			// 
@@ -756,12 +757,11 @@ namespace SwagBot {
 			this->sStrip->ImageScalingSize = System::Drawing::Size(24, 24);
 			this->sStrip->ImeMode = System::Windows::Forms::ImeMode::NoControl;
 			this->sStrip->Items->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(2) { this->lblStatus, this->lblBufferLength });
-			this->sStrip->Location = System::Drawing::Point(0, 363);
+			this->sStrip->Location = System::Drawing::Point(0, 383);
 			this->sStrip->Name = L"sStrip";
 			this->sStrip->Size = System::Drawing::Size(371, 22);
 			this->sStrip->SizingGrip = false;
 			this->sStrip->TabIndex = 23;
-			this->sStrip->ItemClicked += gcnew System::Windows::Forms::ToolStripItemClickedEventHandler(this, &MyForm::sStrip_ItemClicked);
 			// 
 			// lblStatus
 			// 
@@ -780,26 +780,20 @@ namespace SwagBot {
 			this->lblBufferLength->Size = System::Drawing::Size(105, 17);
 			this->lblBufferLength->Text = L"Buffer Length: 0";
 			this->lblBufferLength->TextAlign = System::Drawing::ContentAlignment::MiddleLeft;
-			this->lblBufferLength->Click += gcnew System::EventHandler(this, &MyForm::lblBufferLength_Click);
 			// 
 			// tmrAlive
 			// 
 			this->tmrAlive->Interval = 1000;
 			this->tmrAlive->Tick += gcnew System::EventHandler(this, &MyForm::tmrAlive_Tick);
 			// 
-			// tmrRefresh
-			// 
-			this->tmrRefresh->Enabled = true;
-			this->tmrRefresh->Tick += gcnew System::EventHandler(this, &MyForm::tmrRefresh_Tick);
-			// 
 			// cmdConnect
 			// 
 			this->cmdConnect->BackColor = System::Drawing::Color::Red;
 			this->cmdConnect->FlatStyle = System::Windows::Forms::FlatStyle::System;
 			this->cmdConnect->ForeColor = System::Drawing::Color::Lime;
-			this->cmdConnect->Location = System::Drawing::Point(5, 42);
+			this->cmdConnect->Location = System::Drawing::Point(7, 42);
 			this->cmdConnect->Name = L"cmdConnect";
-			this->cmdConnect->Size = System::Drawing::Size(102, 23);
+			this->cmdConnect->Size = System::Drawing::Size(65, 23);
 			this->cmdConnect->TabIndex = 25;
 			this->cmdConnect->TabStop = false;
 			this->cmdConnect->Text = L"Connect";
@@ -808,10 +802,9 @@ namespace SwagBot {
 			// 
 			// chkReconnect
 			// 
-			this->chkReconnect->AutoSize = true;
-			this->chkReconnect->Location = System::Drawing::Point(113, 19);
+			this->chkReconnect->Location = System::Drawing::Point(8, 70);
 			this->chkReconnect->Name = L"chkReconnect";
-			this->chkReconnect->Size = System::Drawing::Size(104, 17);
+			this->chkReconnect->Size = System::Drawing::Size(204, 16);
 			this->chkReconnect->TabIndex = 26;
 			this->chkReconnect->Text = L"Auto Reconnect";
 			this->chkReconnect->UseVisualStyleBackColor = true;
@@ -833,7 +826,7 @@ namespace SwagBot {
 			this->frmArduino->Controls->Add(this->cmdReset);
 			this->frmArduino->Location = System::Drawing::Point(235, 2);
 			this->frmArduino->Name = L"frmArduino";
-			this->frmArduino->Size = System::Drawing::Size(129, 72);
+			this->frmArduino->Size = System::Drawing::Size(129, 92);
 			this->frmArduino->TabIndex = 28;
 			this->frmArduino->TabStop = false;
 			this->frmArduino->Text = L"Arduino Options";
@@ -852,16 +845,31 @@ namespace SwagBot {
 			// 
 			// frmComm
 			// 
+			this->frmComm->Controls->Add(this->cmdRefresh);
 			this->frmComm->Controls->Add(this->cmbComm);
 			this->frmComm->Controls->Add(this->cmdConnect);
 			this->frmComm->Controls->Add(this->chkReconnect);
 			this->frmComm->Controls->Add(this->cmdDisconnect);
 			this->frmComm->Location = System::Drawing::Point(6, 2);
 			this->frmComm->Name = L"frmComm";
-			this->frmComm->Size = System::Drawing::Size(219, 72);
+			this->frmComm->Size = System::Drawing::Size(219, 92);
 			this->frmComm->TabIndex = 29;
 			this->frmComm->TabStop = false;
 			this->frmComm->Text = L"Commport Selection";
+			// 
+			// cmdRefresh
+			// 
+			this->cmdRefresh->BackColor = System::Drawing::Color::Red;
+			this->cmdRefresh->FlatStyle = System::Windows::Forms::FlatStyle::System;
+			this->cmdRefresh->ForeColor = System::Drawing::Color::Lime;
+			this->cmdRefresh->Location = System::Drawing::Point(150, 42);
+			this->cmdRefresh->Name = L"cmdRefresh";
+			this->cmdRefresh->Size = System::Drawing::Size(62, 23);
+			this->cmdRefresh->TabIndex = 27;
+			this->cmdRefresh->TabStop = false;
+			this->cmdRefresh->Text = L"Refresh";
+			this->cmdRefresh->UseVisualStyleBackColor = false;
+			this->cmdRefresh->Click += gcnew System::EventHandler(this, &MyForm::cmdRefresh_Click);
 			// 
 			// tmrCompass
 			// 
@@ -873,7 +881,7 @@ namespace SwagBot {
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->BackColor = System::Drawing::Color::WhiteSmoke;
-			this->ClientSize = System::Drawing::Size(371, 385);
+			this->ClientSize = System::Drawing::Size(371, 405);
 			this->Controls->Add(this->frmComm);
 			this->Controls->Add(this->frmArduino);
 			this->Controls->Add(this->sStrip);
@@ -907,7 +915,6 @@ namespace SwagBot {
 			this->sStrip->PerformLayout();
 			this->frmArduino->ResumeLayout(false);
 			this->frmComm->ResumeLayout(false);
-			this->frmComm->PerformLayout();
 			this->ResumeLayout(false);
 			this->PerformLayout();
 
@@ -920,6 +927,13 @@ namespace SwagBot {
 
 #define KEY_UP false
 #define KEY_DOWN true
+	
+
+		public:
+		value struct commPorts {
+			String ^Description;
+			String ^Name;
+		};
 
 		private:
 		static array<int>^ keyCode = gcnew array<int>(8) { 0x57, 0x41, 0x44, 0x53, 0x00, 0x4D, 0x4E, 0x00 };
@@ -930,11 +944,13 @@ namespace SwagBot {
 		static array<bool>^ MouseDown = gcnew array<bool>(7) {};
 		
 		static array<String ^>^ Faces = gcnew array<String ^>(255) { 
-			"CLEAR_SCREEN", "Green Smiley", "Angry Smiley", "Compass", "Bumper Unpressed", "Bumper Pressed", "TEST"
+			"CLEAR_SCREEN", "Green Smiley", "Angry Smiley", "Compass", "Bumper Unpressed", "Bumper Pressed", "Numbers", "Mario", "Space Invader"
 		};
 		static array<String ^>^ I2CStates = gcnew array<String ^>(4) {
 			"IDLE", "BUSY", "ERROR", "UNKNOWN"
 		};
+
+		array<commPorts^>^ allDevices = gcnew array<commPorts^>(99);
 
 		array<int,2>^ actionList = gcnew array<int,2>(150,3);
 
@@ -950,8 +966,8 @@ namespace SwagBot {
 		int compassRealValue = 0;
 
 		double PI = 3.14159265359;
-		int batteryVoltage = 0;
-
+		int batteryVoltage = 90;
+		int batteryMinVoltage = 80;
 
 
 		private:
@@ -976,7 +992,6 @@ namespace SwagBot {
 					}
 
 					keyLabels[whatKey]->BackColor = Color::Gray;
-					//return;
 				}
 			} else {
 				if (keyDown[whatKey] == true && MouseDown[whatKey] == false) {
@@ -1002,8 +1017,14 @@ namespace SwagBot {
 		}
 
 		System::Void MyForm_Load(System::Object^  sender, System::EventArgs^  e) {
+			int i = 0;
+
+			for (i=0;i < 99; i++) {
+				allDevices[i] = gcnew commPorts();
+			}
+			
 			loadCommports();
-			setPercentage(100);
+			setPercentage(batteryVoltage);
 			keyLabels[0] = lblW;
 			keyLabels[1] = lblA;
 			keyLabels[2] = lblD;
@@ -1028,8 +1049,42 @@ namespace SwagBot {
 			if (this->cmbComm->DroppedDown) return;
 			int j = this->cmbComm->SelectedIndex;
 
+			ManagementScope ^ connectScope = gcnew ManagementScope();
+			connectScope->Path = gcnew ManagementPath();
+			connectScope->Path->Path = "\\\\" + Environment::MachineName->ToString() + "\\root\\CIMV2";
+			connectScope->Options = gcnew ConnectionOptions();
+			connectScope->Options->Impersonation = ImpersonationLevel::Impersonate;
+			connectScope->Options->Authentication = AuthenticationLevel::Default;
+			connectScope->Options->EnablePrivileges = true;
+
+			connectScope->Connect();
+
+			ObjectQuery ^ objectQuery = gcnew ObjectQuery("SELECT * FROM Win32_PnPEntity WHERE ConfigManagerErrorCode = 0");
+			ManagementObjectSearcher ^ comPortSearcher = gcnew ManagementObjectSearcher(connectScope, objectQuery);
+
+			String ^ caption = "";
+			String ^ name = "";
+			String ^ description = "";
+
 			this->cmbComm->Items->Clear();
-			this->cmbComm->Items->AddRange(serialPort1->GetPortNames());
+			int DevCount = 0;
+
+			for each(ManagementObject ^ obj in comPortSearcher->Get()) {
+				if (obj != nullptr) {
+					Object ^ captionObj = obj["Caption"];
+					if (captionObj != nullptr) {
+						caption = captionObj->ToString();
+						if (caption->Contains("(COM")) {
+							allDevices[DevCount]->Description = caption;
+							allDevices[DevCount]->Name = caption->Substring(caption->LastIndexOf("(COM"))->Replace("(", "")->Replace(")", "");;
+
+							this->cmbComm->Items->Add(allDevices[DevCount]->Description);
+							DevCount++;
+						}
+					}
+				}
+			}
+			
 			if (this->cmbComm->Items->Count > 0 && j == -1) {
 				this->cmbComm->SelectedIndex = this->cmbComm->Items->Count - 1;
 			} else if (j != -1) {
@@ -1037,6 +1092,7 @@ namespace SwagBot {
 					this->cmbComm->SelectedIndex = j;
 				}
 			}
+
 		}
 
 		System::Void cmdConnect_Click(System::Object^  sender, System::EventArgs^  e) {
@@ -1051,15 +1107,15 @@ namespace SwagBot {
 
 			if (this->cmbComm->SelectedIndex != -1) {
 
-				this->serialPort1->PortName = this->cmbComm->Text;
-				this->serialPort1->Parity = System::IO::Ports::Parity::None;
-				this->serialPort1->DataBits = 8;
-				this->serialPort1->WriteBufferSize = 2;
-
 				try {
+					this->serialPort1->PortName = allDevices[this->cmbComm->SelectedIndex]->Name;
+					this->serialPort1->Parity = System::IO::Ports::Parity::None;
+					this->serialPort1->DataBits = 8;
+					this->serialPort1->WriteBufferSize = 2;
+
 					this->serialPort1->Open();
-				} catch (UnauthorizedAccessException ^) {
-					setStatusMessage("Could not open '" + this->cmbComm->Text + "'!", true);
+				} catch (Exception ^) {
+					setStatusMessage("Could not open '" + allDevices[this->cmbComm->SelectedIndex]->Name + "'!", true);
 					setControlstate(true);
 					return;
 				}
@@ -1069,7 +1125,7 @@ namespace SwagBot {
 					setStatusMessage("Connected!", false);
 					setControlstate(false);
 				} else {
-					setStatusMessage("Could not open '" + this->cmbComm->Text + "'!", true);
+					setStatusMessage("Could not open '" + allDevices[this->cmbComm->SelectedIndex]->Name + "'!", true);
 					setControlstate(true);
 				}
 			}
@@ -1084,6 +1140,7 @@ namespace SwagBot {
 				this->cmdConnect->Enabled = false;
 				this->cmdReset->Enabled = false;
 				this->cmdUpload->Enabled = true;
+				this->cmdRefresh->Enabled = false;
 
 				this->cmbComm->Enabled = false;
 				this->tmrCompass->Enabled = true;
@@ -1094,6 +1151,7 @@ namespace SwagBot {
 				this->cmdConnect->Enabled = true;
 				this->cmdReset->Enabled = true;
 				this->cmdUpload->Enabled = false;
+				this->cmdRefresh->Enabled = true;
 
 				this->cmbComm->Enabled = true;
 				this->tmrCompass->Enabled = false;
@@ -1133,9 +1191,6 @@ namespace SwagBot {
 			int gchar;
 			array<int>^ sensordata = gcnew array<int>(12);
 			int i = 0;
-
-			if (!this->serialPort1->IsOpen) return;
-			//TODO: fix this errro
 
 			
 			while (1) {
@@ -1217,22 +1272,16 @@ namespace SwagBot {
 							this->lblRes7->Text = "UNKNOWN_FACE";
 						}
 
-					
-						//for (i = 0; i <= 10; i++) {
-							//Application::DoEvents();
-							//Sleep(20);
-							//Application::DoEvents();
-						//}
-
 						CheckConnectionAlive();
 
 						for (i = 0; i < 7; i++) {
 							this->TriggerKeyState(i, GetAsyncKeyState(keyCode[i]) != 0 || MouseDown[i]);
 						}
+						
+						if (MouseDown[4] == true) MouseDown[4] = false;
 
 						this->serialPort1->Write(keySendDown, 8, 1);
 
-						//Sleep(10);
 
 					} else if (gchar == 255) {
 						bufferlen = 0;
@@ -1252,12 +1301,12 @@ namespace SwagBot {
 				} catch (System::IO::IOException^) {
 					setStatusMessage("COMMPORT DISCONNECTED!", true);
 					Disconnect();
-					//setControlstate(true);
+					setControlstate(true);
 					return;
-				} catch (Exception ^) {
+				} catch (System::InvalidOperationException^) {
 					setStatusMessage("Connection Lost!", true);
 					Disconnect();
-					//setControlstate(true);
+					setControlstate(true);
 					return;
 				}
 			}
@@ -1271,7 +1320,6 @@ namespace SwagBot {
 			int i = 0;
 
 			try {
-				//Console::WriteLine("trying to open file {0}...", fileName);
 				StreamReader^ din = File::OpenText(fileName);
 
 				String^ str;
@@ -1280,8 +1328,7 @@ namespace SwagBot {
 					
 					if (str != ""){
 						if (! str->StartsWith("//")) {
-							
-							//tmpAction[];
+
 							for each(String^ s in str->Split(';')) {
 								if (s == "") continue;
 								if (i > 2) {
@@ -1297,8 +1344,7 @@ namespace SwagBot {
 						}
 					}
 					
-					
-					//Console::WriteLine("line {0}: {1}", count, str);
+
 				}
 			} catch (Exception^ e) {
 				if (dynamic_cast<FileNotFoundException^>(e)){
@@ -1306,9 +1352,6 @@ namespace SwagBot {
 				} else{
 					setStatusMessage("Error while accessing file: " + fileName, true);
 				}
-					//Console::WriteLine("file '{0}' not found", fileName);
-				
-					//Console::WriteLine("problem reading file '{0}'", fileName);
 			}
 
 			return;
@@ -1374,18 +1417,6 @@ namespace SwagBot {
 			Disconnect();
 		}
 
-		void setPercentage(int percentage) {
-			if (percentage < 0) percentage = 0;
-			if (percentage > 100) percentage = 100;
-
-			this->picFront->Height = (int)((this->picBack->Height - 4) / 100.0 * percentage);
-			this->picFront->Top = this->picBack->Top + (this->picBack->Height - this->picFront->Height - 2);
-
-			//this->lblVoltage->Text = (percentage / 10.0) + "V";
-
-			this->picFront->Refresh();
-		}
-
 		double byteToDeg(double x) {
 			return x / 128.0 * PI - (0.499*PI);
 		}
@@ -1436,6 +1467,16 @@ namespace SwagBot {
 
 		}
 
+		void setPercentage(int percentage) {
+			if (percentage < 0) percentage = 0;
+			if (percentage > 100) percentage = 100;
+
+			this->picFront->Height = (int)((this->picBack->Height - 4) / 100.0 * percentage);
+			this->picFront->Top = this->picBack->Top + (this->picBack->Height - this->picFront->Height - 2);
+
+			this->picFront->Refresh();
+		}
+
 		void picFront_Paint(Object^ sender, System::Windows::Forms::PaintEventArgs^ e) {
 			StringFormat^ alignText = gcnew StringFormat;
 			alignText->Alignment = StringAlignment::Center;
@@ -1446,6 +1487,25 @@ namespace SwagBot {
 			System::Drawing::Font^ myFont = gcnew System::Drawing::Font("Verdana", 7); //Microsoft Sans Serif
 
 			e->Graphics->DrawString((batteryVoltage / 10.0) + "", myFont, Brushes::Gray, (float)this->picFront->Width / 2, (float)this->picFront->Height - 6, alignText);
+			
+			if (batteryVoltage > 0 && batteryVoltage < batteryMinVoltage) {
+				batteryMinVoltage = batteryVoltage;
+			}
+
+			if (batteryVoltage == batteryMinVoltage) return;
+			
+			alignText->Alignment = StringAlignment::Center;
+			alignText->LineAlignment = StringAlignment::Near;
+
+
+			Pen^ redPen = gcnew Pen(Color::Red, 1.0f);
+
+			int tmpTop = (int)((this->picBack->Height - 4) / 100.0 * batteryMinVoltage);
+
+			e->Graphics->DrawLine(redPen, 0, this->picFront->Height - tmpTop, 20, this->picFront->Height - tmpTop);
+			e->Graphics->DrawString((batteryMinVoltage / 10.0) + "", myFont, Brushes::Red, (float)this->picFront->Width / 2, (float)this->picFront->Height - tmpTop, alignText);
+
+		
 		}
 
 		private:
@@ -1455,12 +1515,10 @@ namespace SwagBot {
 
 		System::Void lblW_MouseUp(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
 			MouseDown[0] = false;
-			//this->TriggerKeyState(0, KEY_UP);
 		}
 
 		System::Void lblW_MouseDown(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
 			MouseDown[0] = true;
-			//this->TriggerKeyState(0, KEY_DOWN);
 		}
 
 		System::Void lblW_MouseLeave(System::Object^ sender, System::EventArgs^) {
@@ -1473,12 +1531,10 @@ namespace SwagBot {
 
 		System::Void lblA_MouseUp(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
 			MouseDown[1] = false;
-			//this->TriggerKeyState(1, KEY_UP);
 		}
 
 		System::Void lblA_MouseDown(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
 			MouseDown[1] = true;
-			//this->TriggerKeyState(1, KEY_DOWN);
 		}
 
 		System::Void lblA_MouseLeave(System::Object^ sender, System::EventArgs^) {
@@ -1491,12 +1547,10 @@ namespace SwagBot {
 
 		System::Void lblD_MouseUp(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
 			MouseDown[2] = false;
-			//this->TriggerKeyState(2, KEY_UP);
 		}
 
 		System::Void lblD_MouseDown(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
 			MouseDown[2] = true;
-			//this->TriggerKeyState(2, KEY_DOWN);
 		}
 
 		System::Void lblD_MouseLeave(System::Object^ sender, System::EventArgs^) {
@@ -1509,12 +1563,10 @@ namespace SwagBot {
 
 		System::Void lblS_MouseUp(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
 			MouseDown[3] = false;
-			//this->TriggerKeyState(3, KEY_UP);
 		}
 
 		System::Void lblS_MouseDown(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
 			MouseDown[3] = true;
-			//this->TriggerKeyState(3, KEY_DOWN);
 		}
 
 		System::Void lblS_MouseLeave(System::Object^ sender, System::EventArgs^) {
@@ -1525,21 +1577,13 @@ namespace SwagBot {
 			this->lblKeyInfo->Text = "Back";
 		}
 
-		System::Void lblP_MouseUp(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
-			MouseDown[4] = false;
-			//this->TriggerKeyState(4, KEY_UP);
-		}
-
 		System::Void lblP_MouseDown(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
-			MouseDown[4] = true;
+			
 			if (MessageBox::Show(this, "Are you sure you want to calibrate the Compass?", "SwagBot Compass Calibration", MessageBoxButtons::YesNo,MessageBoxIcon::Exclamation) == System::Windows::Forms::DialogResult::Yes) {
-				this->TriggerKeyState(4, KEY_DOWN);
+				MouseDown[4] = true;
 			}
 
 			Application::DoEvents();
-
-			//this->TriggerKeyState(5, KEY_UP);
-			MouseDown[4] = false;
 		}
 
 		System::Void lblP_MouseLeave(System::Object^ sender, System::EventArgs^) {
@@ -1552,12 +1596,10 @@ namespace SwagBot {
 
 		System::Void lblM_MouseUp(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
 			MouseDown[5] = false;
-			//this->TriggerKeyState(5, KEY_UP);
 		}
 
 		System::Void lblM_MouseDown(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
 			MouseDown[5] = true;
-			//this->TriggerKeyState(5, KEY_DOWN);
 		}
 
 		System::Void lblM_MouseLeave(System::Object^ sender, System::EventArgs^) {
@@ -1570,12 +1612,10 @@ namespace SwagBot {
 
 		System::Void lblN_MouseUp(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
 			MouseDown[6] = false;
-			//this->TriggerKeyState(6, KEY_UP);
 		}
 
 		System::Void lblN_MouseDown(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
 			MouseDown[6] = true;
-			//this->TriggerKeyState(6, KEY_DOWN);
 		}
 
 		System::Void lblN_MouseLeave(System::Object^ sender, System::EventArgs^) {
@@ -1584,13 +1624,6 @@ namespace SwagBot {
 
 		System::Void lblN_MouseEnter(System::Object^ sender, System::EventArgs^) {
 			this->lblKeyInfo->Text = "Automatic Mode";
-		}
-
-		System::Void tmrRefresh_Tick(System::Object^  sender, System::EventArgs^  e) {
-			if (this->cmdConnect->Enabled == true) {
-				loadCommports();
-			}
-
 		}
 
 		System::Void cmdReset_Click(System::Object^  sender, System::EventArgs^  e) {
@@ -1619,16 +1652,6 @@ namespace SwagBot {
 		System::Void cmdUpload_Click(System::Object^  sender, System::EventArgs^  e) {
 			ReadFile();
 			uploadArray();
-
-			/*
-			Connect();
-			Application::DoEvents();
-			Sleep(200);
-			ResetArduino();
-			Application::DoEvents();
-			Sleep(200);
-			ShellExecute((HWND) this->Handle.ToInt32(), TEXT("open"), TEXT("flashRicardoLaptop.bat"), TEXT(""), TEXT("C:\\Users\\Jucko13\\Documents\\GitHub\\swagbot\\software\\arduino\\src\\"), SW_SHOWNORMAL);
-			*/
 		}
 
 
@@ -1655,9 +1678,13 @@ namespace SwagBot {
 			}
 		}
 
-	private: System::Void sStrip_ItemClicked(System::Object^  sender, System::Windows::Forms::ToolStripItemClickedEventArgs^  e) {
-	}
-private: System::Void lblBufferLength_Click(System::Object^  sender, System::EventArgs^  e) {
-}
+		System::Void cmdRefresh_Click(System::Object^  sender, System::EventArgs^  e) {
+			loadCommports();
+		}
+
+		System::Void picFront_Click(System::Object^  sender, System::EventArgs^  e) {
+			batteryMinVoltage = 255;
+			setPercentage(batteryVoltage);
+		}
 };
 }
