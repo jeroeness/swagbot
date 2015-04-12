@@ -1451,7 +1451,6 @@ private: System::Windows::Forms::Button^  cmdRefresh;
 
 			e->Graphics->FillEllipse(Brushes::White, (int)(size - 14 * 1.5), (int)(size - 14 * 1.5), 14 * 3, 14 * 3);
 
-
 			alignText->Alignment = StringAlignment::Center;
 			alignText->LineAlignment = StringAlignment::Center;
 
@@ -1659,19 +1658,19 @@ private: System::Windows::Forms::Button^  cmdRefresh;
 			if (compassCalculated != compassRealValue) {
 				if (compassCalculated < compassRealValue) {
 					if (compassRealValue - compassCalculated > 127){
-						compassCalculated -= (255 - (compassRealValue - compassCalculated)) / 10.0f;
+						compassCalculated -= (255 - (compassRealValue - compassCalculated)) / 5.0f;
 						if (compassCalculated < 0) compassCalculated = 255;
 
 					} else {
-						compassCalculated += (compassRealValue - compassCalculated) / 10.0f;
+						compassCalculated += (compassRealValue - compassCalculated) / 5.0f;
 					}
 				} else {
 					if (compassCalculated - compassRealValue > 127) {
-						compassCalculated += (255 - (compassCalculated - compassRealValue)) / 10.0f;
+						compassCalculated += (255 - (compassCalculated - compassRealValue)) / 5.0f;
 						if (compassCalculated > 255) compassCalculated = 0;
 
 					} else {
-						compassCalculated -= (compassCalculated - compassRealValue) / 10.0f;
+						compassCalculated -= (compassCalculated - compassRealValue) / 5.0f;
 					}
 				}
 				this->picCompass->Refresh();
